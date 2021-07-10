@@ -1,0 +1,60 @@
+{
+  "name": "@storybook/client-api",
+  "version": "5.3.21",
+  "description": "Storybook Client API",
+  "keywords": [
+    "storybook"
+  ],
+  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/client-api",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "lib/client-api"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "*.js",
+    "*.d.ts",
+    "ts3.5/**/*"
+  ],
+  "scripts": {
+    "prepare": "node ../../scripts/prepare.js"
+  },
+  "dependencies": {
+    "@storybook/addons": "5.3.21",
+    "@storybook/channel-postmessage": "5.3.21",
+    "@storybook/channels": "5.3.21",
+    "@storybook/client-logger": "5.3.21",
+    "@storybook/core-events": "5.3.21",
+    "@storybook/csf": "0.0.1",
+    "@types/webpack-env": "^1.15.0",
+    "core-js": "^3.0.1",
+    "eventemitter3": "^4.0.0",
+    "global": "^4.3.2",
+    "is-plain-object": "^3.0.0",
+    "lodash": "^4.17.15",
+    "memoizerific": "^1.11.3",
+    "qs": "^6.6.0",
+    "stable": "^0.1.8",
+    "ts-dedent": "^1.1.0",
+    "util-deprecate": "^1.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a939e7204a448e9d24e5431f1c9dba8dd7ec05e9",
+  "typesVersions": {
+    "<=3.5": {
+      "*": [
+        "ts3.5/*"
+      ]
+    }
+  }
+}

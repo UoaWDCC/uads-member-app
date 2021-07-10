@@ -1,0 +1,16 @@
+# Installation
+> `npm install --save @types/jest-specific-snapshot`
+
+# Summary
+This package contains type definitions for jest-specific-snapshot (https://github.com/igor-dv/jest-specific-snapshot#readme).
+
+# Details
+Files were exported from https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jest-specific-snapshot.
+
+### Additional Details
+ * Last updated: Tue, 20 Oct 2020 07:15:45 GMT
+ * Dependencies: [@types/jest](https://npmjs.com/package/@types/jest)
+ * Global values: none
+
+# Credits
+These definitions were written by [Janeene Beeforth](https://github.com/dawnmist).
