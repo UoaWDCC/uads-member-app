@@ -5,6 +5,7 @@
  * You'll likely spend most of your time in this file.
  */
 import React from "react"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { WelcomeScreen, DemoScreen, DemoListScreen } from "../screens"
 
@@ -20,22 +21,22 @@ import { WelcomeScreen, DemoScreen, DemoListScreen } from "../screens"
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
-export type PrimaryParamList = {
+export type NavigatorParamList = {
   welcome: undefined
   demo: undefined
   demoList: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createStackNavigator<PrimaryParamList>()
+const Stack = createStackNavigator<NavigatorParamList>()
 
-export function MainNavigator() {
+const AppStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyle: { backgroundColor: "transparent" },
         headerShown: false,
       }}
+      initialRouteName="welcome"
     >
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
@@ -44,6 +45,18 @@ export function MainNavigator() {
   )
 }
 
+export const AppNavigator = React.forwardRef<
+  NavigationContainerRef,
+  Partial<React.ComponentProps<typeof NavigationContainer>>
+>((props, ref) => {
+  return (
+    <NavigationContainer {...props} ref={ref}>
+      <AppStack />
+    </NavigationContainer>
+  )
+})
+
+AppNavigator.displayName = "AppNavigator"
 /**
  * A list of routes from which we're allowed to leave the app when
  * the user presses the back button on Android.
