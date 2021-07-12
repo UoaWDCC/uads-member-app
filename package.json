@@ -1,0 +1,71 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "prettier": "prettier --check src",
+    "prettify": "prettier --write src",
+    "dev": "nodemon -e js,json,ts --watch src --exec babel-node ./src/bin/www.js --extensions .ts,.js",
+    "clean": "rimraf dist",
+    "prebuild": "yarn run clean",
+    "build": "babel src -d dist --extensions .ts,.js",
+    "prestart": "yarn run build",
+    "start": "node dist/bin/www.js"
+  },
+  "dependencies": {
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "chalk": "^4.1.1",
+    "colors": "^1.4.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jest": "^27.0.6",
+    "mongodb": "^3.6.2",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.4",
+    "pug": "~3.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
+    "@babel/node": "^7.13.10",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.13.8",
+    "@babel/plugin-transform-typescript": "^7.13.0",
+    "@babel/preset-env": "^7.13.10",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/express": "^4.17.12",
+    "@types/jest": "^26.0.24",
+    "@types/mongodb": "^3.6.19",
+    "@types/node": "^14.14.33",
+    "prettier": "^2.3.2",
+    "rimraf": "^3.0.2"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-typescript",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "babel-plugin-add-module-exports",
+      "@babel/plugin-transform-typescript",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ]
+    ]
+  }
+}
