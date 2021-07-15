@@ -5,7 +5,6 @@ import { logger } from '../util/Logger';
  * A singleton adapter that allows access to MongoDB cluster through a unique mongo uri.
  */
 class MongoAdapter {
-
   /**
    * The database instance.
    */
@@ -27,7 +26,7 @@ class MongoAdapter {
     client.connect((err) => {
       if (err) throw err;
       this.db = client.db(dbName);
-      logger.logInfo('MongoDB connected');
+      logger.info('MongoDB connected');
     });
 
     this.client = client;
