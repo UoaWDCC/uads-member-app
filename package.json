@@ -11,7 +11,8 @@
     "prebuild": "yarn run clean",
     "build": "babel src -d dist --extensions .ts,.js",
     "prestart": "yarn run build",
-    "start": "node dist/bin/www.js"
+    "start": "node dist/bin/www.js",
+    "types": "ts-node ./script/types.ts"
   },
   "dependencies": {
     "babel-plugin-add-module-exports": "^1.0.4",
@@ -24,11 +25,13 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jest": "^27.0.6",
-    "joi": "^17.4.1",
+    "joi": "^17.3.0",
     "mongodb": "^3.6.2",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.4",
     "pug": "~3.0.0",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -44,6 +47,7 @@
     "@types/jest": "^26.0.24",
     "@types/mongodb": "^3.6.19",
     "@types/node": "^14.14.33",
+    "joi-to-typescript": "^2.1.0",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2"
   },
