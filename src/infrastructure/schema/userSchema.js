@@ -26,7 +26,6 @@ const userSchema = new Schema({
     },
     clubMembership: [{type: clubSchema}],
     clubRequested: [{type: clubSchema}],
-    //clubAdmin: type..
     membershipStart: Date,
     membershipEnd: Date,
     created: Timestamp,

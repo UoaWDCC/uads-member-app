@@ -9,7 +9,7 @@ const clubSchema = new Schema({
     name: String,
     desc: String,
     imagePath: String,
-    admins: [{type: Object}], //role_uuid or type objects 
+    admins: [{type: UUID}],  
     sponsors: [{type: sponsorSchema}],
     events: [{type: eventSchema}],
     discounts: [{type: discountSchema}],
