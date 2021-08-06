@@ -1,4 +1,3 @@
----
 openapi: 3.0.2
 info:
   title: UADS Backend
@@ -13,15 +12,15 @@ paths:
     summary: End point to do with events
     get:
       tags:
-      - Event
+        - Event
       parameters:
-      - name: name
-        description: Get event with name
-        schema:
-          type: string
-        in: query
+        - name: name
+          description: Get event with name
+          schema:
+            type: string
+          in: query
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -37,20 +36,20 @@ paths:
   /discount:
     get:
       responses:
-        "200":
+        '200':
           description: Offers successfully received
       summary: Get Offers
       description: Get all offers for UADS
   /event/{id}:
     get:
       parameters:
-      - name: id
-        schema:
-          type: integer
-        in: path
-        required: true
+        - name: id
+          schema:
+            type: integer
+          in: path
+          required: true
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -63,7 +62,7 @@ components:
     Event:
       description: Data type to store events using the UADS App
       required:
-      - name
+        - name
       type: object
       properties:
         name:
@@ -72,8 +71,8 @@ components:
     Club:
       description: Data type to store clubs using the UADS App
       required:
-      - name
-      - description
+        - name
+        - description
       type: object
       properties:
         name:
@@ -85,8 +84,8 @@ components:
     Sponsor:
       description: Data type to store sponsors using the UADS App
       required:
-      - name
-      - club_affil
+        - name
+        - club_affil
       type: object
       properties:
         name:

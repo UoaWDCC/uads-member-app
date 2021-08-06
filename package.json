@@ -12,9 +12,12 @@
     "build": "babel src -d dist --extensions .ts,.js",
     "prestart": "yarn run build",
     "start": "node dist/bin/www.js",
-    "types": "ts-node ./script/types.ts"
+    "types": "ts-node ./script/types.ts",
+    "yaml": "ts-node ./scripts/api.js"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.12",
+    "@types/yamljs": "^0.2.31",
     "babel-plugin-add-module-exports": "^1.0.4",
     "bson": "^4.4.1",
     "chalk": "^4.1.1",
@@ -58,7 +61,9 @@
     "@types/node": "^14.14.33",
     "joi-to-typescript": "^2.1.0",
     "prettier": "^2.3.2",
-    "rimraf": "^3.0.2"
+    "node-fetch": "^2.6.1",
+    "rimraf": "^3.0.2",
+    "write-yaml-file": "^4.2.0"
   },
   "babel": {
     "presets": [
