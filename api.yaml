@@ -59,28 +59,6 @@ paths:
       summary: Get a specific event by ID
 components:
   schemas:
-    Event:
-      description: Data type to store events using the UADS App
-      required:
-        - name
-      type: object
-      properties:
-        name:
-          description: name of the event
-          type: string
-    Club:
-      description: Data type to store clubs using the UADS App
-      required:
-        - name
-        - description
-      type: object
-      properties:
-        name:
-          description: name of club
-          type: string
-        description:
-          description: description of club
-          type: string
     Sponsor:
       description: Data type to store sponsors using the UADS App
       required:
@@ -93,6 +71,51 @@ components:
           type: string
         club_affil:
           description: clubs affiliated with sponsor
+          type: array
+          items:
+            $ref: '#/components/schemas/Club'
+    Club:
+      description: Data type to store clubs using the UADS App
+      type: object
+    Event:
+      description: Data type to store events using the UADS App
+      required:
+        - uuid
+        - name
+        - date
+        - attendanceCap
+        - club
+      type: object
+      properties:
+        uuid:
+          format: uuid
+          description: The UUID of the event
+          pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+          type: string
+        name:
+          description: The name of the event
+          type: string
+        date:
+          format: date
+          description: The starting Date of the event
+          type: string
+        imagePath:
+          description: The path/url to an event image
+          type: string
+        attendanceCap:
+          description: The maximum number of attendees, (-1 for no cap)
+          minimum: -1
+          type: integer
+        sponsor:
+          description: The sponsor(s) of the event
+          type: array
+          items:
+            $ref: '#/components/schemas/Sponsor'
+        url:
+          description: An external url for the event
+          type: string
+        club:
+          description: The club(s) hosting the event
           type: array
           items:
             $ref: '#/components/schemas/Club'

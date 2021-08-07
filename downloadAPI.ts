@@ -1,8 +1,7 @@
 import fetch from 'node-fetch';
 import * as writeYamlFile from 'write-yaml-file';
-import openapiTS from 'openapi-typescript';
+import openapiTS, { SchemaObject } from 'openapi-typescript';
 import * as fs from 'fs';
-import prettier from 'prettier';
 
 async function downloadJson(): Promise<void> {
   const result = fetch(
@@ -10,17 +9,29 @@ async function downloadJson(): Promise<void> {
   );
 
   result
+    //Store the downloaded information as json
     .then((res) => res.json())
+    //Write the json openapi as yaml
     .then((json) => {
       writeYamlFile('api.yaml', json);
     })
+    //Convert OAS yaml to typescript interfaces
     .then(() => {
-      openapiTS('api.yaml').then((res) => {
-        fs.writeFile('./src/interface/api.ts', res, (err) => {
-          if (err) {
-            console.log('Error, please try again');
+      return openapiTS('api.yaml', {
+        formatter(node: SchemaObject) {
+          if (node.format === 'date') {
+            return 'Date';
           }
-        });
+        },
+        prettierConfig: '.prettierrc',
+      });
+    })
+    //Save typescript interfaces as file
+    .then((res) => {
+      fs.writeFile('./src/interface/api.ts', res, (err) => {
+        if (err) {
+          console.log('Error, please try again');
+        }
       });
     });
 }
