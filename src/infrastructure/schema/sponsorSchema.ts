@@ -14,15 +14,15 @@ export const sponsorSchema = new Schema({
     imagePath: String,
     instagramHandle: {
         username: String,
-        url: 'mongoose-type-url' 
+        url: mongoose.SchemaTypes.Url 
     },
     facebookHandle: {
         username: String,
-        url: 'mongoose-type-url' 
+        url: mongoose.SchemaTypes.Url 
     },
     twitterHandle: {
         username: String,
-        url: 'mongoose-type-url'
+        url: mongoose.SchemaTypes.Url 
     },
     
     tier: {
@@ -39,7 +39,7 @@ export const sponsorSchema = new Schema({
         streetName: String,
         city: String,
     }, 
-    websiteUrl: 'mongoose-type-url',
+    websiteUrl: mongoose.SchemaTypes.Url,
     discountsOffered: [{type: String, default: null}],
     clubs: [{type: clubSchema, default: null}]
 

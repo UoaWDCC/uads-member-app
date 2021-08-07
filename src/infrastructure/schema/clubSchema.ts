@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { uuid } from 'uuidv4';
-import 'mongoose-type-url';
 import { sponsorSchema } from './sponsorSchema';
 import { eventSchema } from './eventSchema'
 import { discountSchema } from './discountSchema';

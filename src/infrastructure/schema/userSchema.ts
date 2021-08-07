@@ -1,7 +1,6 @@
 import { Timestamp } from 'bson';
 import mongoose from 'mongoose';
 import { uuid } from 'uuidv4';
-import 'mongoose-type-url';
 import { clubSchema } from './clubSchema';
 
 const { Schema } = mongoose;

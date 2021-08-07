@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { uuid } from 'uuidv4';
-import 'mongoose-type-url';
 
 const { Schema } = mongoose;
 
