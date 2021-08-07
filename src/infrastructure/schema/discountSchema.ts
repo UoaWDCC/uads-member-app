@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import uuidv4 from 'uuid/v4';
+import { uuid } from 'uuidv4';
 import 'mongoose-type-url';
 
 const { Schema } = mongoose;
 
-const dicountSchema = new Schema({
-    id: {type: UUID, default: uuidv4},
+export const discountSchema = new Schema({
+    id: {type: String, default: uuid()},
     name: String,
     desc: String,
     imagePath: String,
@@ -20,3 +20,4 @@ const dicountSchema = new Schema({
         minute: String
     }
 })
+

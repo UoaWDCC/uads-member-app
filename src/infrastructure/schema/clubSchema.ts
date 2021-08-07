@@ -1,17 +1,20 @@
 import mongoose from 'mongoose';
-import uuidv4 from 'uuid/v4';
+import { uuid } from 'uuidv4';
 import 'mongoose-type-url';
+import { sponsorSchema } from './sponsorSchema';
+import { eventSchema } from './eventSchema'
+import { discountSchema } from './discountSchema';
 
 const { Schema } = mongoose;
 
-const clubSchema = new Schema({
-    id: {type: UUID, default: uuidv4},
+export const clubSchema = new Schema({
+    id: {type: String, default: uuid()},
     name: String,
     desc: String,
     imagePath: String,
-    admins: [{type: UUID}],  
+    admins: [{type: String}],  //String is returned when a uuid is generated - so this string value refers to the uuid of the user.
     sponsors: [{type: sponsorSchema}],
-    events: [{type: eventSchema}],
+    events: [{type: eventSchema }],
     discounts: [{type: discountSchema}],
     photos: [{type: String}],
 })

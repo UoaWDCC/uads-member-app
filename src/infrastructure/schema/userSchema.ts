@@ -1,11 +1,12 @@
 import { Timestamp } from 'bson';
 import mongoose from 'mongoose';
-import uuidv4 from 'uuid/v4';
+import { uuid } from 'uuidv4';
 import 'mongoose-type-url';
+import { clubSchema } from './clubSchema';
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+export const userSchema = new Schema({
     firebaseAuth: {
         type: String,
         upi: {type: String, required: true}, //add firebase id and mongoose uuid
@@ -31,8 +32,5 @@ const userSchema = new Schema({
     modified: Timestamp,
     deleted: Timestamp,
     notificationsON: {type: Boolean, default: true}
-
-
-
-
+   
 })

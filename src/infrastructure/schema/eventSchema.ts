@@ -1,11 +1,12 @@
 // JavaScript source code
 import mongoose from 'mongoose';
-import uuidv4 from 'uuid/v4';
+import { uuid } from 'uuidv4';
+import 'mongoose-type-url';
 
 const { Schema } = mongoose;
 
-const eventSchema = new Schema({
-    id: {type: UUID, default: uuidv4},
+export const eventSchema = new Schema({
+    id: {type: String, default: uuid()},
     name: String,
     date: Date,
     location: {
@@ -15,7 +16,7 @@ const eventSchema = new Schema({
     },
     imagePath: String,
     attendanceCap: Number,
-    sponsor: [{ type: UUID, default: null }],
+    sponsor: [{ type: String, default: null }],
     url: String,
     
 })
