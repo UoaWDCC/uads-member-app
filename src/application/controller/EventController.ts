@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 
 class EventController extends BaseController {
   async getEvents(req: Request, res: Response) {
-    res.sendStatus(200);
+    res.status(200).json([{ name: 'hello world' }]);
   }
 }
 
