@@ -1,8 +1,8 @@
-import * as express from "express";
+import * as express from 'express';
 
 const Get = (req: express.Request, res: express.Response): void => {
   res.json({
-    message: "hello",
+    message: 'hello',
   });
 };
 

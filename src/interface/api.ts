@@ -4,14 +4,14 @@
  */
 
 export interface paths {
-  "/event": {
+  '/event': {
     /** Getting all the events available to the user */
-    get: operations["GET_EVENT"];
+    get: operations['GET_EVENT'];
   };
-  "/user": {};
-  "/club": {};
-  "/sponsor": {};
-  "/discount": {
+  '/user': {};
+  '/club': {};
+  '/sponsor': {};
+  '/discount': {
     /** Get all offers for UADS */
     get: {
       responses: {
@@ -20,8 +20,8 @@ export interface paths {
       };
     };
   };
-  "/event/{id}": {
-    get: operations["GET_EVENT_ID"];
+  '/event/{id}': {
+    get: operations['GET_EVENT_ID'];
   };
 }
 
@@ -44,7 +44,7 @@ export interface components {
       /** name of sponsor */
       name: string;
       /** clubs affiliated with sponsor */
-      club_affil: components["schemas"]["Club"][];
+      club_affil: components['schemas']['Club'][];
     };
   };
 }
@@ -62,7 +62,7 @@ export interface operations {
       /** Valid request */
       200: {
         content: {
-          "application/json": components["schemas"]["Event"][];
+          'application/json': components['schemas']['Event'][];
         };
       };
     };
@@ -77,7 +77,7 @@ export interface operations {
       /** Got the event */
       200: {
         content: {
-          "application/json": components["schemas"]["Event"];
+          'application/json': components['schemas']['Event'];
         };
       };
     };
