@@ -38,6 +38,7 @@ app.use((err, req, res, next) => {
   `);
 });
 
+//@ts-ignore
 const connect = connector(routes, apiFile);
 
 connect(app);
