@@ -6,7 +6,6 @@ import 'mongoose-type-url';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    //password: {type: String, required: true}, //need hashing - https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
     firebaseAuth: {
         type: String,
         upi: {type: String, required: true}, //add firebase id and mongoose uuid
