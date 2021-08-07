@@ -10,7 +10,7 @@ import chalk from 'chalk';
 
 // Get the port
 const port = normalizePort(Config.PORT);
-logger.logInfo('Hosted on port: ' + chalk.yellow(port));
+logger.info('Hosted on port: ' + chalk.yellow(port));
 app.set('port', port);
 
 // Create HTTP server

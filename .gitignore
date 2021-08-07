@@ -25,3 +25,6 @@ yarn-error.log*
 
 # ide files
 .idea
+
+# config
+config/

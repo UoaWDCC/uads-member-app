@@ -1,23 +1,28 @@
-class Logger {
-  logInfo(message: string) {
-    console.log(Logger.generateLogString(message));
-  }
+import winston from 'winston';
+import config from './Config';
 
-  logWarn(message: string) {
-    console.log(Logger.generateLogString(message));
+const enumerateErrorFormat = winston.format((info) => {
+  if (info instanceof Error) {
+    Object.assign(info, { message: info.stack });
   }
+  return info;
+});
 
-  logError(message?: string) {
-    console.error(
-      Logger.generateLogString(message || 'An unknown error occurred')
-    );
-  }
-
-  private static generateLogString(message: string): string {
-    return `[Server] ${message}`;
-  }
-}
-
-const logger = new Logger();
+const logger = winston.createLogger({
+  level: config.NODE_ENV === 'development' ? 'debug' : 'info',
+  format: winston.format.combine(
+    enumerateErrorFormat(),
+    config.NODE_ENV === 'development'
+      ? winston.format.colorize()
+      : winston.format.uncolorize(),
+    winston.format.splat(),
+    winston.format.printf(({ level, message }) => `${level}: ${message}`)
+  ),
+  transports: [
+    new winston.transports.Console({
+      stderrLevels: ['error'],
+    }),
+  ],
+});
 
 export { logger };
