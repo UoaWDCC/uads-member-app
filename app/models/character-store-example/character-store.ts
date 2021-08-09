@@ -1,5 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { CharacterModel, CharacterSnapshot } from "../character/character"
+import { CharacterModel, CharacterSnapshot } from "../character-example/character"
 import { CharacterApi } from "../../services/api/character-api"
 import { withEnvironment } from "../extensions/with-environment"
 
