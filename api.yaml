@@ -62,21 +62,46 @@ components:
     Sponsor:
       description: Data type to store sponsors using the UADS App
       required:
-        - name
-        - club_affil
+        - uuid
       type: object
       properties:
-        name:
-          description: name of sponsor
+        uuid:
+          description: The UUID of the sponsor
           type: string
-        club_affil:
-          description: clubs affiliated with sponsor
-          type: array
-          items:
-            $ref: '#/components/schemas/Club'
     Club:
       description: Data type to store clubs using the UADS App
+      required:
+        - uuid
+        - name
       type: object
+      properties:
+        uuid:
+          description: The UUID of the Club
+          type: string
+        name:
+          description: The name of the club
+          type: string
+        desc:
+          description: A club description
+          type: string
+        imagePath:
+          description: A image of the club
+          type: string
+        admins:
+          description: The admin(s) of the club
+          type: array
+          items:
+            type: string
+        sponsors:
+          description: The sponsor(s) of the club
+          type: array
+          items:
+            $ref: '#/components/schemas/Sponsor'
+        events:
+          description: The events hosted by the club
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
     Event:
       description: Data type to store events using the UADS App
       required:
@@ -106,7 +131,7 @@ components:
           description: The maximum number of attendees, (-1 for no cap)
           minimum: -1
           type: integer
-        sponsor:
+        sponsors:
           description: The sponsor(s) of the event
           type: array
           items:
@@ -119,3 +144,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Club'
+    User:
+      description: A user of the app
+      type: object
