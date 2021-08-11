@@ -1,7 +1,7 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
-import { Screen, Text, TextField } from "../../components"
+import { Screen, Text, TextField, SignInButton } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
@@ -9,6 +9,8 @@ import { color } from "../../theme"
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
 }
 
 
@@ -22,6 +24,7 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="scroll">
       <Text preset="header" text="LOGIN HERE" />
       <TextField placeholder='Enter UPI' />
+      <SignInButton text='SIGN IN' />
     </Screen>
   )
 })

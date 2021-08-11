@@ -10,7 +10,7 @@ export const palette = {
   deepPurple: "#5D2555",
   earlyDawn: '#fff4de', // background color (primary colour)
   goldenGlow: '#ffd788', // secondary color
-  tangelo:'#ffae70', // sign-in button colour (tertiary color)
+  tangelo:'#ffad70', // sign-in button colour (tertiary color)
   brown: '#503106', // text color
 }
 
