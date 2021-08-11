@@ -1,0 +1,149 @@
+openapi: 3.0.2
+info:
+  title: UADS Backend
+  version: 1.0.0
+  description: API's used for UADS Backend
+  contact:
+    name: Web Development and Consulting Club
+    url: https://wdcc.co.nz
+    email: wdcc.uoa@gmail.com
+paths:
+  /event:
+    summary: End point to do with events
+    get:
+      tags:
+        - Event
+      parameters:
+        - name: name
+          description: Get event with name
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+          description: Valid request
+      operationId: GET_EVENT
+      description: Getting all the events available to the user
+  /user: {}
+  /club: {}
+  /sponsor: {}
+  /discount:
+    get:
+      responses:
+        '200':
+          description: Offers successfully received
+      summary: Get Offers
+      description: Get all offers for UADS
+  /event/{id}:
+    get:
+      parameters:
+        - name: id
+          schema:
+            type: integer
+          in: path
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: Got the event
+      operationId: GET_EVENT_ID
+      summary: Get a specific event by ID
+components:
+  schemas:
+    Sponsor:
+      description: Data type to store sponsors using the UADS App
+      required:
+        - uuid
+      type: object
+      properties:
+        uuid:
+          description: The UUID of the sponsor
+          type: string
+    Club:
+      description: Data type to store clubs using the UADS App
+      required:
+        - uuid
+        - name
+      type: object
+      properties:
+        uuid:
+          description: The UUID of the Club
+          type: string
+        name:
+          description: The name of the club
+          type: string
+        desc:
+          description: A club description
+          type: string
+        imagePath:
+          description: A image of the club
+          type: string
+        admins:
+          description: The admin(s) of the club
+          type: array
+          items:
+            type: string
+        sponsors:
+          description: The sponsor(s) of the club
+          type: array
+          items:
+            $ref: '#/components/schemas/Sponsor'
+        events:
+          description: The events hosted by the club
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    Event:
+      description: Data type to store events using the UADS App
+      required:
+        - uuid
+        - name
+        - date
+        - attendanceCap
+        - club
+      type: object
+      properties:
+        uuid:
+          format: uuid
+          description: The UUID of the event
+          pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+          type: string
+        name:
+          description: The name of the event
+          type: string
+        date:
+          format: date
+          description: The starting Date of the event
+          type: string
+        imagePath:
+          description: The path/url to an event image
+          type: string
+        attendanceCap:
+          description: The maximum number of attendees, (-1 for no cap)
+          minimum: -1
+          type: integer
+        sponsors:
+          description: The sponsor(s) of the event
+          type: array
+          items:
+            $ref: '#/components/schemas/Sponsor'
+        url:
+          description: An external url for the event
+          type: string
+        club:
+          description: The club(s) hosting the event
+          type: array
+          items:
+            $ref: '#/components/schemas/Club'
+    User:
+      description: A user of the app
+      type: object

@@ -1,21 +1,30 @@
 import express from 'express';
-import * as path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import router from './application/route/MainRouter';
+import * as OpenApiValidator from 'express-openapi-validator';
+import * as swaggerUI from 'swagger-ui-express';
+import YAML from 'yamljs';
+import { connector } from 'swagger-routes-express';
+import * as routes from './application/route';
+
+const apiFile = YAML.load('api.yaml');
 
 const app = express();
-
-// Setup view engine as pug
-app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Send everything to router
-app.use('/', router);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(apiFile));
+
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: 'api.yaml',
+    validateRequests: true,
+    validateResponses: true,
+  })
+);
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -28,5 +37,10 @@ app.use((err, req, res, next) => {
   <p>${err.message}</p>
   `);
 });
+
+//@ts-ignore
+const connect = connector(routes, apiFile);
+
+connect(app);
 
 export default app;

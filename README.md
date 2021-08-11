@@ -6,10 +6,10 @@ Run `yarn install` to install necessary packackages
 
 Run `yarn run dev` to start on default port 9002
 
-## Joi-to-Typescript
+## API download
 
-### Github Docs
+To automatically download the OAS from apicurio, run `yarn run api`, this will download the API, convert to YAML, and generate typescript interfaces
 
-https://github.com/mrjono1/joi-to-typescript
+## Docs
 
-Run `yarn run types` to automatically generate typescript interfaces based on Joi schema
+To view docs, go to route /api-docs
