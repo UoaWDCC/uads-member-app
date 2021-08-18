@@ -1,18 +1,31 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
-import { Screen, Text, TextField, SignInButton } from "../../components"
+import { Linking, View, ViewStyle, StyleSheet } from "react-native"
+import { Screen, Text, TextField, SignInButton, Logo, Icon } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
+import { UpiInputField } from "../../components/upi-input-field/upi-input-field"
+import { Box, NativeBaseProvider } from "native-base"
+import { PasswordInputField } from "../../components/password-input-field/password-input-field"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
+  alignContent: "center"
 }
 
+const styles = StyleSheet.create({
+    textStyle: {
+      flex: 1,
+      position: 'absolute',
+      top: '50%',
+
+    },
+    
+})
 
 export const LoginScreen = observer(function LoginScreen() {
   // Pull in one of our MST stores
@@ -22,8 +35,15 @@ export const LoginScreen = observer(function LoginScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="LOGIN HERE" />
-      <TextField placeholder='Enter UPI' />
+      {/*<Image source={require("../../../assets/images/logo.png")} />*/}
+      <Text preset="header" text="LOGIN HERE"/>
+      <NativeBaseProvider>
+        <Box flex={1} alignItems="center" justifyContent="center">
+          <UpiInputField/>
+          <PasswordInputField/>
+        </Box>
+      </NativeBaseProvider>
+      <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => Linking.openURL('http://google.com')}></Text>
       <SignInButton text='SIGN IN' />
     </Screen>
   )

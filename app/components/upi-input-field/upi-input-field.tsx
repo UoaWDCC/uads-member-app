@@ -4,12 +4,17 @@ import { color } from "../../theme"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { borderColor } from "styled-system"
 
-export const InputField = () => {
+export const UpiInputField = () => {
+
   return (
     <Input
-      style={{ width: 208, height: 38}}
-      borderRadius="20"
-      placeholder="Enter UPI"
+     // getRef={input => {
+      //  upi = input
+      //  console.log(upi)
+     // }}
+      style={{ width: 208, height: 38, position: 'absolute', top: '32%'}}
+      borderRadius="40px"
+      placeholder="UPI..."
       _light={{
         placeholderTextColor: color.text,
         backgroundColor: color.palette.goldenGlow,
@@ -18,6 +23,7 @@ export const InputField = () => {
       _dark={{
         placeholderTextColor: color.text,
       }}
+      // onChangeText={(text) => this.setState({text})}
     />
   )
 }
@@ -27,7 +33,7 @@ export default () => {
   return (
     <NativeBaseProvider>
       <Center flex={1}>
-        <InputField />
+        <UpiInputField />
       </Center>
     </NativeBaseProvider>
   )
