@@ -6,7 +6,7 @@ import { Screen, Text, TextField, SignInButton, Logo, Icon } from "../../compone
 // import { useStores } from "../../models"
 import { color } from "../../theme"
 import { UpiInputField } from "../../components/upi-input-field/upi-input-field"
-import { Box, NativeBaseProvider } from "native-base"
+import { Box, NativeBaseProvider, Stack } from "native-base"
 import { PasswordInputField } from "../../components/password-input-field/password-input-field"
 
 const ROOT: ViewStyle = {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     textStyle: {
       flex: 1,
       position: 'absolute',
-      top: '50%',
+      top: '60%',
 
     },
     
@@ -35,12 +35,14 @@ export const LoginScreen = observer(function LoginScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      {/*<Image source={require("../../../assets/images/logo.png")} />*/}
+      { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
       <Text preset="header" text="LOGIN HERE"/>
       <NativeBaseProvider>
         <Box flex={1} alignItems="center" justifyContent="center">
+        <Stack space={4}>
           <UpiInputField/>
           <PasswordInputField/>
+          </Stack>
         </Box>
       </NativeBaseProvider>
       <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => Linking.openURL('http://google.com')}></Text>

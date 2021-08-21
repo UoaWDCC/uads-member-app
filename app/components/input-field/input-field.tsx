@@ -1,12 +1,11 @@
 import React from "react"
 import { Input, Center, NativeBaseProvider } from "native-base"
 import { color } from "../../theme"
-import { Colors } from "react-native/Libraries/NewAppScreen"
-import { borderColor } from "styled-system"
 
 export const InputField = () => {
   return (
     <Input
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{ width: 208, height: 38}}
       borderRadius="20"
       placeholder="Enter UPI"

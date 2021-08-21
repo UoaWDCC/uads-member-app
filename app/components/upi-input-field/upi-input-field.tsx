@@ -1,8 +1,6 @@
 import React from "react"
 import { Input, Center, NativeBaseProvider } from "native-base"
 import { color } from "../../theme"
-import { Colors } from "react-native/Libraries/NewAppScreen"
-import { borderColor } from "styled-system"
 
 export const UpiInputField = () => {
 
@@ -12,13 +10,14 @@ export const UpiInputField = () => {
       //  upi = input
       //  console.log(upi)
      // }}
-      style={{ width: 208, height: 38, position: 'absolute', top: '32%'}}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ width: 208, height: 38}}
       borderRadius="40px"
       placeholder="UPI..."
       _light={{
         placeholderTextColor: color.text,
         backgroundColor: color.palette.goldenGlow,
-        borderColor: color.text
+        borderColor: color.palette.goldenGlow
       }}
       _dark={{
         placeholderTextColor: color.text,

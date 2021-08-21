@@ -5,24 +5,24 @@ import { Colors } from "react-native/Libraries/NewAppScreen"
 import { borderColor } from "styled-system"
 
 export const PasswordInputField = () => {
-  const [show, setShow] = React.useState(false)
+  //const [show, setShow] = React.useState(false)
 
-  const handleClick = () => setShow(!show)
+  //const handleClick = () => setShow(!show)
 
   return (
     <Input
-      style={{ width: 208, height: 38, position: 'absolute', top: '40%'}}
+      style={{ width: 208, height: 38, top: '40%'}}
       borderRadius="40px"
-      type={show ? "text" : "password"}
+     // type={show ? "text" : "password"}
       placeholder="Password..."
 
       _light={{
         placeholderTextColor: color.text,
         backgroundColor: color.palette.goldenGlow,
-        borderColor: color.text
+        borderColor: color.palette.goldenGlow
       }}
       _dark={{
-        placeholderTextColor: color.text,
+        placeholderTextColor: color.palette.goldenGlow,
       }}
     />
   )
