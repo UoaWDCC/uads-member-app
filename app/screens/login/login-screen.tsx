@@ -5,9 +5,9 @@ import { Screen, Text, TextField, SignInButton, Logo, Icon } from "../../compone
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-import { UpiInputField } from "../../components/upi-input-field/upi-input-field"
+import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, NativeBaseProvider, Stack } from "native-base"
-import { PasswordInputField } from "../../components/password-input-field/password-input-field"
+import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
