@@ -5,15 +5,20 @@ import { Colors } from "react-native/Libraries/NewAppScreen"
 import { borderColor } from "styled-system"
 
 export const PasswordInputField = () => {
-  //const [show, setShow] = React.useState(false)
+  const [show, setShow] = React.useState(false)
 
-  //const handleClick = () => setShow(!show)
+  const handleClick = () => setShow(!show)
 
   return (
     <Input
-      style={{ width: 208, height: 38, top: '40%'}}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ 
+        width: 208, 
+        height: 38,
+        top: '40%'
+        }}
       borderRadius="40px"
-     // type={show ? "text" : "password"}
+      type={show ? "text" : "password"}
       placeholder="Password..."
 
       _light={{
