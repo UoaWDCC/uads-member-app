@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { Linking, View, ViewStyle, StyleSheet, Button } from "react-native"
+import { Linking, View, ViewStyle, StyleSheet } from "react-native"
 import { Screen, Text, TextField, SignInButton, Logo, Icon } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -8,7 +8,6 @@ import { color } from "../../theme"
 import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, NativeBaseProvider, Stack } from "native-base"
 import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
-import { useNavigation } from "@react-navigation/native"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -33,7 +32,7 @@ export const LoginScreen = observer(function LoginScreen() {
   // const { someStore, anotherStore } = useStores()
 
   // Pull in navigation via hook
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
       { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
@@ -46,12 +45,6 @@ export const LoginScreen = observer(function LoginScreen() {
           </Stack>
         </Box>
       </NativeBaseProvider>
-      
-      <Button
-      title="Register"
-      onPress={() =>
-        navigation.navigate('register')
-      }/>
       <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => Linking.openURL('http://google.com')}></Text>
       <SignInButton text='SIGN IN' />
     </Screen>

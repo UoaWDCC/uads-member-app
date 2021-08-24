@@ -7,7 +7,7 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { LoginScreen, RegistrationScreen} from "../screens"
+import { LoginScreen} from "../screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -37,7 +37,6 @@ const AppStack = () => {
       initialRouteName="login"
     >
       <Stack.Screen name="login" component={LoginScreen} />
-      <Stack.Screen name="register" component={RegistrationScreen} />
     </Stack.Navigator>
   )
 }
