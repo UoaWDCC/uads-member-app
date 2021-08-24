@@ -40,6 +40,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [show] = React.useState(false)
+  const navigation = useNavigation();
 
   function registerUser() {
     if(email === '' && password === '') {
@@ -61,7 +62,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   // const { firstName = '', lastName = '', upi = '', email = '', password };
 
   // Pull in navigation via hook
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
       <Text preset="header" text="Registration" />

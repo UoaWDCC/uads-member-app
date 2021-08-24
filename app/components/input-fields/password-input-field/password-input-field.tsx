@@ -1,11 +1,13 @@
 import React from "react"
-import { Input, Center, NativeBaseProvider } from "native-base"
+import { Input, Center, NativeBaseProvider, Button } from "native-base"
 import { color } from "../../../theme"
+import { Colors } from "react-native/Libraries/NewAppScreen"
+import { borderColor } from "styled-system"
 
 export const PasswordInputField = () => {
-  const [show] = React.useState(false)
+  const [show, setShow] = React.useState(false)
 
-  // const handleClick = () => setShow(!show)
+  const handleClick = () => setShow(!show)
 
   return (
     <Input

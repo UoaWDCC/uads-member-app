@@ -10,7 +10,7 @@ import { color } from "../../theme"
 import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -107,12 +107,6 @@ export const LoginScreen = observer(function LoginScreen() {
           </Stack>
         </Box>
       </NativeBaseProvider>
-      
-      <Button
-      title="Register"
-      onPress={() =>
-        navigation.navigate('register')
-      }/>
       <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => Linking.openURL('http://google.com')}></Text>
       <SignInButton text='SIGN IN' onPress={() => userLogin()}/>
     </Screen>
