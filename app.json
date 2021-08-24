@@ -17,16 +17,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "@react-native-firebase/app"
-      "@react-native-firebase/perf"
-      "@react-native-firebase/crashlytics"
-    ]
+    }
   }
 }

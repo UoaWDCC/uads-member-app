@@ -1,17 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from "react"
+import React, { useContext, useRef } from "react";
 import { observer } from "mobx-react-lite"
 import { Button, ViewStyle } from "react-native"
 import { Screen, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-import { Input, NativeBaseProvider, Stack } from "native-base"
+import { FormControl, Input, NativeBaseProvider, Stack } from "native-base"
 import { GradLevel } from "../../components/input-fields/study-level-drop-down/grad-level-drop-down"
 import { useNavigation } from "@react-navigation/native"
 import { FirstNameInput } from "../../components/input-fields/first-name-input/first-name-input"
 import firebase from '@react-native-firebase/app';
 import { LastNameInput } from "../../components/input-fields/last-name-input/last-name-input"
+import { AuthContext } from "./context/AuthContext";
+import { auth } from "./firebaseSetup";
+import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field";
+import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field";
+import { EmailInputField } from "../../components/input-fields/email-input-field/email-input-field";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -25,23 +30,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
-  function signUpPressed() {
-    var email = "test@example.com";
-    var password = "hunter2";
-    // [START auth_signup_password]
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Signed in 
-      var user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ..
-    });
-  // [END auth_signup_password]
-  }
+  
 
   // Pull in navigation via hook
   const navigation = useNavigation()
@@ -50,8 +39,17 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
       <Text preset="header" text="Registration" />
       <NativeBaseProvider>
         <Stack space={4}>
+        <FormControl>
+          <EmailInputField ref={emailRef}></EmailInputField>
+        </FormControl>
+        
             <FirstNameInput></FirstNameInput>
             <LastNameInput></LastNameInput>
+            <UpiInputField></UpiInputField>
+            <FormControl>
+            <PasswordInputField></PasswordInputField>
+            </FormControl>
+            
             { /* <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
               borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="First Name..."/>
               value={this.state.username} />
