@@ -7,7 +7,15 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { LoginScreen} from "../screens"
+import { 
+  LoginScreen, 
+  AboutScreen,
+  HomeScreen, 
+  OffersScreen, 
+  SettingsScreen, 
+  SponsorsScreen, 
+} from "../screens"
+
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -23,6 +31,11 @@ import { LoginScreen} from "../screens"
  */
 export type NavigatorParamList = {
   login: undefined
+  home: undefined
+  about: undefined
+  offers: undefined
+  settings: undefined
+  sponsors: undefined 
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -32,11 +45,15 @@ const AppStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerShown: true, //on for testing so i can see which screen I am on 
       }}
-      initialRouteName="login"
+      initialRouteName="home"
     >
-      <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="about" component={AboutScreen} />
+      <Stack.Screen name="offers" component={OffersScreen} />
+      <Stack.Screen name="settings" component={SettingsScreen} />
+      <Stack.Screen name="sponsors" component={SponsorsScreen} />
     </Stack.Navigator>
   )
 }
