@@ -15,6 +15,7 @@ import {
   SettingsScreen, 
   SponsorsScreen, 
 } from "../screens"
+import { NativeBaseProvider, Box, Button } from "native-base"
 
 
 /**
@@ -43,19 +44,29 @@ const Stack = createStackNavigator<NavigatorParamList>()
 
 const AppStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: true, //on for testing so i can see which screen I am on 
-      }}
-      initialRouteName="home"
-    >
-      <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="about" component={AboutScreen} />
-      <Stack.Screen name="offers" component={OffersScreen} />
-      <Stack.Screen name="settings" component={SettingsScreen} />
-      <Stack.Screen name="sponsors" component={SponsorsScreen} />
-    </Stack.Navigator>
+    <NativeBaseProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: true, //on for testing so i can see which screen I am on 
+        }}
+        initialRouteName="home"
+      >
+        <Stack.Screen name="home" component={HomeScreen} />
+        <Stack.Screen name="about" component={AboutScreen} />
+        <Stack.Screen name="offers" component={OffersScreen} />
+        <Stack.Screen name="settings" component={SettingsScreen} />
+        <Stack.Screen name="sponsors" component={SponsorsScreen} />
+      </Stack.Navigator>
+      <Box alignItems="center" justifyContent="space-evenly" flexDirection="row"> 
+        <Button> about </Button> 
+        <Button> home </Button> 
+        <Button> offers </Button> 
+        <Button> settings </Button> 
+        <Button> sponsors </Button> 
+      </Box>
+    </NativeBaseProvider>
   )
+  
 }
 
 export const AppNavigator = React.forwardRef<

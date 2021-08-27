@@ -11,7 +11,7 @@ const ROOT: ViewStyle = {
   flex: 1,
 }
 
-export const AboutScreen = observer(function LoginScreen() {
+export const AboutScreen = observer(function AboutScreen() {
   const navigation = useNavigation()
 
   return (

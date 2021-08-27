@@ -8,3 +8,4 @@ export * from "./settings/settings-screen"
 export * from "./sponsors/sponsors-screen"
 
 
+export * from "./my-new/my-new-screen"
