@@ -32,7 +32,7 @@ const ROOT: ViewStyle = {
 
 export const RegistrationScreen = observer(function RegistrationScreen() {
   // Pull in one of our MST stores
-  //const { someStore, anotherStore } = useStores()
+  // const { someStore, anotherStore } = useStores()
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
