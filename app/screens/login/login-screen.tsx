@@ -44,7 +44,7 @@ export const LoginScreen = observer(function LoginScreen() {
     } else {
       firebase
       .auth()
-      .signInWithEmailAndPassword(upi + "@aucklanduni.nz", password) // Getting email from UPI
+      .signInWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password) // Getting email from UPI
       .then((res) => {
         console.log(res)
         console.log('User logged-in successfully!')
