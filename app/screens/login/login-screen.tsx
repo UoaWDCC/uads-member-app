@@ -67,6 +67,7 @@ export const LoginScreen = observer(function LoginScreen() {
 
   // Pull in navigation via hook
   const navigation = useNavigation();
+
   return (
     <Screen style={ROOT} preset="scroll">
       { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
