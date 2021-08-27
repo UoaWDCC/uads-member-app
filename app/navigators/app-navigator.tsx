@@ -37,6 +37,7 @@ const AppStack = () => {
       initialRouteName="login"
     >
       <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="register" component={RegistrationScreen} />
     </Stack.Navigator>
   )
 }
