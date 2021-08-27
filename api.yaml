@@ -14,8 +14,8 @@ paths:
       tags:
         - Event
       parameters:
-        - name: name
-          description: Get event with name
+        - name: filter
+          description: Sort by filter
           schema:
             type: string
           in: query
@@ -29,18 +29,319 @@ paths:
                   $ref: '#/components/schemas/Event'
           description: Valid request
       operationId: GET_EVENT
-      description: Getting all the events available to the user
-  /user: {}
-  /club: {}
-  /sponsor: {}
-  /discount:
-    get:
+      summary: Get all events
+      description: Get all events, and filtered.
+    put:
+      tags:
+        - Event
       responses:
         '200':
+          description: Successfully modify the events.
+        '404':
+          description: |
+            An error has occurred.
+      operationId: PUT_EVENT
+      summary: Update the events
+      description: |
+        Allows for the update of events.
+    post:
+      tags:
+        - Event
+      responses:
+        '200':
+          description: Successfully posted events
+        '404':
+          description: Error has occurred
+      operationId: POST_EVENTS
+      summary: Post events
+      description: |
+        Allows the posting of events
+    delete:
+      tags:
+        - Event
+      responses:
+        '200':
+          description: Event successfully deleted
+        '404':
+          description: An error has occurred.
+      operationId: DELETE_EVENT
+      summary: Deleting an event
+      description: |
+        Deleting a specific event type
+  /user:
+    summary: End point to do with users
+    get:
+      tags:
+        - User
+      parameters:
+        - name: id
+          description: ''
+          schema:
+            type: string
+          in: query
+          required: true
+        - name: club
+          description: the members of a given club
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: success
+      operationId: GET_USER
+      summary: get user by id
+      description: Get User(s)
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      tags:
+        - User
+      responses:
+        '200':
+          description: Successful change in the user management.
+        '404':
+          description: An error has occurred.
+      operationId: PUT_USER
+      summary: Modify the user
+      description: User management for the admins.
+    post:
+      requestBody:
+        description: User to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      tags:
+        - User
+      responses:
+        '200':
+          description: success
+        '404':
+          description: fails
+      operationId: POST_USER
+      summary: Add user
+      description: Create user upon registration
+    delete:
+      tags:
+        - User
+      responses:
+        '200':
+          description: Successfully deleted user
+        '404':
+          description: An error has occurred.
+      operationId: DELETE_USER
+      summary: Delete user
+      description: Allows to delete user from UADS.
+  /club:
+    summary: End point to do with club
+    get:
+      tags:
+        - Club
+      parameters:
+        - name: name
+          description: ''
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Club'
+          description: Success
+      operationId: GET_CLUB
+      summary: Get clubs
+      description: Get all clubs, and club by name.
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Club'
+        required: true
+      tags:
+        - Club
+      responses:
+        '200':
+          description: Successfully modified club
+        '404':
+          description: An error has occurred.
+      operationId: PUT_CLUB
+      summary: Modify the club
+      description: Modify the club things i.e. club name.
+    post:
+      tags:
+        - Club
+      responses:
+        '200':
+          description: Successful post
+      operationId: POST_CLUB
+      summary: Create club
+    delete:
+      tags:
+        - Club
+      responses:
+        '200':
+          description: Successfully deleted information.
+        '404':
+          description: An error occurred.
+      operationId: DELETE_CLUB
+      summary: Delete things from club
+      description: Allows for the deletion of information the club path.
+  /sponsor:
+    summary: End point to do with sponsors
+    get:
+      tags:
+        - Sponsor
+      parameters:
+        - name: filter
+          description: name filter/search?
+          schema:
+            type: string
+          in: query
+        - name: discount
+          description: Get by discount
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sponsor'
+          description: Success
+      operationId: GET_SPONSOR
+      summary: Get sponsors
+      description: Get all sponsors, sponsor of a discount, and filtered.
+    put:
+      tags:
+        - Sponsor
+      responses:
+        '200':
+          description: Successfully modify the sponsors.
+        '404':
+          description: An error has occurred.
+      operationId: PUT_SPONSOR
+      summary: Modify the sponsor details
+      description: Allows the modification of the sponsors.
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sponsor'
+        required: true
+      tags:
+        - Sponsor
+      responses:
+        '200':
+          description: Successfully posts sponsor
+        '404':
+          description: Error has occurred
+      operationId: POST_SPONSOR
+      summary: Post sponsors
+      description: Allows the posting of sponsors
+    delete:
+      tags:
+        - Sponsor
+      responses:
+        '200':
+          description: |
+            Successfully deleted sponsor
+        '404':
+          description: An error has occurred.
+      operationId: DELETE_SPONSOR
+      summary: Delete sponsor
+      description: |
+        Deleting a sponsor from UADS.
+  /discount:
+    summary: End point to do with discount
+    get:
+      tags:
+        - Discount
+      parameters:
+        - name: filter
+          description: Sort by filter
+          schema:
+            type: string
+          in: query
+        - name: sponsor
+          description: Get discounts from a particular sponsor
+          schema:
+            type: string
+          in: query
+          required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Discount'
           description: Offers successfully received
-      summary: Get Offers
-      description: Get all offers for UADS
-  /event/{id}:
+      operationId: GET_DISCOUNT
+      summary: Get Discounts
+      description: Get all discounts, discounts of a sponsor, and filtered.
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Discount'
+        required: true
+      tags:
+        - Discount
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Discount'
+          description: Discount successfully put.
+      operationId: PUT_DISCOUNT
+      summary: Modify discounts
+      description: Allows admins to modify discounts
+    post:
+      tags:
+        - Discount
+      responses:
+        '200':
+          description: |
+            Successfully posted discount
+        '404':
+          description: Error has occurred
+      summary: Post discount
+      description: Allows the posting of discounts.
+    delete:
+      tags:
+        - Discount
+      responses:
+        '200':
+          description: Successfully deleted offer
+      operationId: DELETE_DISCOUNT
+      summary: Deleting the offers
+      description: Deleting offers in UADS.
+  /user/{id}:
     get:
       parameters:
         - name: id
@@ -50,23 +351,48 @@ paths:
           required: true
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Event'
-          description: Got the event
-      operationId: GET_EVENT_ID
-      summary: Get a specific event by ID
+          description: Success
+    parameters:
+      - name: id
+        schema:
+          type: integer
+        in: path
+        required: true
+  /club/{id}:
+    put:
+      parameters:
+        - name: id
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Good
+    parameters:
+      - name: id
+        schema:
+          type: integer
+        in: path
+        required: true
 components:
   schemas:
     Sponsor:
       description: Data type to store sponsors using the UADS App
       required:
         - uuid
+        - name
+        - desc
       type: object
       properties:
         uuid:
           description: The UUID of the sponsor
+          type: string
+        name:
+          description: The name of the sponsor
+          type: string
+        desc:
+          description: The description of the sponsor
           type: string
     Club:
       description: Data type to store clubs using the UADS App
@@ -93,15 +419,15 @@ components:
           items:
             type: string
         sponsors:
-          description: The sponsor(s) of the club
+          description: The UUID of the sponsor(s) of the club
           type: array
           items:
-            $ref: '#/components/schemas/Sponsor'
+            type: string
         events:
           description: The events hosted by the club
           type: array
           items:
-            $ref: '#/components/schemas/Event'
+            type: string
     Event:
       description: Data type to store events using the UADS App
       required:
@@ -135,15 +461,43 @@ components:
           description: The sponsor(s) of the event
           type: array
           items:
-            $ref: '#/components/schemas/Sponsor'
+            type: string
         url:
           description: An external url for the event
           type: string
         club:
-          description: The club(s) hosting the event
+          description: The UUID of club(s) hosting the event
           type: array
           items:
-            $ref: '#/components/schemas/Club'
+            type: string
     User:
       description: A user of the app
+      required:
+        - uuid
       type: object
+      properties:
+        uuid:
+          description: '> uuid of the users'
+          type: string
+    Discount:
+      description: Discounts
+      required:
+        - sponsor
+        - value
+        - desc
+        - uuid
+      type: object
+      properties:
+        desc:
+          description: The description of the discount
+          type: string
+        uuid:
+          description: |
+            The id of the discount
+          type: integer
+        sponsor:
+          description: The sponsor of the discount
+          type: string
+        value:
+          description: The value of the discount
+          type: integer
