@@ -7,8 +7,6 @@ import firebase from '../database/firebase';
 
 export default class Signup extends Component {
 
-    
-
     render() {
         const [show] = React.useState(false)
         return (
