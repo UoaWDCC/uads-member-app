@@ -1,34 +1,40 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext, useRef, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
 import { Alert, Button, ViewStyle } from "react-native"
-import { Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
+import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
-import { FormControl, Input, NativeBaseProvider, Stack } from "native-base"
-// import { GradLevel } from "../../components/input-fields/study-level-drop-down/grad-level-drop-down"
+import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
-// import { FirstNameInput } from "../../components/input-fields/first-name-input/first-name-input"
-// import firebase from '@react-native-firebase';
-// import { LastNameInput } from "../../components/input-fields/last-name-input/last-name-input"
-// import { AuthContext } from "./context/AuthContext";
-
+import { StyleSheet } from "react-native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-
-// import { auth } from "../../../firebaseSetup";
-// import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field";
-// import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field";
-// import { EmailInputField } from "../../components/input-fields/email-input-field/email-input-field";
+import { paddingBottom } from "styled-system";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
-  alignContent: "center"
+  alignContent: "center",
+  paddingTop: "100px"
 }
+
+// const ROOT: ViewStyle = {
+//   backgroundColor: color.background,
+//   
+// }
+
+const styles = StyleSheet.create({
+    
+  textStyle: {
+      flex: 1,
+      position: 'absolute',
+      top: '68%',
+
+    }
+    
+})
 
 export const RegistrationScreen = observer(function RegistrationScreen() {
   // Pull in one of our MST stores
@@ -37,17 +43,16 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [upi, setUpi] = useState('')
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [show] = React.useState(false)
   const navigation = useNavigation();
 
   function registerUser() {
-    if(email === '' && password === '') {
+    if(upi === '' && password === '') {
       Alert.alert('Enter details to signup!')
     } else {
       firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
       .then((res) => {
         res.user.updateProfile({
           upi: upi
@@ -65,8 +70,9 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="Registration" />
+      <Text preset="header" text="Registration" style={{ paddingBottom: "50px" }}/>
       <NativeBaseProvider>
+      <Box alignItems="center" justifyContent="center">
         <Stack space={4}>
                 <Input
                     // eslint-disable-next-line react-native/no-inline-styles
@@ -116,23 +122,6 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
                     }}
                     onChangeText={upi => setUpi(upi)}
                 />
-
-                <Input
-                    // eslint-disable-next-line react-native/no-inline-styles
-                    style={{ width: 208, height: 38}}
-                    borderRadius="40px"
-                    placeholder="Email..."
-                    _light={{
-                        placeholderTextColor: color.text,
-                        backgroundColor: color.palette.goldenGlow,
-                        borderColor: color.palette.goldenGlow
-                    }}
-                    _dark={{
-                        placeholderTextColor: color.text,
-                    }}
-                    onChangeText={email => setEmail(email)}
-                    // onChangeText={(text) => this.setState({text})}
-                />
                 
                 <Input
                     // eslint-disable-next-line react-native/no-inline-styles
@@ -176,19 +165,19 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
             { /* <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
               borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="University..." />  */}
             { /* <GradLevel></GradLevel> */}
-            <Button
-              title="Sign Up"
+            
+            
+              
+            </Stack>
+        </Box>
+        
+      </NativeBaseProvider>
+      <Text text="Already have an account? Sign in!" style={styles.textStyle} onPress={() => navigation.navigate('login')}></Text>
+      <MainButton
+              text="SIGN UP"
               onPress={() =>
                 registerUser()
               }/>
-            <Button
-              title="Back to login"
-              onPress={() =>
-                navigation.navigate('login')
-              }/>
-              
-        </Stack>
-      </NativeBaseProvider>
     </Screen>
   )
 })

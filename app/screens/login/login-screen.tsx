@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
-import { Linking, View, ViewStyle, StyleSheet, Button, Alert } from "react-native"
-import { Screen, Text, TextField, SignInButton, Logo, Icon } from "../../components"
+import { ViewStyle, StyleSheet } from "react-native"
+import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
@@ -12,6 +12,8 @@ import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
 import { useNavigation } from "@react-navigation/native";
 
+const uadsLogo = require("../../components/logo/logos/logo.png")
+
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
@@ -21,12 +23,20 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-    textStyle: {
+    
+  logoStyle: {
+    alignSelf: "center",
+    height: "350px",
+    width: "350px",
+    
+  },
+
+  textStyle: {
       flex: 1,
       position: 'absolute',
-      top: '60%',
+      top: '68%',
 
-    },
+    }
     
 })
 
@@ -60,9 +70,10 @@ export const LoginScreen = observer(function LoginScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
-      <Text preset="header" text="LOGIN HERE"/>
+      
       <NativeBaseProvider>
-        <Box flex={1} alignItems="center" justifyContent="center">
+        <Box alignItems="center" justifyContent="center">
+        <Image source={uadsLogo} style={ styles.logoStyle } />
         <Stack space={4}>
           {/* <UpiInputField/>
           <PasswordInputField/> */}
@@ -104,11 +115,12 @@ export const LoginScreen = observer(function LoginScreen() {
                     }}
                     onChangeText={password => setPassword(password)}
                 />
+                
           </Stack>
         </Box>
       </NativeBaseProvider>
-      <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => Linking.openURL('http://google.com')}></Text>
-      <SignInButton text='SIGN IN' onPress={() => userLogin()}/>
+      <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => navigation.navigate('register')}></Text>
+      <MainButton text='SIGN IN' onPress={() => userLogin()}/>
     </Screen>
   )
 })

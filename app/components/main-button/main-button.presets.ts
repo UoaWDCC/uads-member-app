@@ -12,7 +12,7 @@ const BASE_VIEW: ViewStyle = {
   width: "70%",
   height: 60,
   position: "absolute",
-  top: "70%"
+  top: "78%"
 }
 
 const BASE_TEXT: TextStyle = {

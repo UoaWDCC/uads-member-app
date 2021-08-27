@@ -1,8 +1,8 @@
 import { StyleProp, TextStyle, TouchableOpacityProps, ViewStyle } from "react-native"
-import { ButtonPresetNames } from "./sign-in-button.presets"
+import { ButtonPresetNames } from "./main-button.presets"
 import { TxKeyPath } from "../../i18n"
 
-export interface SignInButtonProps extends TouchableOpacityProps {
+export interface MainButtonProps extends TouchableOpacityProps {
   /**
    * Text which is looked up via i18n.
    */
