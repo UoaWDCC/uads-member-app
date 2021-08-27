@@ -74,12 +74,6 @@ paths:
       tags:
         - User
       parameters:
-        - name: id
-          description: ''
-          schema:
-            type: string
-          in: query
-          required: true
         - name: club
           description: the members of a given club
           schema:
