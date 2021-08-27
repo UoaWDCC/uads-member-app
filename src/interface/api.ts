@@ -213,7 +213,6 @@ export interface operations {
   GET_USER: {
     parameters: {
       query: {
-        id: string;
         /** the members of a given club */
         club?: string;
       };
