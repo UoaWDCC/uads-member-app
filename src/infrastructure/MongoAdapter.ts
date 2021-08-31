@@ -33,27 +33,6 @@ class MongoAdapter {
 
     this.uri = uri;
     this.openConnections = [];
-    // const client = new MongoClient(uri, {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    // });
-    // const client = new Mongoose();
-    // // client.connect(uri, { useNewUrlParser: true });
-    // client
-    //   .connect(uri, {})
-    //   .then(() => {
-    //     logger.info("MongoDB connected");
-    //   })
-    //   .catch((err) => {
-    //     logger.info(err);
-    //     throw err;
-    //   });
-    // client.connect((err) => {
-    //   if (err) throw err;
-    //   this.db = client.db(dbName);
-    //   logger.info("MongoDB connected");
-    // });
-    // this.client = client;
 
     this.client = mongoose;
   }
@@ -66,7 +45,7 @@ class MongoAdapter {
       res = this.client.connections[index].db;
       callBack(null, res);
     } else {
-      createConnection(this.uri)
+      createConnection(this.uri, { dbName: dbName })
         .asPromise()
         .then((connection) => {
           res = connection.db;
