@@ -1,6 +1,12 @@
 import { Db, MongoClient } from 'mongodb';
 import { logger } from '../util/Logger';
-import { Mongoose, createConnection, connections, Connection } from 'mongoose';
+import {
+  Mongoose,
+  createConnection,
+  connections,
+  Connection,
+  Callback,
+} from 'mongoose';
 
 /**
  * A singleton adapter that allows access to MongoDB cluster through a unique mongo uri.
@@ -9,7 +15,7 @@ class MongoAdapter {
   /**
    * The database instance.
    */
-  public db: Db;
+  private db: Db;
 
   /**
    * Private MongoClient for purposes of getting another database from the same adapter instance.
@@ -52,16 +58,20 @@ class MongoAdapter {
     this.client = mongoose;
   }
 
-  public getDb(dbName: string): Db {
+  public getDb(dbName: string, callBack: Callback<Db>): void {
     const index = this.openConnections.indexOf(dbName);
+    let res: Db;
+
     if (index != -1) {
-      return this.client.connections[index].db;
+      res = this.client.connections[index].db;
+      callBack(null, res);
     } else {
-      createConnection().openUri(this.uri, (err, connection) => {
-        if (err) throw err;
-        this.openConnections.push(dbName);
-        return connection.db;
-      });
+      createConnection(this.uri)
+        .asPromise()
+        .then((connection) => {
+          res = connection.db;
+          callBack(null, res);
+        });
     }
   }
 

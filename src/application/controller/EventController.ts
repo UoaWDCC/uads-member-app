@@ -1,11 +1,18 @@
 import { BaseController } from './BaseController';
 import { NextFunction, Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
-import { ConsoleTransportOptions } from 'winston/lib/winston/transports';
-
+import { EventRepository } from '../../infrastructure/repository/EventRepository';
 class EventController extends BaseController {
   async getEvents(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
+
+    const eventRepo = new EventRepository(mongoAdapter);
+    await eventRepo.connectCollection('eventDetails');
+    await eventRepo.isConnected();
+
+    const result = await eventRepo.list();
+
+    console.log(result);
 
     res.status(200).json([
       {
