@@ -24,6 +24,7 @@ export const HomeScreen = observer(function HomeScreen() {
             to offers
           </Button>
         </Box>
+        
       </NativeBaseProvider>
     </Screen>
   )

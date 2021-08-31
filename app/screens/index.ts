@@ -6,6 +6,3 @@ export * from "./home/home-screen"
 export * from "./offers/offers-screen"
 export * from "./settings/settings-screen"
 export * from "./sponsors/sponsors-screen"
-
-
-export * from "./my-new/my-new-screen"

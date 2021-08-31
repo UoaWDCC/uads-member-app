@@ -7,6 +7,7 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
   LoginScreen, 
   AboutScreen,
@@ -15,8 +16,6 @@ import {
   SettingsScreen, 
   SponsorsScreen, 
 } from "../screens"
-import { NativeBaseProvider, Box, Button } from "native-base"
-
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -44,30 +43,38 @@ const Stack = createStackNavigator<NavigatorParamList>()
 
 const AppStack = () => {
   return (
-    <NativeBaseProvider>
       <Stack.Navigator
         screenOptions={{
           headerShown: true, //on for testing so i can see which screen I am on 
         }}
-        initialRouteName="home"
-      >
-        <Stack.Screen name="home" component={HomeScreen} />
-        <Stack.Screen name="about" component={AboutScreen} />
-        <Stack.Screen name="offers" component={OffersScreen} />
-        <Stack.Screen name="settings" component={SettingsScreen} />
-        <Stack.Screen name="sponsors" component={SponsorsScreen} />
+        initialRouteName="login"
+      > 
+        <Stack.Screen name="login" component={LoginScreen} /> 
       </Stack.Navigator>
-      <Box alignItems="center" justifyContent="space-evenly" flexDirection="row"> 
-        <Button> about </Button> 
-        <Button> home </Button> 
-        <Button> offers </Button> 
-        <Button> settings </Button> 
-        <Button> sponsors </Button> 
-      </Box>
-    </NativeBaseProvider>
   )
-  
 }
+
+const Tab = createBottomTabNavigator<NavigatorParamList>();
+
+const AppTab = () => {
+  return (
+      <Tab.Navigator
+        tabBarOptions={{
+          labelStyle: {fontSize:18},
+          activeTintColor: 'red',
+          inactiveTintColor: 'black'
+        }}
+      > 
+        <Tab.Screen name="home" component={HomeScreen} />
+        <Tab.Screen name="about" component={AboutScreen} />
+        <Tab.Screen name="offers" component={OffersScreen} />
+        <Tab.Screen name="settings" component={SettingsScreen} />
+        <Tab.Screen name="sponsors" component={SponsorsScreen} />
+      </Tab.Navigator> 
+  )
+}
+
+var isLoggedIn = true
 
 export const AppNavigator = React.forwardRef<
   NavigationContainerRef,
@@ -75,7 +82,10 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   return (
     <NavigationContainer {...props} ref={ref}>
-      <AppStack />
+      { isLoggedIn ? (
+        <AppTab /> ) : (
+        <AppStack />
+      )}
     </NavigationContainer>
   )
 })
