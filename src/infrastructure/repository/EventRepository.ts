@@ -7,18 +7,16 @@ class EventRepository {
   private _isConnected: boolean;
   private eventCollection: MongoCollection;
 
-  constructor(mongoAdapter: MongoAdapter) {
+  constructor(mongoAdapter: MongoAdapter, collectinName?: string) {
     this.mongoAdapter = mongoAdapter;
-    // mongoAdapter.getDb('event').then((db) => {
-    //   console.log(db);
-    //   this.db = db;
-    //   //   this.eventCollection = db.collection(collectionName);
-    //   this._isConnected = true;
-    // });
+
+    if (collectinName != null) {
+      this.connectCollection(collectinName);
+    }
   }
 
-  public async connectCollection(collectionName: string): Promise<void> {
-    const dbb = this.mongoAdapter.getDb('event', (err: Error, res: Db) => {
+  public connectCollection(collectionName: string): void {
+    this.mongoAdapter.getDb('event', (err: Error, res: Db) => {
       if (err) throw err;
       this.db = res;
       this.eventCollection = res.collection(collectionName);
@@ -28,7 +26,7 @@ class EventRepository {
 
   public async isConnected(): Promise<boolean> {
     while (!this._isConnected) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 50));
     }
 
     return true;
