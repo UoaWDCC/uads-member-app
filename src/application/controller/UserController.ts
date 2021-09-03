@@ -33,6 +33,7 @@ class UserController extends BaseController {
   async deleteUser(req: Request, res: Response){
     
   }
+
 }
 
 export { UserController };

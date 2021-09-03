@@ -89,8 +89,13 @@ paths:
                   $ref: '#/components/schemas/User'
           description: success
       operationId: GET_USER
+<<<<<<< HEAD
       summary: Getting User
       description: Get all users / get all users in a particular club
+=======
+      summary: get user by id
+      description: Get User(s)
+>>>>>>> 92f8a1b543e3848d4238fb79057fa8b46db23d59
     put:
       requestBody:
         content:
@@ -336,7 +341,10 @@ paths:
       summary: Deleting the offers
       description: Deleting offers in UADS.
   /user/{id}:
+<<<<<<< HEAD
     summary: Route for Users By ID
+=======
+>>>>>>> 92f8a1b543e3848d4238fb79057fa8b46db23d59
     get:
       tags:
         - User
@@ -349,8 +357,11 @@ paths:
       responses:
         '200':
           description: Success
+<<<<<<< HEAD
       operationId: GET_USER_ID
       summary: Getting users by ID
+=======
+>>>>>>> 92f8a1b543e3848d4238fb79057fa8b46db23d59
     parameters:
       - name: id
         schema:
@@ -359,8 +370,11 @@ paths:
         required: true
   /club/{id}:
     put:
+<<<<<<< HEAD
       tags:
         - Club
+=======
+>>>>>>> 92f8a1b543e3848d4238fb79057fa8b46db23d59
       parameters:
         - name: id
           schema:
@@ -370,8 +384,11 @@ paths:
       responses:
         '200':
           description: Good
+<<<<<<< HEAD
       operationId: GET_CLUB_ID
       summary: Getting clubs by ID
+=======
+>>>>>>> 92f8a1b543e3848d4238fb79057fa8b46db23d59
     parameters:
       - name: id
         schema:
