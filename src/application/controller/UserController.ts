@@ -15,7 +15,24 @@ class UserController extends BaseController {
     res.status(200).json([{ uuid: "SomeClub" }]);
   }
 
+  async getUserByID(req: Request, res:Response){
+    var id = req.params.id
+    console.log(id)
 
+    res.status(200).json([{ uuid: "SomeClub" }]);
+  }
+  
+  async createUser(req: Request, res:Response) {
+  
+  }
+
+  async modifyUser(req: Request, res:Response){
+
+  }
+
+  async deleteUser(req: Request, res: Response){
+    
+  }
 }
 
 export { UserController };
