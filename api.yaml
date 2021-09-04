@@ -348,6 +348,10 @@ paths:
           required: true
       responses:
         '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
           description: Success
       operationId: GET_USER_ID
       summary: Getting users by ID
