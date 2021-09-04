@@ -15,14 +15,10 @@ export interface paths {
     delete: operations['DELETE_EVENT'];
   };
   '/user': {
-    /** Get User(s) */
+    /** Get all users / get all users in a particular club */
     get: operations['GET_USER'];
-    /** User management for the admins. */
-    put: operations['PUT_USER'];
     /** Create user upon registration */
     post: operations['POST_USER'];
-    /** Allows to delete user from UADS. */
-    delete: operations['DELETE_USER'];
   };
   '/club': {
     /** Get all clubs, and club by name. */
@@ -61,17 +57,11 @@ export interface paths {
     delete: operations['DELETE_DISCOUNT'];
   };
   '/user/{id}': {
-    get: {
-      parameters: {
-        path: {
-          id: number;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-      };
-    };
+    get: operations['GET_USER_ID'];
+    /** Change user */
+    put: operations['PUT_USER'];
+    /** Allows to delete user from UADS. */
+    delete: operations['DELETE_USER'];
     parameters: {
       path: {
         id: number;
@@ -79,17 +69,7 @@ export interface paths {
     };
   };
   '/club/{id}': {
-    put: {
-      parameters: {
-        path: {
-          id: string;
-        };
-      };
-      responses: {
-        /** Good */
-        200: unknown;
-      };
-    };
+    put: operations['GET_CLUB_ID'];
     parameters: {
       path: {
         id: number;
@@ -149,6 +129,7 @@ export interface components {
     User: {
       /** > uuid of the users */
       uuid: string;
+      name?: { [key: string]: unknown };
     };
     /** Discounts */
     Discount: {
@@ -209,7 +190,7 @@ export interface operations {
       404: unknown;
     };
   };
-  /** Get User(s) */
+  /** Get all users / get all users in a particular club */
   GET_USER: {
     parameters: {
       query: {
@@ -226,25 +207,11 @@ export interface operations {
       };
     };
   };
-  /** User management for the admins. */
-  PUT_USER: {
-    responses: {
-      /** Successful change in the user management. */
-      200: unknown;
-      /** An error has occurred. */
-      404: unknown;
-    };
-    requestBody: {
-      content: {
-        'application/json': string;
-      };
-    };
-  };
   /** Create user upon registration */
   POST_USER: {
     responses: {
-      /** success */
-      200: unknown;
+      /** Success */
+      201: unknown;
       /** fails */
       404: unknown;
     };
@@ -253,15 +220,6 @@ export interface operations {
       content: {
         'application/json': components['schemas']['User'];
       };
-    };
-  };
-  /** Allows to delete user from UADS. */
-  DELETE_USER: {
-    responses: {
-      /** Successfully deleted user */
-      200: unknown;
-      /** An error has occurred. */
-      404: unknown;
     };
   };
   /** Get all clubs, and club by name. */
@@ -399,6 +357,60 @@ export interface operations {
   DELETE_DISCOUNT: {
     responses: {
       /** Successfully deleted offer */
+      200: unknown;
+    };
+  };
+  GET_USER_ID: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          'application/json': components['schemas']['User'];
+        };
+      };
+    };
+  };
+  /** Change user */
+  PUT_USER: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** Successful change in the user management. */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
+    };
+  };
+  /** Allows to delete user from UADS. */
+  DELETE_USER: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** Successfully deleted user */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
+    };
+  };
+  GET_CLUB_ID: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** Good */
       200: unknown;
     };
   };
