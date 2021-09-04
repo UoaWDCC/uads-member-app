@@ -91,23 +91,6 @@ paths:
       operationId: GET_USER
       summary: Getting User
       description: Get all users / get all users in a particular club
-    put:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-        required: true
-      tags:
-        - User
-      responses:
-        '200':
-          description: Successful change in the user management.
-        '404':
-          description: An error has occurred.
-      operationId: PUT_USER
-      summary: Modify the user
-      description: User management for the admins.
     post:
       requestBody:
         description: User to be added
@@ -119,24 +102,13 @@ paths:
       tags:
         - User
       responses:
-        '200':
-          description: success
+        '201':
+          description: Success
         '404':
           description: fails
       operationId: POST_USER
       summary: Add user
       description: Create user upon registration
-    delete:
-      tags:
-        - User
-      responses:
-        '200':
-          description: Successfully deleted user
-        '404':
-          description: An error has occurred.
-      operationId: DELETE_USER
-      summary: Delete user
-      description: Allows to delete user from UADS.
   /club:
     summary: End point to do with club
     get:
@@ -355,6 +327,34 @@ paths:
           description: Success
       operationId: GET_USER_ID
       summary: Getting users by ID
+    put:
+      tags:
+        - User
+      parameters:
+        - name: name
+          description: edit name field
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          description: Successful change in the user management.
+        '404':
+          description: An error has occurred.
+      operationId: PUT_USER
+      summary: Modify the user by ID
+      description: 'Change user '
+    delete:
+      tags:
+        - User
+      responses:
+        '200':
+          description: Successfully deleted user
+        '404':
+          description: An error has occurred.
+      operationId: DELETE_USER
+      summary: Delete user by ID
+      description: Allows to delete user from UADS.
     parameters:
       - name: id
         schema:
@@ -486,6 +486,8 @@ components:
         uuid:
           description: '> uuid of the users'
           type: string
+        name:
+          description: ''
     Discount:
       description: Discounts
       required:

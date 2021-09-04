@@ -5,7 +5,6 @@ const userController = new UserController();
 
 //Add more middleware handlers in the array
 const get: Handler[] = [userController.getUsers];
+const post: Handler[] = [userController.createUser];
 
-const put: Handler[] = [userController.createUser];
-
-export { get as GET_USER, put as POST_USER};
+export { get as GET_USER, post as POST_USER};

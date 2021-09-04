@@ -16,8 +16,8 @@ class UserController extends BaseController {
   }
 
   async getUserByID(req: Request, res:Response){
-    var id = req.params.id
-    console.log(id)
+    var id = req.params.id;
+    console.log(id);
 
     res.status(200).json([{ uuid: "SomeClub2" }]);
   }
@@ -30,12 +30,20 @@ class UserController extends BaseController {
   }
 
   async modifyUser(req: Request, res:Response){
-    const data = req.body;
-    console.log(data);
+    var id = req.params.id;
+    console.log(id);
+    
+    var name = req.query.name;
+    console.log(name);
+
+    res.status(200).json(null)
   }
 
   async deleteUser(req: Request, res: Response){
-    
+    var id = req.params.id;
+    console.log(id);
+
+    res.status(200).json(null)
   }
 
 }
