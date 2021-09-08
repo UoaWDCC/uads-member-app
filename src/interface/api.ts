@@ -381,6 +381,10 @@ export interface operations {
       path: {
         id: number;
       };
+      query: {
+        /** edit name field */
+        name?: string;
+      };
     };
     responses: {
       /** Successful change in the user management. */
