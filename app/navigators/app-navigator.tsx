@@ -8,15 +8,16 @@ import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { 
-  LoginScreen, 
+import {
+  LoginScreen,
   AboutScreen,
-  HomeScreen, 
-  OffersScreen, 
-  SettingsScreen, 
-  SponsorsScreen, 
+  HomeScreen,
+  OffersScreen,
+  SettingsScreen,
+  SponsorsScreen,
 } from "../screens"
 
+import { LoginScreen, RegistrationScreen, WelcomeScreen} from "../screens"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -35,7 +36,7 @@ export type NavigatorParamList = {
   about: undefined
   offers: undefined
   settings: undefined
-  sponsors: undefined 
+  sponsors: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -43,14 +44,15 @@ const Stack = createStackNavigator<NavigatorParamList>()
 
 const AppStack = () => {
   return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: true, //on for testing so i can see which screen I am on 
-        }}
-        initialRouteName="login"
-      > 
-        <Stack.Screen name="login" component={LoginScreen} /> 
-      </Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="login"
+    >
+      <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="register" component={RegistrationScreen} />
+    </Stack.Navigator>
   )
 }
 
@@ -64,13 +66,13 @@ const AppTab = () => {
           activeTintColor: 'red',
           inactiveTintColor: 'black'
         }}
-      > 
+      >
         <Tab.Screen name="home" component={HomeScreen} />
         <Tab.Screen name="about" component={AboutScreen} />
         <Tab.Screen name="offers" component={OffersScreen} />
         <Tab.Screen name="settings" component={SettingsScreen} />
         <Tab.Screen name="sponsors" component={SponsorsScreen} />
-      </Tab.Navigator> 
+      </Tab.Navigator>
   )
 }
 
