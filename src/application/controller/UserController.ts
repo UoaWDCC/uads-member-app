@@ -2,6 +2,7 @@ import { BaseController } from './BaseController';
 import { NextFunction, Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { UserRepository } from '../../infrastructure/repository/UserRepository';
+import {operations} from "../../interface/api"
 
 class UserController extends BaseController {
   async getUsers(req: Request, res: Response) {
@@ -10,9 +11,27 @@ class UserController extends BaseController {
     const userRepo = new UserRepository(mongoAdapter, 'userDetails');
     await userRepo.isConnected();
 
-    const result = await userRepo.getAllUsers();
+    var query = {};
 
-    res.status(200).json(result);       //@TODO doesn't check for uuid field :(
+    if (req.query.club){
+      query["clubMembership.clubName"] = req.query.club;
+    }
+    var result = await userRepo.getUsers(query);
+
+
+//     const cursor = db.collection('inventory').find({
+//                      tags: 'red'
+//                    });
+    
+    // if(club != null) {
+    //   result = result.filter(
+    //     function( user ) {
+    //       return ( user.clubMembership.name == club );
+    //     }
+    //   );
+    // }
+
+    res.status(200).json(result);  
 
     //@TODO still neeed to implement filtering by clubs :(
 
@@ -42,6 +61,7 @@ class UserController extends BaseController {
     res.status(200).json(result);
   }
 
+  //generate UUID and pass into request body
   async createUser(req: Request, res: Response) {
     const userDetails = req.body;
     const mongoAdapter = MongoAdapter.getInstance();
@@ -50,12 +70,7 @@ class UserController extends BaseController {
     await userRepo.isConnected();
     userRepo.createUser(userDetails);
 
-    // if you want to return the user created
-    // const uuid = req.body.uuid;
-    // const result = await userRepo.getByID(uuid);
-    // res.status(201).json(result);
-
-    res.status(201).json([ "Created!" ]);
+    res.status(201).json();
   }
 
   async modifyUser(req: Request, res: Response) {
@@ -67,12 +82,14 @@ class UserController extends BaseController {
     var id = req.params.id.toString();
     console.log(id);
 
-    var name = req.query.name.toString();
+    console.log(req.query)
+
+    var name = req.query.firstname.toString();
     console.log(name);
 
     userRepo.modifyUser(id, "firstName", name);
 
-    res.status(200).json(null);
+    res.status(200).json();
   }
 
   async deleteUser(req: Request, res: Response) {
@@ -86,7 +103,7 @@ class UserController extends BaseController {
 
     userRepo.deleteUser(id);
 
-    res.status(200).json(null);
+    res.status(200).json();
   }
 }
 

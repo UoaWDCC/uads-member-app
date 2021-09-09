@@ -22,7 +22,7 @@ app.use(
   OpenApiValidator.middleware({
     apiSpec: 'api.yaml',
     validateRequests: true,
-    validateResponses: false,
+    validateResponses: true,
   })
 );
 
