@@ -13,23 +13,24 @@ export const userSchema = new Schema({
         email: {type: String, required: true},
         emailVerified: {type: String, required: true},
         imagePath: String, //Path or URL?
-
     },
     firstName: String,
     lastName: String,
     university: String,
     gradLevel: {
-        type: String,
+        // type: String,
         enum: ['Undergraduate', 'Postgraduate'],
         default: 'Undergraduate'
     },
-    clubMembership: [{type: clubSchema}],
-    clubRequested: [{type: clubSchema}],
-    membershipStart: Date,
-    membershipEnd: Date,
+    clubMembership: [{
+        name: String,
+        start: Date,
+        end: Date,
+    }],
+    // clubRequested: [{type: clubSchema}],
     created: Timestamp,
     modified: Timestamp,
-    deleted: Timestamp,
+    // deleted: Boolean,
     notificationsON: {type: Boolean, default: true}
    
 })

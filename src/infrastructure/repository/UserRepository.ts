@@ -33,11 +33,15 @@ class UserRepository {
     return true;
   }
 
-  public async getAllUsers(): Promise<any[]> {
-    const dbList = await this.userCollection.find({}).toArray();
 
+  public async getUsers(query: any): Promise<any[]> {
+    var dbList = null;
+
+    dbList = await this.userCollection.find(query).toArray();
+    
     return dbList;
   }
+
   public async getByID(id: string): Promise<any> {
     const allUserDetails = await this.userCollection.findOne({"uuid": id});
 
@@ -45,19 +49,23 @@ class UserRepository {
   }
 
   public async createUser(user): Promise<void> {
+    user.created = Date.now();
+    user.modified = Date.now();
+
     this.userCollection.insertOne(user);
   }
 
   public async deleteUser(id: string): Promise<void> {
     const status = await this.userCollection.deleteOne({"uuid": id});
-    console.log(status.acknowledged);
-    console.log("Deleted " + status.deletedCount + " elements");
+    
   }
 
   public async modifyUser(id: string, fieldName: string, value: string): Promise<void> {
+    //modify multiple fields at once
     const update = {
       "$set": {
-        "firstName": value,
+        fieldName: value,
+        "modified": Date.now(),
       }
     };
     
