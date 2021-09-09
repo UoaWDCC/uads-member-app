@@ -10,6 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import {
   LoginScreen,
+  RegistrationScreen,
   AboutScreen,
   HomeScreen,
   OffersScreen,
@@ -17,7 +18,6 @@ import {
   SponsorsScreen,
 } from "../screens"
 
-import { LoginScreen, RegistrationScreen, WelcomeScreen} from "../screens"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -37,6 +37,7 @@ export type NavigatorParamList = {
   offers: undefined
   settings: undefined
   sponsors: undefined
+  register: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -60,13 +61,7 @@ const Tab = createBottomTabNavigator<NavigatorParamList>();
 
 const AppTab = () => {
   return (
-      <Tab.Navigator
-        tabBarOptions={{
-          labelStyle: {fontSize:18},
-          activeTintColor: 'red',
-          inactiveTintColor: 'black'
-        }}
-      >
+      <Tab.Navigator>
         <Tab.Screen name="home" component={HomeScreen} />
         <Tab.Screen name="about" component={AboutScreen} />
         <Tab.Screen name="offers" component={OffersScreen} />
@@ -76,7 +71,7 @@ const AppTab = () => {
   )
 }
 
-var isLoggedIn = true
+var isLoggedIn = false
 
 export const AppNavigator = React.forwardRef<
   NavigationContainerRef,
