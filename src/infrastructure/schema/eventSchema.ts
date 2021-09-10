@@ -5,18 +5,18 @@ import { uuid } from 'uuidv4';
 import { IEvent } from '../../domain/Entities';
 
 export const EventSchema = new Schema<IEvent>({
-    id: {type: String, default: uuid()},
-    name: String,
-    date: Date,
-    location: {
+    uuid: { type: uuid(), required: true },
+    name: { type: String, required: true },
+    date: { type: Date, required: true },
+    location: { type: {
         building: Number,
         room: Number,
         description: String
-    },
-    imagePath: String,
-    attendanceCap: Number,
+    }, required: true},
+    imagePath: { type: String, required: false },
+    attendanceCap: { type: Number, required: false},
     sponsor: [{ type: String, default: null }],
-    url: String,
+    url: {type: String, required: false},
 });
 
 const Club = model<IEvent>('Event', EventSchema);

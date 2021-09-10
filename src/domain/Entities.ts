@@ -1,12 +1,11 @@
-import { Timestamp } from "bson";
+import { Timestamp, UUID } from "bson";
 import { Number } from "mongoose";
-import { Url } from "url";
 
 interface IDiscount {
-    id: string;
+    id: UUID;
     name: string;
-    desc: string;
-    imagePath: string;
+    descDiscount: string;
+    imagePath?: string;
     startTime: {
         date: Date;
         hour: string;
@@ -20,20 +19,20 @@ interface IDiscount {
 }
 
 interface ISponsor {
-    id: string;
+    id: UUID;
     companyName: string;
     sponsorDesc: string;
-    companyRepName: string;
-    imaginePath: string;
-    instagramHandle: {
+    companyRepName?: string;
+    imagePath?: string;
+    instagramHandle?: {
         username: string;
         url: string;
     },
-    facebookHandle: {
+    facebookHandle?: {
         username: string;
         url: string;
     },
-    twitterHandle: {
+    twitterHandle?: {
         username: string;
         url: string;
     },
@@ -41,7 +40,6 @@ interface ISponsor {
     tier: {
         type: Number;
         enum: [1, 2, 3, 4];
-        default: 4;
     },
     phone: Number;
     email: String,
@@ -57,7 +55,7 @@ interface ISponsor {
 }
 
 interface IEvent {
-    id: string;
+    id: UUID;
     name: string;
     date: Date;
     location: {
@@ -65,21 +63,22 @@ interface IEvent {
         room: Number;
         description: string;
     },
-    imagePath: string;
-    attendanceCap: Number;
+    imagePath?: string;
+    attendanceCap?: Number;
     sponsor: string [];
-    url: string;
+    url?: string;
 }
 
 interface IClub {
-    id: string; 
+    id: UUID; 
     name: string;
-    imagePath: string;
+    desc?: string;
+    imagePath?: string;
     admins: string [];
-    sponsors: ISponsor[];
-    events: IEvent[];
-    discounts: IDiscount[];
-    photos: string[];
+    sponsors?: ISponsor[];
+    events?: IEvent[];
+    discounts?: IDiscount[];
+    photos?: string[];
 }
 
 interface IUser {
@@ -91,21 +90,26 @@ interface IUser {
         emailVerified: string;
         imagePath: string;
     },
+    uuid: UUID;
     firstName: string;
     lastName: string;
     university: string;
-    gradLevel: {
+    gradLevel?: {
         type: string;
         enum: ['Undergraduate', 'Postgraduate'];
         default: 'Undergraduate';
     },
     clubMembership: [{
         name: string;
+        start: Date,
+        end: Date,
     }];
-    clubRequested: IClub [];
+    clubRequested: [{
+        name: String,
+    }];
     created: Timestamp;
     modified: Timestamp;
-    notificationsON: Boolean;
+    notificationsON?: Boolean;
 }
 
 export {
