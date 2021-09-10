@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
+import { model, Schema, Model } from 'mongoose';
 import { uuid } from 'uuidv4';
+import { IDiscount } from '../../domain/Entities';
 
-const { Schema } = mongoose;
-
-export const discountSchema = new Schema({
+export const DiscountSchema = new Schema<IDiscount>({
     id: {type: String, default: uuid()},
     name: String,
     desc: String,
@@ -20,3 +20,4 @@ export const discountSchema = new Schema({
     }
 })
 
+const Discount = model<IDiscount>('Discount', DiscountSchema);

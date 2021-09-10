@@ -1,19 +1,21 @@
-import mongoose from 'mongoose';
+import { model, Schema, Model } from 'mongoose';
 import { uuid } from 'uuidv4';
-import { sponsorSchema } from './sponsorSchema';
-import { eventSchema } from './eventSchema'
-import { discountSchema } from './discountSchema';
+import { SponsorSchema } from './SponsorSchema';
+import { EventSchema } from './EventSchema'
+import { DiscountSchema } from './DiscountSchema';
+import { IClub } from '../../domain/Entities';
 
-const { Schema } = mongoose;
 
-export const clubSchema = new Schema({
-    id: {type: String, default: uuid()},
-    name: String,
-    desc: String,
-    imagePath: String,
-    admins: [{type: String}],  //String is returned when a uuid is generated - so this string value refers to the uuid of the user.
-    sponsors: [{type: sponsorSchema}],
-    events: [{type: eventSchema }],
-    discounts: [{type: discountSchema}],
-    photos: [{type: String}],
-})
+export const ClubSchema = new Schema<IClub>({
+    id: { type: String, default: uuid() },
+    name: { type: String, required: true },
+    desc: { type: String, required: false },
+    imagePath: { type: String, required: false },
+    admins: [{ type: String, required: true }],  //String is returned when a uuid is generated - so this string value refers to the uuid of the user.
+    sponsors: [{ type: SponsorSchema, required: false }],
+    events: [{ type: EventSchema, required: false }],
+    discounts: [{ type: DiscountSchema, required: false }],
+    photos: [{ type: String }],
+});
+
+const Club = model<IClub>('Club', ClubSchema);

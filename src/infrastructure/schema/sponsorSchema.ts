@@ -1,12 +1,11 @@
 // JavaScript source code
 import mongoose from 'mongoose';
+import { model, Schema, Model } from 'mongoose';
 import { uuid } from 'uuidv4';
-import 'mongoose-type-url';
-import { clubSchema } from './clubSchema';
+import { ClubSchema } from './ClubSchema';
 
-const { Schema } = mongoose;
 
-export const sponsorSchema = new Schema({
+export const SponsorSchema = new Schema({
     id: {type: String, default: uuid()},
     companyName: String,
     sponsorDesc: String,
@@ -14,15 +13,15 @@ export const sponsorSchema = new Schema({
     imagePath: String,
     instagramHandle: {
         username: String,
-        url: mongoose.SchemaTypes.Url 
+        url: String,
     },
     facebookHandle: {
         username: String,
-        url: mongoose.SchemaTypes.Url 
+        url: String,
     },
     twitterHandle: {
         username: String,
-        url: mongoose.SchemaTypes.Url 
+        url: String, 
     },
     
     tier: {
@@ -39,8 +38,8 @@ export const sponsorSchema = new Schema({
         streetName: String,
         city: String,
     }, 
-    websiteUrl: mongoose.SchemaTypes.Url,
+    websiteUrl: String,
     discountsOffered: [{type: String, default: null}],
-    clubs: [{type: clubSchema, default: null}]
+    clubs: [{type: ClubSchema, default: null}]
 
 })
