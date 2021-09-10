@@ -2,12 +2,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
-import { Alert, Button, ViewStyle } from "react-native"
+import { Alert, Button, ViewStyle, StyleSheet } from "react-native"
 import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
-import { StyleSheet } from "react-native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { paddingBottom } from "styled-system";

@@ -24,12 +24,6 @@ const ROOT: ViewStyle = {
 
 const styles = StyleSheet.create({
     
-  forgotPasswordStyle: {
-    flex: 1,
-    position: 'absolute',
-    top: '72%',
-  },
-
   logoStyle: {
     alignSelf: "center",
     height: "350px",
@@ -37,15 +31,16 @@ const styles = StyleSheet.create({
     
   },
 
-  signUpStyle: {
+  textStyle: {
       flex: 1,
       position: 'absolute',
-      top: '69%',
-  }
-  
+      top: '68%',
+
+    }
+    
 })
 
-export const LoginScreen = observer(function LoginScreen() {
+export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
   const [upi, setUpi] = useState('')
@@ -79,14 +74,13 @@ export const LoginScreen = observer(function LoginScreen() {
       
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
-        <Image source={uadsLogo} style={ styles.logoStyle } />
-        <Stack space={2}>
+        <Stack space={4}>
           {/* <UpiInputField/>
           <PasswordInputField/> */}
                 <Input
                     // getRef={input => {
                     // eslint-disable-next-line react-native/no-inline-styles
-                    style={{ width: 208, height: 38, top: '20%'}}
+                    style={{ width: 208, height: 38}}
                     borderRadius="40px"
                     placeholder="UPI..."
                     _light={{
@@ -105,7 +99,7 @@ export const LoginScreen = observer(function LoginScreen() {
                     style={{ 
                         width: 208, 
                         height: 38,
-                        top: '30%'
+                        top: '40%'
                         }}
                     borderRadius="40px"
                     type={show ? "text" : "password"}
@@ -125,8 +119,7 @@ export const LoginScreen = observer(function LoginScreen() {
           </Stack>
         </Box>
       </NativeBaseProvider>
-      <Text text="Don't have an account? Sign up!" style={styles.signUpStyle} onPress={() => navigation.navigate('register')}></Text>
-      <Text text="Forgot password?" style={styles.forgotPasswordStyle} onPress={() => navigation.navigate('forgot-password')}></Text>
+      <Text text="Don't have an account? Sign up!" style={styles.textStyle} onPress={() => navigation.navigate('register')}></Text>
       <MainButton text='SIGN IN' onPress={() => userLogin()}/>
     </Screen>
   )
