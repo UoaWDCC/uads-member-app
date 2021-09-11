@@ -1,13 +1,11 @@
 // JavaScript source code
-import mongoose from 'mongoose';
-import { model, Schema, Model } from 'mongoose';
-import { uuid } from 'uuidv4';
+import { Schema } from 'mongoose';
 import { ISponsor } from '../../domain/Entities';
 import { ClubSchema } from './clubSchema';
 
 
 export const SponsorSchema = new Schema<ISponsor>({
-    uuid: { type: uuid(), required: true },
+    uuid: { type: String, required: true },
     companyName: { type: String, required: true },
     sponsorDesc: { type: String, required: true },
     companyRepName: { type: String, required: true },
@@ -30,7 +28,7 @@ export const SponsorSchema = new Schema<ISponsor>({
         enum: [1, 2, 3, 4], //1 being the highest level of sponsor
     }, required: true },
     
-    phone: { type: Number, required: true },
+    phone: { type: Schema.Types.Number, required: true },
     email: { type: String, required: true },
     
     address: {

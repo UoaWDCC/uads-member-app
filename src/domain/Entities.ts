@@ -1,8 +1,7 @@
-import { Timestamp, UUID } from "bson";
 import { Number } from "mongoose";
 
 interface IDiscount {
-    id: UUID;
+    uuid: string;
     name: string;
     descDiscount: string;
     imagePath?: string;
@@ -19,10 +18,10 @@ interface IDiscount {
 }
 
 interface ISponsor {
-    id: UUID;
+    uuid: string;
     companyName: string;
     sponsorDesc: string;
-    companyRepName?: string;
+    companyRepName: string;
     imagePath?: string;
     instagramHandle?: {
         username: string;
@@ -42,7 +41,7 @@ interface ISponsor {
         enum: [1, 2, 3, 4];
     },
     phone: Number;
-    email: String,
+    email: string,
 
     address: {
         streetNo: string;
@@ -55,7 +54,7 @@ interface ISponsor {
 }
 
 interface IEvent {
-    id: UUID;
+    uuid: string;
     name: string;
     date: Date;
     location: {
@@ -70,7 +69,7 @@ interface IEvent {
 }
 
 interface IClub {
-    id: UUID; 
+    uuid: string; 
     name: string;
     desc?: string;
     imagePath?: string;
@@ -90,14 +89,13 @@ interface IUser {
         emailVerified: string;
         imagePath: string;
     },
-    uuid: UUID;
+    uuid: string;
     firstName: string;
     lastName: string;
     university: string;
-    gradLevel?: {
+    gradLevel: {
         type: string;
         enum: ['Undergraduate', 'Postgraduate'];
-        default: 'Undergraduate';
     },
     clubMembership: [{
         name: string;
@@ -107,8 +105,8 @@ interface IUser {
     clubRequested: [{
         name: String,
     }];
-    created: Timestamp;
-    modified: Timestamp;
+    created: Number;
+    modified: Number;
     notificationsON?: Boolean;
 }
 

@@ -1,11 +1,10 @@
 // JavaScript source code
-import mongoose from 'mongoose';
-import { model, Schema, Model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { uuid } from 'uuidv4';
 import { IEvent } from '../../domain/Entities';
 
 export const EventSchema = new Schema<IEvent>({
-    uuid: { type: uuid(), required: true },
+    uuid: { type: String, default: uuid },
     name: { type: String, required: true },
     date: { type: Date, required: true },
     location: { type: {
@@ -14,7 +13,7 @@ export const EventSchema = new Schema<IEvent>({
         description: String
     }, required: true},
     imagePath: { type: String, required: false },
-    attendanceCap: { type: Number, required: false},
+    attendanceCap: { type: Schema.Types.Number, required: false},
     sponsor: [{ type: String, default: null }],
     url: {type: String, required: false},
 });

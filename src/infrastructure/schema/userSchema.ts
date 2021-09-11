@@ -1,7 +1,4 @@
-import { Timestamp } from 'bson';
-import mongoose from 'mongoose';
 import { model, Schema, Model } from 'mongoose';
-import { uuid } from 'uuidv4';
 import { IUser } from '../../domain/Entities';
 
 const UserSchema = new Schema<IUser>({
@@ -13,15 +10,14 @@ const UserSchema = new Schema<IUser>({
         emailVerified: {type: String, required: true},
         imagePath: String, //Path or URL?
     },
-    uuid: {type: uuid(), required: true},
+    uuid: {type: String, required: true },
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     university: {type: String, required: true},
-    gradLevel: {
+    gradLevel: { type: {
         type: String,
         enum: ['Undergraduate', 'Postgraduate'],
-        default: 'Undergraduate'
-    },
+    }, required: true },
     clubMembership: [{
         name: String,
         start: Date,
@@ -30,9 +26,10 @@ const UserSchema = new Schema<IUser>({
     clubRequested: [{
         name: String,
     }],
-    created: { type: Timestamp, required: true },
-    modified: { type: Timestamp, required: true },
-    notificationsON: {type: Boolean, default: false }
+    
+    created: { type: Schema.Types.Number, required: true },
+    modified: { type: Schema.Types.Number, required: true },
+    notificationsON: {type: Schema.Types.Boolean, default: false }
 });
 
 export const Users = model<IUser>('Users', UserSchema);

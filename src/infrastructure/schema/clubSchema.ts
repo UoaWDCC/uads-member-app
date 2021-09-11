@@ -1,13 +1,11 @@
-import { model, Schema, Model } from 'mongoose';
-import { uuid } from 'uuidv4';
+import { model, Schema } from 'mongoose';
 import { SponsorSchema } from './sponsorSchema';
 import { EventSchema } from './eventSchema'
 import { DiscountSchema } from './discountSchema';
 import { IClub } from '../../domain/Entities';
 
-
 export const ClubSchema = new Schema<IClub>({
-    uuid: { type: uuid(), required: true },
+    uuid: { type: String, required: true },
     name: { type: String, required: true },
     desc: { type: String, required: false },
     imagePath: { type: String, required: false },
