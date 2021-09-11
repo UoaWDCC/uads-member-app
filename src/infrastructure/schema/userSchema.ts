@@ -1,11 +1,7 @@
-import { Timestamp } from 'bson';
-import mongoose from 'mongoose';
-import { uuid } from 'uuidv4';
-import { clubSchema } from './clubSchema';
+import { model, Schema } from 'mongoose';
+import { IUser } from '../../domain/Entities';
 
-const { Schema } = mongoose;
-
-export const userSchema = new Schema({
+const UserSchema = new Schema<IUser>({
     firebaseAuth: {
         type: String,
         upi: {type: String, required: true}, //add firebase id and mongoose uuid
@@ -13,23 +9,27 @@ export const userSchema = new Schema({
         email: {type: String, required: true},
         emailVerified: {type: String, required: true},
         imagePath: String, //Path or URL?
-
     },
-    firstName: String,
-    lastName: String,
-    university: String,
-    gradLevel: {
+    uuid: {type: String, required: true },
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
+    university: {type: String, required: true},
+    gradLevel: { type: {
         type: String,
         enum: ['Undergraduate', 'Postgraduate'],
-        default: 'Undergraduate'
-    },
-    clubMembership: [{type: clubSchema}],
-    clubRequested: [{type: clubSchema}],
-    membershipStart: Date,
-    membershipEnd: Date,
-    created: Timestamp,
-    modified: Timestamp,
-    deleted: Timestamp,
-    notificationsON: {type: Boolean, default: true}
-   
-})
+    }, required: true },
+    clubMembership: [{
+        name: String,
+        start: Date,
+        end: Date,
+    }],
+    clubRequested: [{
+        name: String,
+    }],
+    
+    created: { type: Schema.Types.Number, required: true },
+    modified: { type: Schema.Types.Number, required: true },
+    notificationsON: {type: Schema.Types.Boolean, default: false }
+});
+
+export const Users = model<IUser>('Users', UserSchema);

@@ -1,21 +1,21 @@
 // JavaScript source code
-import mongoose from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { uuid } from 'uuidv4';
+import { IEvent } from '../../domain/Entities';
 
-const { Schema } = mongoose;
-
-export const eventSchema = new Schema({
-    id: {type: String, default: uuid()},
-    name: String,
-    date: Date,
-    location: {
+export const EventSchema = new Schema<IEvent>({
+    uuid: { type: String, default: uuid },
+    name: { type: String, required: true },
+    date: { type: Date, required: true },
+    location: { type: {
         building: Number,
         room: Number,
         description: String
-    },
-    imagePath: String,
-    attendanceCap: Number,
+    }, required: true},
+    imagePath: { type: String, required: false },
+    attendanceCap: { type: Schema.Types.Number, required: false},
     sponsor: [{ type: String, default: null }],
-    url: String,
-    
-})
+    url: {type: String, required: false},
+});
+
+const Club = model<IEvent>('Event', EventSchema);
