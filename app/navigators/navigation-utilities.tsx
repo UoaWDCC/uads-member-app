@@ -23,6 +23,8 @@ export const setAppNavigation = (ref: React.RefObject<NavigationContainerRef>) =
   }
 }
 
+export const AuthContext = React.createContext(null)
+
 /**
  * Gets the current screen from any navigation state.
  */

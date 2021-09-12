@@ -6,6 +6,7 @@ import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
+import { AuthContext } from "../../navigators"
 import { color } from "../../theme"
 import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
@@ -43,6 +44,8 @@ export const LoginScreen = observer(function LoginScreen() {
   const [password, setPassword] = useState("")
   const [show] = React.useState(false)
 
+  const { logIn } = React.useContext(AuthContext)
+  
   function userLogin() {
     if (upi === "" && password === "") {
       Alert.alert("Enter details to signin!")
@@ -53,7 +56,7 @@ export const LoginScreen = observer(function LoginScreen() {
         .then((res) => {
           console.log(res)
           console.log("User logged-in successfully!")
-          navigation.navigate("welcome") // Change this to correct screen
+          logIn(res)
         })
         .catch((error) => console.error(error))
     }

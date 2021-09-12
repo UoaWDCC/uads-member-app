@@ -10,6 +10,7 @@ import { StyleSheet } from "react-native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { paddingBottom } from "styled-system"
+import { AuthContext } from "../../navigators"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -44,6 +45,8 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   const [show] = React.useState(false)
   const navigation = useNavigation()
 
+  const { signUp } = React.useContext(AuthContext)
+
   function registerUser() {
     if (upi === "" && password === "") {
       Alert.alert("Enter details to signup!")
@@ -56,7 +59,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
             upi: upi,
           })
           console.log("User registered successfully!")
-          navigation.navigate("Login") // Change to home screen once implemented.
+          signUp(res)
         })
         .catch((error) => console.error(error))
     }
