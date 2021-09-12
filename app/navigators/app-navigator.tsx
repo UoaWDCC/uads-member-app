@@ -18,6 +18,7 @@ import {
   OffersScreen,
   SettingsScreen,
   SponsorsScreen,
+  LoadingScreen,
 } from "../screens"
 
 /**
@@ -81,6 +82,7 @@ export const AppNavigator = React.forwardRef<
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUser(user)
+        setIsLoading(false)
       }
     })
     return () => unsubscribe()
@@ -106,6 +108,12 @@ export const AppNavigator = React.forwardRef<
     }),
     [],
   )
+
+  if (isLoading) { 
+    return (
+      <LoadingScreen/>
+    )
+  }
 
   return (
     <AuthContext.Provider value={authContext}>
