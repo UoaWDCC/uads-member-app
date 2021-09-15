@@ -196,6 +196,10 @@ export interface operations {
       query: {
         /** the members of a given club */
         club?: string;
+        /** the members of a university */
+        university?: string;
+        /** get members by graduation level */
+        gradlevel?: string;
       };
     };
     responses: {
@@ -382,8 +386,10 @@ export interface operations {
         id: number;
       };
       query: {
-        /** edit name field */
-        name?: string;
+        /** edit first name */
+        firstname?: string;
+        /** edit last name */
+        lastname?: string;
       };
     };
     responses: {

@@ -79,6 +79,16 @@ paths:
           schema:
             type: string
           in: query
+        - name: university
+          description: the members of a university
+          schema:
+            type: string
+          in: query
+        - name: gradlevel
+          description: get members by graduation level
+          schema:
+            type: string
+          in: query
       responses:
         '200':
           content:
@@ -331,8 +341,13 @@ paths:
       tags:
         - User
       parameters:
-        - name: name
-          description: edit name field
+        - name: firstname
+          description: edit first name
+          schema:
+            type: string
+          in: query
+        - name: lastname
+          description: edit last name
           schema:
             type: string
           in: query

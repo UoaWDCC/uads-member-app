@@ -1,6 +1,6 @@
 import { Collection as MongoCollection, Db } from 'mongodb';
 import { MongoAdapter } from '../MongoAdapter';
-import { userSchema } from '../schema/userSchema'
+// import { Users } from '../schema/userSchema'
 
 class UserRepository {
   private db: Db;
@@ -34,17 +34,19 @@ class UserRepository {
   }
 
 
-  public async getUsers(query: any): Promise<any[]> {
+  public async getUsers(query: any): Promise<any []> {
     var dbList = null;
-
+ 
     dbList = await this.userCollection.find(query).toArray();
-    
+
     return dbList;
   }
 
   public async getByID(id: string): Promise<any> {
     const allUserDetails = await this.userCollection.findOne({"uuid": id});
-
+    
+    console.log(allUserDetails)
+    
     return allUserDetails;
   }
 
@@ -55,26 +57,21 @@ class UserRepository {
     this.userCollection.insertOne(user);
   }
 
-  public async deleteUser(id: string): Promise<void> {
+  public async deleteUser(id: string): Promise<any> {
     const status = await this.userCollection.deleteOne({"uuid": id});
-    
+
+
+    return status.deletedCount;
   }
 
-  public async modifyUser(id: string, fieldName: string, value: string): Promise<void> {
-    //modify multiple fields at once
+  public async modifyUser(id: string, query: any): Promise<any> {
+  
     const update = {
-      "$set": {
-        fieldName: value,
-        "modified": Date.now(),
-      }
+      "$set": query
     };
     
-
-    await this.userCollection.findOneAndUpdate({"uuid": id}, update);
-
-
-    // console.log(status.acknowledged);
-    // console.log("Deleted " + status.deletedCount + " elements");
+    const status = await this.userCollection.findOneAndUpdate({"uuid": id}, update);
+    return status.lastErrorObject.updatedExisting;
   }
 }
 
