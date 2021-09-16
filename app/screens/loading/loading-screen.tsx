@@ -1,14 +1,22 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
-import { Screen, Text } from "../../components"
+import { Spinner, NativeBaseProvider, Box } from "native-base"
+import { Screen } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
+  backgroundColor: color.palette.goldenGlow,
   flex: 1,
+}
+
+const spinner: ViewStyle = { 
+  flex: 1,
+  flexDirection: 'column', 
+  justifyContent: 'center', 
+  alignItems: 'center'
 }
 
 export const LoadingScreen = observer(function LoadingScreen() {
@@ -18,8 +26,12 @@ export const LoadingScreen = observer(function LoadingScreen() {
   // Pull in navigation via hook
   // const navigation = useNavigation()
   return (
-    <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="Loading" />
-    </Screen>
+    <NativeBaseProvider>
+      <Screen style={ROOT} preset="scroll">
+        <Box style={spinner}>
+          <Spinner color={color.text} size="large" />
+        </Box>
+      </Screen>
+    </NativeBaseProvider>
   )
 })
