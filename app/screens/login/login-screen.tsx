@@ -6,11 +6,9 @@ import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { AuthContext } from "../../navigators"
+import { AuthContext } from "../../../context/AuthContext"
 import { color } from "../../theme"
-// import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
-// import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
 import { useNavigation } from "@react-navigation/native"
 
 const uadsLogo = require("../../components/logo/logos/logo.png")

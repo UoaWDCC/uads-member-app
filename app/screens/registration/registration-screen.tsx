@@ -10,7 +10,8 @@ import { StyleSheet } from "react-native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { paddingBottom } from "styled-system"
-import { AuthContext } from "../../navigators"
+import { AuthContext } from "../../../context/AuthContext"
+import Signup from "../../components/input-fields/singup-component/singup-component"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,

@@ -9,7 +9,7 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import firebase from "../../firebaseSetup"
-import { AuthContext } from "./navigation-utilities"
+import { AuthContext } from "../../context/AuthContext"
 import {
   LoginScreen,
   RegistrationScreen,
@@ -80,45 +80,62 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   React.useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user)
-        setIsLoading(false)
-      }
+      if (user) 
+        dispatch({ type: "LOG_IN", user: user })
+      
+      dispatch({ type: "FINISHED_LOADING"})
     })
     return () => unsubscribe()
   }, [])
 
-  const [user, setUser] = React.useState(null)
-  const [isLoading, setIsLoading] = React.useState(true)
-
-  const authContext = React.useMemo(
-    () => ({
-      logIn: (data) => {
-        setIsLoading(false)
-        setUser(data)
-      },
-      logOut: () => {
-        setIsLoading(false)
-        setUser(null)
-      },
-      signUp: (data) => {
-        setIsLoading(false)
-        setUser(data)
-      },
-    }),
-    [],
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case "LOG_IN":
+          return {
+            ...prevState,
+            isSignout: false,
+            isLoading: false,
+            user: action,
+          }
+        case "LOG_OUT":
+          return {
+            ...prevState,
+            isSignout: true,
+            isLoading: false,
+            user: null,
+          }
+        case "FINISHED_LOADING":
+          return {
+            ...prevState,
+            isSignout: false,
+            isLoading: false,
+          }
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      user: null,
+    },
   )
 
-  if (isLoading) { 
-    return (
-      <LoadingScreen/>
-    )
-  }
-
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider
+      value={{
+        logIn: async (data) => {
+          dispatch({ type: "LOG_IN", user: data })
+        },
+        logOut: () => {
+          dispatch({ type: "LOG_OUT" })
+        },
+        signUp: async (data) => {
+          dispatch({ type: "LOG_IN", user: data })
+        },
+      }}
+    >
       <NavigationContainer {...props} ref={ref}>
-        {user ? <AppTab /> : <AppStack />}
+        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack />}
       </NavigationContainer>
     </AuthContext.Provider>
   )
