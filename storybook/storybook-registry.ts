@@ -1,5 +1,5 @@
 require("../app/components/text-example/text.story")
-// require("../app/components/auto-image-example/auto-image.story")
+//require("../app/components/auto-image-example/auto-image.story")
 require("../app/components/button-example/button.story")
 require("../app/components/form-row-example/form-row.story")
 require("../app/components/switch-example/switch.story")
