@@ -7,8 +7,21 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import firebase from "../../firebaseSetup"
+import { AuthContext } from "../../context/AuthContext"
+import {
+  LoginScreen,
+  RegistrationScreen,
+  ForgotPasswordScreen,
+  AboutScreen,
+  HomeScreen,
+  OffersScreen,
+  SettingsScreen,
+  SponsorsScreen,
+  LoadingScreen,
+} from "../screens"
 
-import { LoginScreen, RegistrationScreen, ForgotPasswordScreen, WelcomeScreen} from "../screens"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -23,6 +36,12 @@ import { LoginScreen, RegistrationScreen, ForgotPasswordScreen, WelcomeScreen} f
  */
 export type NavigatorParamList = {
   login: undefined
+  home: undefined
+  about: undefined
+  offers: undefined
+  settings: undefined
+  sponsors: undefined
+  register: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -43,14 +62,84 @@ const AppStack = () => {
   )
 }
 
+const Tab = createBottomTabNavigator<NavigatorParamList>()
+
+const AppTab = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="home" component={HomeScreen} />
+      <Tab.Screen name="about" component={AboutScreen} />
+      <Tab.Screen name="offers" component={OffersScreen} />
+      <Tab.Screen name="settings" component={SettingsScreen} />
+      <Tab.Screen name="sponsors" component={SponsorsScreen} />
+    </Tab.Navigator>
+  )
+}
+
 export const AppNavigator = React.forwardRef<
   NavigationContainerRef,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
+  React.useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) 
+        dispatch({ type: "LOG_IN", user: user })
+      
+      dispatch({ type: "FINISHED_LOADING"})
+    })
+    return () => unsubscribe()
+  }, [])
+
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case "LOG_IN":
+          return {
+            ...prevState,
+            isSignout: false,
+            isLoading: false,
+            user: action,
+          }
+        case "LOG_OUT":
+          return {
+            ...prevState,
+            isSignout: true,
+            isLoading: false,
+            user: null,
+          }
+        case "FINISHED_LOADING":
+          return {
+            ...prevState,
+            isSignout: false,
+            isLoading: false,
+          }
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      user: null,
+    },
+  )
+
   return (
-    <NavigationContainer {...props} ref={ref}>
-      <AppStack />
-    </NavigationContainer>
+    <AuthContext.Provider
+      value={{
+        logIn: async (data) => {
+          dispatch({ type: "LOG_IN", user: data })
+        },
+        logOut: () => {
+          dispatch({ type: "LOG_OUT" })
+        },
+        signUp: async (data) => {
+          dispatch({ type: "LOG_IN", user: data })
+        },
+      }}
+    >
+      <NavigationContainer {...props} ref={ref}>
+        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   )
 })
 

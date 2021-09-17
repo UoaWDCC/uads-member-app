@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, Alert } from "react-native"
 import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
@@ -6,11 +6,10 @@ import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
+import { AuthContext } from "../../../context/AuthContext"
 import { color } from "../../theme"
-import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
-import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native"
 
 const uadsLogo = require("../../components/logo/logos/logo.png")
 
@@ -19,7 +18,7 @@ const ROOT: ViewStyle = {
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
-  alignContent: "center"
+  alignContent: "center",
 }
 
 const styles = StyleSheet.create({
@@ -32,51 +31,55 @@ const styles = StyleSheet.create({
 
   logoStyle: {
     alignSelf: "center",
-    height: "350px",
-    width: "350px",
-    
+    height: 350,
+    width: 350,
   },
 
   signUpStyle: {
       flex: 1,
       position: 'absolute',
       top: '69%',
-  }
+  },
   
+  textStyle: {
+    flex: 1,
+    position: "absolute",
+    top: "68%",
+  }
 })
 
 export const LoginScreen = observer(function LoginScreen() {
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
-  const [upi, setUpi] = useState('')
-  const [password, setPassword] = useState('')
+  const [upi, setUpi] = useState("")
+  const [password, setPassword] = useState("")
   const [show] = React.useState(false)
-  
 
+  const { logIn } = React.useContext(AuthContext)
+  
   function userLogin() {
-    if(upi === '' && password === '') {
-      Alert.alert('Enter details to signin!')
+    if (upi === "" && password === "") {
+      Alert.alert("Enter details to signin!")
     } else {
       firebase
-      .auth()
-      .signInWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password) // Getting email from UPI
-      .then((res) => {
-        console.log(res)
-        console.log('User logged-in successfully!')
-        navigation.navigate('welcome') // Change this to correct screen
-      })
-      .catch(error => console.error(error))  
+        .auth()
+        .signInWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password) // Getting email from UPI
+        .then((res) => {
+          console.log(res)
+          console.log("User logged-in successfully!")
+          logIn(res)
+        })
+        .catch((error) => console.error(error))
     }
   }
-  
 
   // Pull in navigation via hook
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <Screen style={ROOT} preset="scroll">
-      { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
-      
+      {/* <Image source={require("../../../assets/images/logo.png")} /> */}
+
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
         <Image source={uadsLogo} style={ styles.logoStyle } />
