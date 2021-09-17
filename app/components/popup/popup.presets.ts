@@ -1,19 +1,13 @@
 import { ViewStyle, TextStyle } from "react-native"
-import { color, spacing } from "../../theme"
+import { color } from "../../theme"
 
 /**
  * All text will start off looking like this.
  */
 const BASE_VIEW: ViewStyle = {
-  paddingVertical: spacing[2],
-  paddingHorizontal: spacing[2],
   borderRadius: 4,
   justifyContent: "center",
   alignItems: "center",
-}
-
-const BASE_TEXT: TextStyle = {
-  paddingHorizontal: spacing[3],
 }
 
 /**
@@ -29,7 +23,7 @@ export const viewPresets: Record<string, ViewStyle> = {
 }
 
 export const textPresets: Record<PopupPresets, TextStyle> = {
-  primary: { ...BASE_TEXT, fontSize: 15, color: color.palette.white} as TextStyle
+  primary: {fontSize: 15, color: color.palette.white} as TextStyle
 }
 
 /**

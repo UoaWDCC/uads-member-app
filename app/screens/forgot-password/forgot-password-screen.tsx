@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert } from "react-native"
+import { ViewStyle, StyleSheet, Alert, View } from "react-native"
 import { Screen, Text, SendLinkButton, Popup } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { color } from "../../theme"
+import { color, spacing } from "../../theme"
 import { Box, Input, NativeBaseProvider, Stack, Modal } from "native-base"
 import { useNavigation } from "@react-navigation/native";
 import { style } from "styled-system";
@@ -20,6 +20,15 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
+
+  centeredView: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    position: "absolute",
+    top: "5%"
+  },
+  
   
   enterEmailStyle: {
     flex: 1,
@@ -42,7 +51,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     position: 'absolute',
-    top: '55%'
+    top: '55%',
+    width: '99%'
+  },
+
+  modalStyle: {
+    backgroundColor: color.palette.brown,
+    margin: 0,
+    padding: 0
+  },
+
+  modalText: {
+    color: color.palette.white
+  },
+
+  modalView: {
+    alignItems: "center",
+    backgroundColor: color.palette.brown,
+    borderRadius: 20,
+    margin: 5,
+    padding: 5,
+    width: "80vw"
   },
   
   sendLinkButtonStyle: {
@@ -64,7 +93,8 @@ const styles = StyleSheet.create({
     top: {
       marginBottom: "auto",
       marginTop: 0,
-    },
+    }
+
     
 })
 
@@ -102,15 +132,17 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
       <Text style={styles.enterEmailStyle} text="Enter your UPI and we will send instructions to your university email to reset your password."/>
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center" style={styles.inputStyle}>
-        <Modal isOpen={showModal} onClose={() => setShowModal(false)} size={"md"}>
-          <Popup>
-        <Modal.Content style={styles.top}>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+        <Modal.Content style={styles.modalStyle}>
           <Modal.CloseButton />
           <Modal.Body>
-            There isn't an account registered with this UPI. Please input correct UPI.
+            <Text style={styles.modalText}>There isn't an account registered with this UPI. Please input correct UPI.</Text>
           </Modal.Body>
         </Modal.Content>
-        </Popup>
+        </View>
+        </View>
         </Modal>
         <Stack space={4} >
         
