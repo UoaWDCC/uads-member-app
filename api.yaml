@@ -74,7 +74,7 @@ paths:
       tags:
         - User
       parameters:
-        - name: club
+        - name: clubMembership.name
           description: the members of a given club
           schema:
             type: string
@@ -84,7 +84,7 @@ paths:
           schema:
             type: string
           in: query
-        - name: gradlevel
+        - name: gradLevel.type
           description: get members by graduation level
           schema:
             type: string
@@ -335,21 +335,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: Success
+        '404':
+          description: None found
       operationId: GET_USER_ID
       summary: Getting users by ID
     put:
       tags:
         - User
       parameters:
-        - name: firstname
+        - name: firstName
           description: edit first name
           schema:
             type: string
           in: query
-        - name: lastname
+        - name: lastName
           description: edit last name
           schema:
             type: string
+          in: query
+        - name: university
+          description: edit university
+          schema: {}
+          in: query
+        - name: gradLevel.type
+          description: edit description
+          schema: {}
+          in: query
+        - name: clubMembership.name
+          description: edit club
+          schema: {}
+          in: query
+        - name: notificationsON
+          description: edit notifications on
+          schema: {}
           in: query
       responses:
         '200':

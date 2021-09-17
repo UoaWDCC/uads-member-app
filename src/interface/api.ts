@@ -195,11 +195,11 @@ export interface operations {
     parameters: {
       query: {
         /** the members of a given club */
-        club?: string;
+        'clubMembership.name'?: string;
         /** the members of a university */
         university?: string;
         /** get members by graduation level */
-        gradlevel?: string;
+        'gradLevel.type'?: string;
       };
     };
     responses: {
@@ -377,6 +377,8 @@ export interface operations {
           'application/json': components['schemas']['User'];
         };
       };
+      /** None found */
+      404: unknown;
     };
   };
   /** Change user */
@@ -387,9 +389,17 @@ export interface operations {
       };
       query: {
         /** edit first name */
-        firstname?: string;
+        firstName?: string;
         /** edit last name */
-        lastname?: string;
+        lastName?: string;
+        /** edit university */
+        university?: { [key: string]: unknown };
+        /** edit description */
+        'gradLevel.type'?: { [key: string]: unknown };
+        /** edit club */
+        'clubMembership.name'?: { [key: string]: unknown };
+        /** edit notifications on */
+        notificationson?: { [key: string]: unknown };
       };
     };
     responses: {

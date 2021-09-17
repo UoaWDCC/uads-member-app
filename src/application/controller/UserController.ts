@@ -5,11 +5,6 @@ import { UserRepository } from '../../infrastructure/repository/UserRepository';
 import {operations} from "../../interface/api"
 
 class UserController extends BaseController {
-  addQuery(query: any, queryField: string, queryParam: any){
-    if (queryParam){
-      query[queryField] = queryParam;
-    }
-  }
 
   async getUsers(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
@@ -19,17 +14,22 @@ class UserController extends BaseController {
 
     var query = {};
 
-    //get all by club
+    // const queryParams = req.query;
+    // for ( const [key, value] of Object.entries(queryParams)) {
+    //   query[key] = value;
+    // }
+    
+    // get all by club
     if (req.query.club){
       query["clubMembership.name"] = req.query.club;
     }
 
-    //get all by university
+    // get all by university
     if (req.query.university){
       query["university"] = req.query.university;
     }
 
-    //get all by gradlevel
+    // get all by gradlevel
     if (req.query.gradlevel){
       query["gradLevel.type"] = req.query.gradlevel;
     }
@@ -77,9 +77,19 @@ class UserController extends BaseController {
 
     var query = {};
 
-    query["modified"] = Date.now();
+    const queryParams = req.query;
+ /*
+    for ( const [key, value] of Object.entries(queryParams)) {
+      if (key == "notificationsON"){
+        query[key] = value;
+      }
+    }
+  */
 
-    //modify firstname
+    query["modified"] = Date.now();
+    
+
+    // modify firstname
     if (req.query.firstname){
       query["firstName"] = req.query.firstname;
     }
@@ -100,13 +110,17 @@ class UserController extends BaseController {
     }
 
     //modify club
-    if (req.query.club){
-      query["clubMembership.name"] = req.query.club;
-    }
+    // if (req.query.club){
+    //   query["clubMembership.name"] = req.query.club;
+    // }
 
     //modify notifications on
     if (req.query.notificationson) {
-      query[ "notificationsON" ] = req.query.notificationson;
+      if (req.query.notificationson == "true"){
+        query[ "notificationsON" ] = true;
+      } else {
+        query[ "notificationsON" ] = false;
+      }
     }
 
     const status = await userRepo.modifyUser(id, query);
