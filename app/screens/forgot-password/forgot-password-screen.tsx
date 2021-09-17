@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert, View } from "react-native"
+import { ViewStyle, StyleSheet, Alert, View, Button, ColorPropType } from "react-native"
 import { Screen, Text, SendLinkButton, Popup } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -55,6 +55,13 @@ const styles = StyleSheet.create({
     width: '99%'
   },
 
+  linkText: {
+    color: color.palette.white,
+    textAlign: "center",
+    textDecorationColor: color.palette.white,
+    textDecorationLine: "underline"
+  },
+
   modalStyle: {
     backgroundColor: color.palette.brown,
     margin: 0,
@@ -62,7 +69,8 @@ const styles = StyleSheet.create({
   },
 
   modalText: {
-    color: color.palette.white
+    color: color.palette.white,
+    textAlign: "center",
   },
 
   modalView: {
@@ -103,6 +111,8 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
   // const { someStore, anotherStore } = useStores()
   const [upi, setUpi] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [text, setText] = useState("Check your email to reset your password!")
+  const [showButton, setShowButton] = useState(true)
   
   function sendLink() {
     if(upi === '') {
@@ -112,10 +122,14 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
       .then((res) => {
         console.log(res)
         console.log('Password reset email sent successfully!')
-        navigation.navigate('login') // Change this to correct screen
+        setText("Check your email to reset your password!")
+        setShowButton(true)
+        setShowModal(true)
       })
       .catch(error => {
         console.error(error)
+        setText("There isn't an account registered with this UPI. Please input correct UPI.")
+        setShowButton(false)
         setShowModal(true)
       }) 
     }
@@ -138,7 +152,10 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
         <Modal.Content style={styles.modalStyle}>
           <Modal.CloseButton />
           <Modal.Body>
-            <Text style={styles.modalText}>There isn't an account registered with this UPI. Please input correct UPI.</Text>
+            <Text style={styles.modalText}>{text}</Text>
+            {showButton ? (
+              <Text style={styles.linkText} onPress={() => navigation.navigate('login')}>Return to log in</Text>
+            ) : null}
           </Modal.Body>
         </Modal.Content>
         </View>
