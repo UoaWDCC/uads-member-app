@@ -219,6 +219,10 @@ paths:
         '200':
           description: Successfully modify the sponsors.
         '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error-Response'
           description: An error has occurred.
       operationId: PUT_SPONSOR
       summary: Modify the sponsor details
@@ -252,6 +256,10 @@ paths:
           description: |
             Successfully deleted sponsor
         '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error-Response'
           description: An error has occurred.
       operationId: DELETE_SPONSOR
       summary: Delete sponsor
@@ -427,23 +435,6 @@ paths:
         required: true
 components:
   schemas:
-    Sponsor:
-      description: Data type to store sponsors using the UADS App
-      required:
-        - uuid
-        - sponsorName
-        - sponsorDesc
-      type: object
-      properties:
-        uuid:
-          description: The UUID of the sponsor
-          type: string
-        sponsorName:
-          description: The name of the sponsor
-          type: string
-        sponsorDesc:
-          description: The description of the sponsor
-          type: string
     Club:
       description: Data type to store clubs using the UADS App
       required:
@@ -555,7 +546,6 @@ components:
           type: integer
     Error-Response:
       description: Item not found
-      required: []
       type: object
       properties:
         Success:
@@ -563,4 +553,75 @@ components:
           type: boolean
         Message:
           description: Error-Message
+          type: string
+    Socials:
+      description: Object Type
+      type: object
+      properties:
+        url:
+          description: Object type
+          type: string
+        username:
+          description: username
+          type: string
+    Sponsor:
+      description: Data type to store sponsors using the UADS App
+      required:
+        - uuid
+        - sponsorName
+        - sponsorDesc
+        - tier
+      type: object
+      properties:
+        uuid:
+          description: The UUID of the sponsor
+          type: string
+        sponsorName:
+          description: The name of the sponsor
+          type: string
+        sponsorDesc:
+          description: The description of the sponsor
+          type: string
+        instagramHandle:
+          $ref: '#/components/schemas/Socials'
+          description: Instagram information
+        facebookHandle:
+          $ref: '#/components/schemas/Socials'
+          description: Facebook information
+        tier:
+          description: tier
+        twitterHandle:
+          $ref: '#/components/schemas/Socials'
+          description: Twitter information
+        address:
+          $ref: '#/components/schemas/Address'
+          description: Address information
+        websiteUrl:
+          description: Website link
+          type: string
+        discountOffered:
+          description: Discount that is offered
+          type: array
+          items:
+            type: string
+        clubs:
+          description: Gets information from club
+          type: array
+          items:
+            type: string
+        sponsorRepName:
+          description: Rep of the sponsor
+          type: string
+    Address:
+      description: Tier object
+      type: object
+      properties:
+        streetNo:
+          description: The street number
+          type: integer
+        streetName:
+          description: The street name
+          type: string
+        city:
+          description: The city location
           type: string

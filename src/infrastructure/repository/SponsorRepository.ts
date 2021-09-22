@@ -5,7 +5,7 @@ class SponsorRepository {
   private db: Db;
   private mongoAdapter: MongoAdapter;
   private _isConnected: boolean;
-  private eventCollection: MongoCollection;
+  private sponsorCollection: MongoCollection;
 
   constructor(mongoAdapter: MongoAdapter, collectinName?: string) {
     this.mongoAdapter = mongoAdapter;
@@ -19,7 +19,7 @@ class SponsorRepository {
     this.mongoAdapter.getDb('sponsor', (err: Error, res: Db) => {
       if (err) throw err;
       this.db = res;
-      this.eventCollection = res.collection(collectionName);
+      this.sponsorCollection = res.collection(collectionName);
       this._isConnected = true;
     });
   }
@@ -33,10 +33,13 @@ class SponsorRepository {
   }
 
   public async list(): Promise<any[]> {
-    const dbList = await this.eventCollection.find({}).toArray();
+    const dbList = await this.sponsorCollection.find({}).toArray();
 
     return dbList;
   }
-}
 
+  public async createSponsor(sponsorDetails): Promise<void> {
+    this.sponsorCollection.insertOne(sponsorDetails);
+  }
+}
 export { SponsorRepository };

@@ -80,15 +80,6 @@ export interface paths {
 
 export interface components {
   schemas: {
-    /** Data type to store sponsors using the UADS App */
-    Sponsor: {
-      /** The UUID of the sponsor */
-      uuid: string;
-      /** The name of the sponsor */
-      sponsorName: string;
-      /** The description of the sponsor */
-      sponsorDesc: string;
-    };
     /** Data type to store clubs using the UADS App */
     Club: {
       /** The UUID of the Club */
@@ -145,9 +136,52 @@ export interface components {
     /** Item not found */
     'Error-Response': {
       /** Item not found */
-      Success: boolean;
+      Success?: boolean;
       /** Error-Message */
-      Message: string;
+      Message?: string;
+    };
+    /** Object Type */
+    Socials: {
+      /** Object type */
+      url?: string;
+      /** username */
+      username?: string;
+    };
+    /** Data type to store sponsors using the UADS App */
+    Sponsor: {
+      /** The UUID of the sponsor */
+      uuid: string;
+      /** The name of the sponsor */
+      sponsorName: string;
+      /** The description of the sponsor */
+      sponsorDesc: string;
+      /** Instagram information */
+      instagramHandle?: components['schemas']['Socials'];
+      /** Facebook information */
+      facebookHandle?: components['schemas']['Socials'];
+      /** tier */
+      tier: { [key: string]: unknown };
+      /** Twitter information */
+      twitterHandle?: components['schemas']['Socials'];
+      /** Address information */
+      address?: components['schemas']['Address'];
+      /** Website link */
+      websiteUrl?: string;
+      /** Discount that is offered */
+      discountOffered?: components['schemas']['Discount'][];
+      /** Gets information from club */
+      clubs?: components['schemas']['Club'][];
+      /** Rep of the sponsor */
+      sponsorRepName?: string;
+    };
+    /** Tier object */
+    Address: {
+      /** The street number */
+      streetNo?: number;
+      /** The street name */
+      streetName?: string;
+      /** The city location */
+      city?: string;
     };
   };
 }
@@ -309,7 +343,11 @@ export interface operations {
       /** Successfully modify the sponsors. */
       200: unknown;
       /** An error has occurred. */
-      404: unknown;
+      404: {
+        content: {
+          'application/json': components['schemas']['Error-Response'];
+        };
+      };
     };
   };
   /** Allows the posting of sponsors */
@@ -336,7 +374,11 @@ export interface operations {
       /** Successfully deleted sponsor */
       200: unknown;
       /** An error has occurred. */
-      404: unknown;
+      404: {
+        content: {
+          'application/json': components['schemas']['Error-Response'];
+        };
+      };
     };
   };
   /** Get all discounts, discounts of a sponsor, and filtered. */
