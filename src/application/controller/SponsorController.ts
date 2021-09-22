@@ -13,8 +13,6 @@ class SponsorController extends BaseController {
     await sponsorRepo.isConnected();
 
     const result = await sponsorRepo.list();
-    console.log(result);
-
     res.status(200).json(result);
   }
 
@@ -24,7 +22,21 @@ class SponsorController extends BaseController {
 
     const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
     await sponsorRepo.isConnected();
+
     sponsorRepo.createSponsor(sponsorDetails);
+
+    res.status(200).json();
+  }
+
+  async deleteSponsor(req: Request, res: Response) {
+    const { uuid } = req.body;
+    console.log(uuid);
+    const mongoAdapter = MongoAdapter.getInstance();
+
+    const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
+    await sponsorRepo.isConnected();
+
+    sponsorRepo.deleteSponsor(uuid);
 
     res.status(200).json();
   }

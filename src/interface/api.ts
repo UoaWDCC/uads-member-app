@@ -168,9 +168,9 @@ export interface components {
       /** Website link */
       websiteUrl?: string;
       /** Discount that is offered */
-      discountOffered?: components['schemas']['Discount'][];
+      discountOffered?: string[];
       /** Gets information from club */
-      clubs?: components['schemas']['Club'][];
+      clubs?: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
     };

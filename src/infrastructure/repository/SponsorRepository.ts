@@ -1,3 +1,4 @@
+import { string } from 'joi';
 import { Collection as MongoCollection, Db } from 'mongodb';
 import { MongoAdapter } from '../MongoAdapter';
 
@@ -40,6 +41,10 @@ class SponsorRepository {
 
   public async createSponsor(sponsorDetails): Promise<void> {
     this.sponsorCollection.insertOne(sponsorDetails);
+  }
+
+  public async deleteSponsor(id: string): Promise<any> {
+    this.sponsorCollection.deleteOne({ uuid: id });
   }
 }
 export { SponsorRepository };
