@@ -43,7 +43,7 @@ class SponsorRepository {
     this.sponsorCollection.insertOne(sponsorDetails);
   }
 
-  public async deleteSponsor(id: string): Promise<any> {
+  public async deleteSponsor(id: string): Promise<void> {
     this.sponsorCollection.deleteOne({ uuid: id });
   }
 }
