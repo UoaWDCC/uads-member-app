@@ -46,5 +46,13 @@ class SponsorRepository {
   public async deleteSponsor(id: string): Promise<void> {
     this.sponsorCollection.deleteOne({ uuid: id });
   }
+
+  public async editSponsor(sponsorDetails): Promise<void> {
+    this.sponsorCollection.updateOne(
+      { uuid: sponsorDetails.uuid },
+      { $set: sponsorDetails },
+      { upsert: false }
+    );
+  }
 }
 export { SponsorRepository };

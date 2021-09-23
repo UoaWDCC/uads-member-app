@@ -30,13 +30,30 @@ class SponsorController extends BaseController {
 
   async deleteSponsor(req: Request, res: Response) {
     const { uuid } = req.body;
-    console.log(uuid);
+
     const mongoAdapter = MongoAdapter.getInstance();
 
     const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
     await sponsorRepo.isConnected();
 
     sponsorRepo.deleteSponsor(uuid);
+
+    res.status(200).json();
+  }
+
+  async editSponsor(req: Request, res: Response) {
+    const { uuid } = req.body;
+    if (!uuid) {
+      res.status(400).json();
+      return;
+    }
+    const sponsorDetails = req.body;
+    const mongoAdapter = MongoAdapter.getInstance();
+
+    const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
+    await sponsorRepo.isConnected();
+
+    sponsorRepo.editSponsor(sponsorDetails);
 
     res.status(200).json();
   }

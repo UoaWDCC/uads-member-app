@@ -7,5 +7,11 @@ const sponsorController = new SponsorController();
 const get: Handler[] = [sponsorController.getSponsors];
 const post: Handler[] = [sponsorController.createSponsor];
 const del: Handler[] = [sponsorController.deleteSponsor];
+const put: Handler[] = [sponsorController.editSponsor];
 
-export { get as GET_SPONSOR, post as POST_SPONSOR, del as DELETE_SPONSOR };
+export {
+  get as GET_SPONSOR,
+  post as POST_SPONSOR,
+  del as DELETE_SPONSOR,
+  put as PUT_SPONSOR,
+};
