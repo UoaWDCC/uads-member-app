@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import { SponsorSchema } from './sponsorSchema';
 import { EventSchema } from './eventSchema'
 import { DiscountSchema } from './discountSchema';
-import { IClub } from '../../domain/Entities';
+import { IClub } from '.';
 
 export const ClubSchema = new Schema<IClub>({
     uuid: { type: String, required: true },

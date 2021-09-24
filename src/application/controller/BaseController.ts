@@ -1,4 +1,4 @@
-import { MongoAdapter } from '../../infrastructure/MongoAdapter';
+import { MongoAdapter } from '../../adapters/MongoAdapter';
 import Config from '../../util/Config';
 /**
  * The root controller that all other controllers will extend from.

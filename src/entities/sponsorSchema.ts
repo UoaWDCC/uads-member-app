@@ -1,6 +1,6 @@
 // JavaScript source code
 import { Schema } from 'mongoose';
-import { ISponsor } from '../../domain/Entities';
+import { ISponsor } from '.'
 import { ClubSchema } from './clubSchema';
 
 

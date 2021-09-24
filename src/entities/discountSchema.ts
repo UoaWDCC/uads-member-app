@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IDiscount } from '../../domain/Entities';
+import { IDiscount } from '.';
 
 export const DiscountSchema = new Schema<IDiscount>({
     uuid: { type: String, required: true },

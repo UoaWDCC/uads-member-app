@@ -1,7 +1,7 @@
 // JavaScript source code
 import { model, Schema } from 'mongoose';
 import { uuid } from 'uuidv4';
-import { IEvent } from '../../domain/Entities';
+import { IEvent } from '.'; 
 
 export const EventSchema = new Schema<IEvent>({
     uuid: { type: String, default: uuid },

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IUser } from '../../domain/Entities';
+import { IUser } from '.';
 
 const UserSchema = new Schema<IUser>({
     firebaseAuth: {
