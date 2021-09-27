@@ -46,7 +46,6 @@ class MongoAdapter {
       callBack(null, res);
     } else {
       createConnection(this.uri, { dbName: dbName })
-        .asPromise()
         .then((connection) => {
           res = connection.db;
           callBack(null, res);
