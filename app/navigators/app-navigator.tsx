@@ -64,7 +64,11 @@ const Tab = createBottomTabNavigator<NavigatorParamList>()
 
 const AppTab = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tab.Screen name="home" component={HomeScreen} />
       <Tab.Screen name="about" component={AboutScreen} />
       <Tab.Screen name="offers" component={OffersScreen} />
@@ -80,10 +84,9 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   React.useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) 
-        dispatch({ type: "LOG_IN", user: user })
-      
-      dispatch({ type: "FINISHED_LOADING"})
+      if (user) dispatch({ type: "LOG_IN", user: user })
+
+      dispatch({ type: "FINISHED_LOADING" })
     })
     return () => unsubscribe()
   }, [])
