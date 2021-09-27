@@ -5,7 +5,7 @@ import * as OpenApiValidator from 'express-openapi-validator';
 import * as swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 import { connector } from 'swagger-routes-express';
-import * as routes from './application/route';
+import * as routes from './adapters/application/route';
 
 const apiFile = YAML.load('api.yaml');
 

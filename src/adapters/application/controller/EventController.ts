@@ -1,7 +1,7 @@
 import { BaseController } from './BaseController';
 import { NextFunction, Request, Response } from 'express';
-import { MongoAdapter } from '../../adapters/MongoAdapter';
-import { EventRepository } from '../../use_cases/repository/EventRepository';
+import { MongoAdapter } from '../../MongoAdapter';
+import { EventRepository } from '../../../use_cases/repository/EventRepository';
 class EventController extends BaseController {
   async getEvents(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
