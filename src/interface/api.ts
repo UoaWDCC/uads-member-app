@@ -399,7 +399,7 @@ export interface operations {
         /** edit club */
         'clubMembership.name'?: { [key: string]: unknown };
         /** edit notifications on */
-        notificationson?: { [key: string]: unknown };
+        notificationsON?: { [key: string]: unknown };
       };
     };
     responses: {
