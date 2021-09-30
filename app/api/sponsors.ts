@@ -1,5 +1,6 @@
 import axios from "axios";
+import { BACKEND_URL } from '@env'
 
 export default axios.create({
-  baseURL: "http://192.168.1.14:9002",
+  baseURL: BACKEND_URL,
 });

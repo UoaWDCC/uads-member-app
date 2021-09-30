@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, TextStyle } from "react-native"
+import { ViewStyle, TextStyle, TouchableOpacity } from "react-native"
 import { Screen, SponsorIcon } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
@@ -19,6 +19,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
       .then((res) => {
         const data = res.data
         data.sort((a, b) => (a.tier > b.tier ? 1 : b.tier > a.tier ? -1 : 0))
+        console.log(data)
         setSponsors(data)
       })
       .catch((e) => {
@@ -34,7 +35,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
           <FlatList
             data={sponsors}
             numColumns={3}
-            keyExtractor={(item, index) => item}
+            keyExtractor={(item, index) => item.uuid}
             renderItem={({ item }) => {
               const { sponsorName, uuid } = item
               const prop = {
@@ -43,7 +44,9 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               }
               return (
                 <Box style={SPONSORICON}>
-                  <SponsorIcon key={uuid} props={prop} />
+                  <TouchableOpacity onPress={() => console.log(item)}>
+                    <SponsorIcon key={uuid} props={prop} />
+                  </TouchableOpacity>
                 </Box>
               )
             }}
@@ -75,7 +78,6 @@ const CONTAINER: ViewStyle = {
   borderTopEndRadius: 40,
 }
 const SPONSORICON: ViewStyle = {
-  flex: 1,
   flexDirection: "column",
   margin: 1,
 }
