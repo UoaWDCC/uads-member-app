@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert } from "react-native"
+import { ViewStyle, StyleSheet, Alert, Dimensions } from "react-native"
 import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -13,6 +13,9 @@ import { useNavigation } from "@react-navigation/native"
 
 const uadsLogo = require("../../components/logo/logos/logo.png")
 
+const sWidth = Dimensions.get('window').width;
+const sHeight = Dimensions.get('window').height;
+
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
@@ -24,15 +27,20 @@ const ROOT: ViewStyle = {
 const styles = StyleSheet.create({
   logoStyle: {
     alignSelf: "center",
-    height: 350,
-    width: 350,
+    height: sWidth,
+    width: sWidth,
   },
 
   textStyle: {
     flex: 1,
     position: "absolute",
-    top: "68%",
+    top: sHeight * 0.8,
   },
+
+  inputStyle: {
+    width: sWidth * 0.8,
+    height: sHeight * 0.07,
+  }
 })
 
 export const LoginScreen = observer(function LoginScreen() {
@@ -43,7 +51,7 @@ export const LoginScreen = observer(function LoginScreen() {
   const [show] = React.useState(false)
 
   const { logIn } = React.useContext(AuthContext)
-  
+
   function userLogin() {
     if (upi === "" && password === "") {
       Alert.alert("Enter details to signin!")
@@ -76,7 +84,7 @@ export const LoginScreen = observer(function LoginScreen() {
             <Input
               // getRef={input => {
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{ width: 208, height: 38 }}
+              style={styles.inputStyle}
               borderRadius="40px"
               placeholder="UPI..."
               _light={{
@@ -92,11 +100,7 @@ export const LoginScreen = observer(function LoginScreen() {
 
             <Input
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                width: 208,
-                height: 38,
-                top: "40%",
-              }}
+              style={[styles.inputStyle, {top: 50,}]}
               borderRadius="40px"
               type={show ? "text" : "password"}
               placeholder="Password..."
@@ -111,14 +115,14 @@ export const LoginScreen = observer(function LoginScreen() {
               onChangeText={(password) => setPassword(password)}
             />
           </Stack>
+          <Text
+            text="Don't have an account? Sign up!"
+            style={styles.textStyle}
+            onPress={() => navigation.navigate("register")}
+          ></Text>
+          <MainButton style={{top: sHeight * 0.85}} text="SIGN IN" onPress={() => userLogin()} />
         </Box>
       </NativeBaseProvider>
-      <Text
-        text="Don't have an account? Sign up!"
-        style={styles.textStyle}
-        onPress={() => navigation.navigate("register")}
-      ></Text>
-      <MainButton text="SIGN IN" onPress={() => userLogin()} />
     </Screen>
   )
 })
