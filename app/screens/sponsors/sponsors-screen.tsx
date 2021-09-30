@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { TouchableOpacity, ViewStyle } from "react-native"
-import { Screen, SponsorIcon, SponsorIconProps } from "../../components"
+import { ViewStyle, TextStyle } from "react-native"
+import { Screen, SponsorIcon } from "../../components"
 import { useNavigation } from "@react-navigation/native"
-import { color } from "../../theme"
-import { NativeBaseProvider, Box, Button } from "native-base"
+import { Text } from "../../components"
+import { color, typography } from "../../theme"
+import { NativeBaseProvider, Box, FlatList } from "native-base"
 
 import sponsorsApi from "../../api/sponsors"
 
@@ -26,15 +27,25 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box flex={1} >
-          {sponsors.map((curr) => {
-            const { sponsorName } = curr
-            const prop = {
-              name: `${sponsorName}`,
-              imgUrl: "https://wallpaperaccess.com/thumb/6336218.png",
-            }
-            return <SponsorIcon props={prop} />
-          })}
+        <Text style={TEXT} text={"Sponsors:"} />
+        <Box style={CONTAINER}>
+          <FlatList
+            data={sponsors}
+            numColumns={3}
+            keyExtractor={(item, index) => item}
+            renderItem={({ item }) => {
+              const { sponsorName, uuid } = item
+              const prop = {
+                name: `${sponsorName}`,
+                imgUrl: "https://wallpaperaccess.com/thumb/6336218.png",
+              }
+              return ( 
+                <Box style={SPONSORICON}>
+                  <SponsorIcon key={uuid} props={prop} />
+                </Box>
+              )
+            }}
+          />
         </Box>
       </NativeBaseProvider>
     </Screen>
@@ -42,10 +53,27 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
 })
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.primary,
+  backgroundColor: color.background,
   flex: 1,
 }
 
-// const Container: ViewStyle {
+const TEXT: TextStyle = {
+  fontFamily: typography.primary,
+  fontWeight: "bold",
+  fontSize: 40,
+  color: color.text,
+  marginTop: 30,
+  marginLeft: 30,
+}
 
-// }
+const CONTAINER: ViewStyle = {
+  flex: 1,
+  backgroundColor: "#fffffa",
+  marginTop: 10,
+  borderTopEndRadius: 40,
+}
+const SPONSORICON: ViewStyle = { 
+  flex: 1, 
+  flexDirection: 'column', 
+  margin: 1
+}

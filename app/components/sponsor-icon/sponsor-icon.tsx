@@ -6,9 +6,8 @@ import { Text } from "../"
 import { NativeBaseProvider, Image, Box } from "native-base"
 
 const CONTAINER: ViewStyle = {
-  justifyContent: "center",
   alignItems: "center",
-  padding: 5
+  padding: 20
 }
 
 const TEXT: TextStyle = {
@@ -46,7 +45,7 @@ export const Img = ({ imgUrl }) => {
         uri: imgUrl,
       }}
       alt="Alternate Text"
-      size="xl"
+      size="lg"
       borderRadius={100}
     />
   )
