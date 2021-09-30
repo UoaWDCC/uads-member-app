@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
 
   inputStyle: {
     width: sWidth * 0.8,
-    height: sHeight * 0.07,
   }
 })
 
