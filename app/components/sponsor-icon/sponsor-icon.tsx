@@ -7,14 +7,14 @@ import { NativeBaseProvider, Image, Box } from "native-base"
 
 const CONTAINER: ViewStyle = {
   alignItems: "center",
-  padding: 20
+  padding: 20,
 }
 
 const TEXT: TextStyle = {
   fontFamily: typography.primary,
   fontSize: 14,
   color: color.text,
-  marginTop: 10
+  marginTop: 10,
 }
 
 export interface SponsorIconProps {

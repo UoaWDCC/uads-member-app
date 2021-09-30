@@ -17,7 +17,9 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
     sponsorsApi
       .get(`/sponsor`)
       .then((res) => {
-        setSponsors(res.data)
+        const data = res.data
+        data.sort((a, b) => (a.tier > b.tier ? 1 : b.tier > a.tier ? -1 : 0))
+        setSponsors(data)
       })
       .catch((e) => {
         console.error(e)
@@ -39,7 +41,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                 name: `${sponsorName}`,
                 imgUrl: "https://wallpaperaccess.com/thumb/6336218.png",
               }
-              return ( 
+              return (
                 <Box style={SPONSORICON}>
                   <SponsorIcon key={uuid} props={prop} />
                 </Box>
@@ -72,8 +74,8 @@ const CONTAINER: ViewStyle = {
   marginTop: 10,
   borderTopEndRadius: 40,
 }
-const SPONSORICON: ViewStyle = { 
-  flex: 1, 
-  flexDirection: 'column', 
-  margin: 1
+const SPONSORICON: ViewStyle = {
+  flex: 1,
+  flexDirection: "column",
+  margin: 1,
 }
