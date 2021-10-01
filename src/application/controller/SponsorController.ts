@@ -10,10 +10,24 @@ class SponsorController extends BaseController {
   async getSponsors(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
 
+    const queryParams: { [key: string]: string }
+      = { "club": "clubs", "discount": "discountOffered", "name": "sponsorName" };
+
+    var query = {};
+
+    Object.entries(queryParams).forEach(
+      ([key, value]) => {
+        if (req.query[key] != null) {
+          query[value] = req.query[key];
+        }
+      }
+    );
+
     const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
     await sponsorRepo.isConnected();
 
-    const result = await sponsorRepo.list();
+    const result = await sponsorRepo.list(query);
+
     res.status(200).json(result);
   }
 

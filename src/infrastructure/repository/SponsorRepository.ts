@@ -33,8 +33,8 @@ class SponsorRepository {
     return true;
   }
 
-  public async list(): Promise<any[]> {
-    const dbList = await this.sponsorCollection.find({}).toArray();
+  public async list(query): Promise<any[]> {
+    const dbList = await this.sponsorCollection.find(query).toArray();
 
     return dbList;
   }
