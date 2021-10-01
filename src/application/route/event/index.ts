@@ -5,6 +5,6 @@ import { isAuthenticated } from '../../../middleware/authentication';
 const eventController = new EventController();
 
 //Add more middleware handlers in the array
-const get: Handler[] = [eventController.getEvents, isAuthenticated];
+const get: Handler[] = [isAuthenticated, eventController.getEvents];
 
 export { get as GET_EVENT };

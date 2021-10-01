@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as admin from 'firebase-admin';
 
 export async function isAuthenticated(req: Request, res: Response, next: Function) {
-    const token = req.headers['auth-token'][0];
+    const token = req.headers['auth-token'];
  
     if (token == null)
         return res.status(401).send({ message: 'Unauthorized' });
