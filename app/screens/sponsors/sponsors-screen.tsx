@@ -6,20 +6,25 @@ import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
 import { color, typography } from "../../theme"
 import { NativeBaseProvider, Box, FlatList } from "native-base"
+import firebase from "firebase"
 
-import sponsorsApi from "../../api/sponsors"
+import sponsorsApi from "../../api/backend"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
 
   useEffect(() => {
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken){
+      console.log("TOKEN")
+        console.log(idToken)
+    })
+
     sponsorsApi
       .get(`/sponsor`)
       .then((res) => {
         const data = res.data
         data.sort((a, b) => (a.tier > b.tier ? 1 : b.tier > a.tier ? -1 : 0))
-        console.log(data)
         setSponsors(data)
       })
       .catch((e) => {
@@ -44,7 +49,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               }
               return (
                 <Box style={SPONSORICON}>
-                  <TouchableOpacity onPress={() => console.log(item)}>
+                  <TouchableOpacity onPress={() => {navigation.navigate('sponsor', item)}}>
                     <SponsorIcon key={uuid} props={prop} />
                   </TouchableOpacity>
                 </Box>

@@ -18,6 +18,7 @@ import {
   OffersScreen,
   SettingsScreen,
   SponsorsScreen,
+  SponsorScreen,
   LoadingScreen,
 } from "../screens"
 
@@ -33,18 +34,13 @@ import {
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
-export type NavigatorParamList = {
+export type StackNavigatorParamList = {
   login: undefined
-  home: undefined
-  about: undefined
-  offers: undefined
-  settings: undefined
-  sponsors: undefined
   register: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createStackNavigator<NavigatorParamList>()
+const Stack = createStackNavigator<StackNavigatorParamList>()
 
 const AppStack = () => {
   return (
@@ -60,7 +56,36 @@ const AppStack = () => {
   )
 }
 
-const Tab = createBottomTabNavigator<NavigatorParamList>()
+export type SponsorNavigatorParamList = {
+  sponsors: undefined
+  sponsor: undefined
+}
+
+const Sponsor = createStackNavigator<SponsorNavigatorParamList>()
+
+const AppSponsorScreen = () => {
+  return (
+    <Sponsor.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="sponsors"
+    >
+      <Sponsor.Screen name="sponsors" component={SponsorsScreen} />
+      <Sponsor.Screen name="sponsor" component={SponsorScreen} />
+    </Sponsor.Navigator>
+  )
+}
+
+export type TabNavigatorParamList = {
+  home: undefined
+  about: undefined
+  offers: undefined
+  settings: undefined
+  sponsors: undefined
+}
+
+const Tab = createBottomTabNavigator<TabNavigatorParamList>()
 
 const AppTab = () => {
   return (
@@ -73,7 +98,7 @@ const AppTab = () => {
       <Tab.Screen name="about" component={AboutScreen} />
       <Tab.Screen name="offers" component={OffersScreen} />
       <Tab.Screen name="settings" component={SettingsScreen} />
-      <Tab.Screen name="sponsors" component={SponsorsScreen} />
+      <Tab.Screen name="sponsors" component={AppSponsorScreen} />
     </Tab.Navigator>
   )
 }

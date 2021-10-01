@@ -38,7 +38,7 @@ export const SponsorIcon = observer(function SponsorIcon(props: any) {
   )
 })
 
-export const Img = ({ imgUrl }) => {
+const Img = ({ imgUrl }) => {
   return (
     <Image
       source={{
