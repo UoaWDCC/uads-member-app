@@ -4,6 +4,7 @@ import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { SponsorRepository } from '../../infrastructure/repository/SponsorRepository';
 import { Console } from 'console';
 import { mongo } from 'mongoose';
+import { checkValidUrl } from '../../util/ValidationCheck';
 
 class SponsorController extends BaseController {
   async getSponsors(req: Request, res: Response) {
@@ -18,14 +19,22 @@ class SponsorController extends BaseController {
 
   async createSponsor(req: Request, res: Response) {
     const sponsorDetails = req.body;
-    const mongoAdapter = MongoAdapter.getInstance();
+    const { facebookHandle, twitterHandle, instagramHandle } = req.body;
+    if (
+      checkValidUrl(facebookHandle.url) &&
+      checkValidUrl(twitterHandle.url) &&
+      checkValidUrl(instagramHandle.url)
+    ) {
+      const mongoAdapter = MongoAdapter.getInstance();
 
-    const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
-    await sponsorRepo.isConnected();
+      const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
+      await sponsorRepo.isConnected();
 
-    sponsorRepo.createSponsor(sponsorDetails);
-
-    res.status(200).json();
+      sponsorRepo.createSponsor(sponsorDetails);
+      res.status(200).json();
+    } else {
+      res.status(404).json({}).send('invalid url');
+    }
   }
 
   async deleteSponsor(req: Request, res: Response) {
