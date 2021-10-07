@@ -5,7 +5,6 @@ import { color, typography } from "../../theme"
 import { Text } from "../"
 import { screenWidth } from "../../utils/screenDimensions"
 import { NativeBaseProvider, Image, Box } from "native-base"
-import { backgroundColor } from "styled-system"
 
 const CONTAINER: ViewStyle = {
   alignItems: "center",
