@@ -13,6 +13,7 @@ const CONTAINER: ViewStyle = {
 }
 
 const TEXT: TextStyle = {
+  textAlign: "center",
   fontFamily: typography.primary,
   fontSize: 14,
   color: color.text,
