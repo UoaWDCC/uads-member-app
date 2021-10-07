@@ -3,11 +3,14 @@ import { TextStyle, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { color, typography } from "../../theme"
 import { Text } from "../"
+import { screenWidth } from "../../utils/screenDimensions"
 import { NativeBaseProvider, Image, Box } from "native-base"
+import { backgroundColor } from "styled-system"
 
 const CONTAINER: ViewStyle = {
   alignItems: "center",
   padding: 20,
+  width: screenWidth / 3,
 }
 
 const TEXT: TextStyle = {

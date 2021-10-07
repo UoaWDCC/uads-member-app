@@ -72,7 +72,13 @@ const AppSponsorScreen = () => {
       initialRouteName="sponsors"
     >
       <Sponsor.Screen name="sponsors" component={SponsorsScreen} />
-      <Sponsor.Screen name="sponsor" component={SponsorScreen} />
+      <Sponsor.Screen 
+        name="sponsor" 
+        component={SponsorScreen} 
+        options={ {
+          headerShown: true
+        }}
+      />
     </Sponsor.Navigator>
   )
 }

@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
 import { color, typography } from "../../theme"
 import { NativeBaseProvider, Box, FlatList } from "native-base"
-import firebase from "firebase"
 
 import sponsorsApi from "../../api/backend"
 
@@ -15,11 +14,6 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   const [sponsors, setSponsors] = useState([])
 
   useEffect(() => {
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken){
-      console.log("TOKEN")
-        console.log(idToken)
-    })
-
     sponsorsApi
       .get(`/sponsor`)
       .then((res) => {
@@ -49,7 +43,11 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               }
               return (
                 <Box style={SPONSORICON}>
-                  <TouchableOpacity onPress={() => {navigation.navigate('sponsor', item)}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("sponsor", item)
+                    }}
+                  >
                     <SponsorIcon key={uuid} props={prop} />
                   </TouchableOpacity>
                 </Box>
@@ -80,7 +78,8 @@ const CONTAINER: ViewStyle = {
   flex: 1,
   backgroundColor: "#fffffa",
   marginTop: 10,
-  borderTopEndRadius: 40,
+  borderTopRightRadius: 40,
+  borderTopLeftRadius: 40,
 }
 const SPONSORICON: ViewStyle = {
   flexDirection: "column",
