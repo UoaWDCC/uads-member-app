@@ -1,4 +1,5 @@
 import { Collection as MongoCollection, Db } from 'mongodb';
+import { IUser } from '../../domain/Entities';
 import { MongoAdapter } from '../MongoAdapter';
 // import { Users } from '../schema/userSchema'
 
@@ -33,8 +34,8 @@ class UserRepository {
     return true;
   }
 
-
-  public async getUsers(query: any): Promise<any []> {
+  //get all users
+  public async getUsers(query: any): Promise<IUser[]> {
     var dbList = null;
  
     dbList = await this.userCollection.find(query).toArray();
@@ -42,7 +43,8 @@ class UserRepository {
     return dbList;
   }
 
-  public async getByID(id: string): Promise<any> {
+  //get single user
+  public async getByID(id: string): Promise<IUser> {
     const allUserDetails = await this.userCollection.findOne({"uuid": id});
     
     console.log(allUserDetails)
@@ -50,21 +52,20 @@ class UserRepository {
     return allUserDetails;
   }
 
-  public async createUser(user): Promise<void> {
+  public async createUser(user: IUser): Promise<void> {
     user.created = Date.now();
     user.modified = Date.now();
 
     this.userCollection.insertOne(user);
   }
 
-  public async deleteUser(id: string): Promise<any> {
+  public async deleteUser(id: string): Promise<number> {
     const status = await this.userCollection.deleteOne({"uuid": id});
-
 
     return status.deletedCount;
   }
 
-  public async modifyUser(id: string, query: any): Promise<any> {
+  public async modifyUser(id: string, query: any): Promise<boolean> {
   
     const update = {
       "$set": query

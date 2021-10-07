@@ -2,7 +2,7 @@ import { BaseController } from './BaseController';
 import { NextFunction, Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { UserRepository } from '../../infrastructure/repository/UserRepository';
-import {operations} from "../../interface/api"
+import { operations } from "../../interface/api";
 
 class UserController extends BaseController {
 
@@ -34,7 +34,7 @@ class UserController extends BaseController {
       query["gradLevel.type"] = req.query.gradlevel;
     }
 
-    var result = await userRepo.getUsers(query);
+    const result = await userRepo.getUsers(query);
 
     res.status(200).json(result);  
   }

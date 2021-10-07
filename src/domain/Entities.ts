@@ -105,8 +105,8 @@ interface IUser {
     clubRequested: [{
         name: String,
     }];
-    created: Number;
-    modified: Number;
+    created: number;
+    modified: number;
     notificationsON?: Boolean;
 }
 
