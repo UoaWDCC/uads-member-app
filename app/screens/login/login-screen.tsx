@@ -99,7 +99,7 @@ export const LoginScreen = observer(function LoginScreen() {
 
             <Input
               // eslint-disable-next-line react-native/no-inline-styles
-              style={[styles.inputStyle, {top: 50,}]}
+              style={[styles.inputStyle]}
               borderRadius="40px"
               type={show ? "text" : "password"}
               placeholder="Password..."
