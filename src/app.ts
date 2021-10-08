@@ -7,6 +7,7 @@ import * as swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 import { connector } from 'swagger-routes-express';
 import * as routes from './application/route';
+import * as admin from 'firebase-admin';
 
 const apiFile = YAML.load('api.yaml');
 
@@ -29,6 +30,12 @@ app.use(
     validateResponses: false,
   })
 );
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  projectId: 'wdcc-uads',
+  databaseURL: 'https://WDCC-UADS.firebaseio.com'
+});
 
 // Error handler
 app.use((err, req, res, next) => {
