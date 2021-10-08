@@ -114,6 +114,7 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
   const [text, setText] = useState("Check your email to reset your password!")
   const [showButton, setShowButton] = useState(true)
   
+  
   function sendLink() {
     if(upi === '') {
       Alert.alert('Enter upi to reset password!')

@@ -20,6 +20,7 @@ import {
   SettingsScreen,
   SponsorsScreen,
   LoadingScreen,
+  ChangePasswordScreen,
 } from "../screens"
 
 /**
@@ -62,6 +63,23 @@ const AppStack = () => {
   )
 }
 
+const Settings = createStackNavigator<NavigatorParamList>()
+
+const AppSettingsScreen = () => {
+  return (
+    <Settings.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="settings"
+    >
+      <Settings.Screen name="settings" component={SettingsScreen} />
+      <Settings.Screen name="change-password" component={ChangePasswordScreen} />
+    </Settings.Navigator>
+
+  )
+}
+
 const Tab = createBottomTabNavigator<NavigatorParamList>()
 
 const AppTab = () => {
@@ -70,7 +88,7 @@ const AppTab = () => {
       <Tab.Screen name="home" component={HomeScreen} />
       <Tab.Screen name="about" component={AboutScreen} />
       <Tab.Screen name="offers" component={OffersScreen} />
-      <Tab.Screen name="settings" component={SettingsScreen} />
+      <Tab.Screen name="settings" component={AppSettingsScreen} />
       <Tab.Screen name="sponsors" component={SponsorsScreen} />
     </Tab.Navigator>
   )
@@ -137,7 +155,7 @@ export const AppNavigator = React.forwardRef<
       }}
     >
       <NavigationContainer {...props} ref={ref}>
-        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack />}
+        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack /> }
       </NavigationContainer>
     </AuthContext.Provider>
   )
