@@ -1,5 +1,5 @@
 import { BaseController } from './BaseController';
-import { NextFunction, Request, Response } from 'express';
+import e, { NextFunction, Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { SponsorRepository } from '../../infrastructure/repository/SponsorRepository';
 import { Console } from 'console';
@@ -10,18 +10,19 @@ class SponsorController extends BaseController {
   async getSponsors(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
 
-    const queryParams: { [key: string]: string }
-      = { "club": "clubs", "discount": "discountOffered", "name": "sponsorName" };
+    const queryParams: { [key: string]: string } = {
+      club: 'clubs',
+      discount: 'discountOffered',
+      name: 'sponsorName',
+    };
 
     var query = {};
 
-    Object.entries(queryParams).forEach(
-      ([key, value]) => {
-        if (req.query[key] != null) {
-          query[value] = req.query[key];
-        }
+    Object.entries(queryParams).forEach(([key, value]) => {
+      if (req.query[key] != null) {
+        query[value] = req.query[key];
       }
-    );
+    });
 
     const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
     await sponsorRepo.isConnected();
@@ -76,9 +77,18 @@ class SponsorController extends BaseController {
     const sponsorRepo = new SponsorRepository(mongoAdapter, 'sponsorDetails');
     await sponsorRepo.isConnected();
 
-    sponsorRepo.editSponsor(sponsorDetails);
+    const { facebookHandle, twitterHandle, instagramHandle } = req.body;
+    if (
+      checkValidUrl(facebookHandle.url) &&
+      checkValidUrl(twitterHandle.url) &&
+      checkValidUrl(instagramHandle.url)
+    ) {
+      sponsorRepo.editSponsor(sponsorDetails);
 
-    res.status(200).json();
+      res.status(200).json();
+    } else {
+      res.status(404).json({}).send('invalid url');
+    }
   }
 }
 

@@ -189,7 +189,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Sponsor'
+              $ref: '#/components/schemas/POST-Sponsor'
         required: true
       tags:
         - Sponsor

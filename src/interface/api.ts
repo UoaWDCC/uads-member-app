@@ -157,7 +157,7 @@ export interface components {
       /** The IDs of the discounts offered by the sponsor */
       discountOffered?: string[];
       /** The IDs of the clubs which are associated with the sponsor */
-      clubs?: string[];
+      clubs: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
     };
@@ -204,6 +204,29 @@ export interface components {
       'club-membership'?: components['schemas']['Club-membership'][];
       /** The status of the user */
       'grad-level'?: 'Undergraduate' | 'Postgraduate';
+    };
+    /** Data type to store sponsors using the UADS App */
+    'POST-Sponsor': {
+      /** The name of the sponsor */
+      sponsorName: string;
+      /** The description of the sponsor */
+      sponsorDesc: string;
+      /** Instagram information */
+      instagramHandle?: components['schemas']['Socials'];
+      /** Facebook information */
+      facebookHandle?: components['schemas']['Socials'];
+      /** tier */
+      tier: '1' | '2' | '3' | '4';
+      /** Twitter information */
+      twitterHandle?: components['schemas']['Socials'];
+      /** Address information */
+      address?: components['schemas']['Address'];
+      /** Website link */
+      websiteUrl?: string;
+      /** The IDs of the clubs which are associated with the sponsor */
+      clubs?: string[];
+      /** Rep of the sponsor */
+      sponsorRepName?: string;
     };
   };
 }
