@@ -87,7 +87,7 @@ class SponsorController extends BaseController {
 
       res.status(200).json();
     } else {
-      res.status(404).json({}).send('invalid url');
+      res.status(404).json({ message: 'invalid url' });
     }
   }
 }
