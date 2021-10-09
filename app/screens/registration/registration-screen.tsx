@@ -57,7 +57,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
         .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
         .then((res) => {
           res.user.updateProfile({
-            upi: upi,
+            // upi: upi,
           })
           console.log("User registered successfully!")
           signUp(res)
