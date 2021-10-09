@@ -9,6 +9,7 @@ import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
+import { isVariance } from "@babel/types"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -112,36 +113,62 @@ export const SettingsScreen = observer(function SettingsScreen() {
   const [name, setName] = useState("");
   const [notifs, setNotifs] = useState("");
   const [upi, setUpi] = useState("");
+  const [thisUuid, setUuid] = useState("")
   const { logOut } = React.useContext(AuthContext);
 
   useEffect(() => {
     firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      console.log(idToken)
 
-    usersApi
-      .get(`/users/321`, {
-        headers: {
-          'auth-token': idToken
+      if (thisUuid == "") {
+        const getUUID = async() => {
+          let userUPI = firebase.auth().currentUser.email.replace("@aucklanduni.ac.nz", "")
+          await usersApi
+            .get(`/users`, {
+              headers: {
+                'auth-token': idToken
+              }
+            })
+            .then((res) => {
+              let userArray = res.data
+              for (var i=0; i<userArray.length; i++) {
+                if (userUPI == userArray[i].upi) {
+                  setUuid(userArray[i].uuid)
+                }
+              } 
+            })
+            .catch((e) => {
+              console.error(e)
+            })
         }
-      })
-      .then((res) => {
-        const {firstName, lastName, upi, notificationsON} = res.data
-        let name = `${firstName} ${lastName}`
-        setName(name)
-        setUpi(upi)
-        setNotifs(
-          (notificationsON) ? "ON" : "OFF"
-        )
-        
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+        getUUID()
+        console.log(thisUuid)
+
+      } else {
+        usersApi
+          .get(`/users/${thisUuid}`, {
+            headers: {
+              'auth-token': idToken
+            }
+          })
+          .then((res) => {
+            const {firstName, lastName, upi, notificationsON} = res.data
+            let name = `${firstName} ${lastName}`
+            setName(name)
+            setUpi(upi)
+            setNotifs(
+              (notificationsON) ? "ON" : "OFF"
+            )
+            
+          })
+          .catch((e) => {
+            console.error(e)
+          })
+      }
     })
     
-  }, []);
-
-   async function changeName(newName: string) {
+  }, [thisUuid]);
+  
+  async function changeName(newName: string) {
     const names: string[] = newName.split(" ")
     const firstName = names[0]
     const lastName = names[1]
@@ -165,7 +192,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
       })
     })
     
-   }
+  }
 
   function changeNotifs() {
     let newNotifs: boolean = (notifs == "ON") ? false : true
