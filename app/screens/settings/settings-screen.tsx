@@ -9,7 +9,6 @@ import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
-import { isVariance } from "@babel/types"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -71,14 +70,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4
   },
 
-  notifsSwitch: {
-    color: color.palette.orange,
-    fontWeight: 'bold',
-    minHeight: 40,
-    minWidth: 50,
-    justifyContent: 'center'
-  },
-
   notifsText: {
     color: color.palette.brown,
     fontWeight: 'bold',
@@ -120,29 +111,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
     firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
 
       if (thisUuid == "") {
-        const getUUID = async() => {
-          let userUPI = firebase.auth().currentUser.email.replace("@aucklanduni.ac.nz", "")
-          await usersApi
-            .get(`/users`, {
-              headers: {
-                'auth-token': idToken
-              }
-            })
-            .then((res) => {
-              let userArray = res.data
-              for (var i=0; i<userArray.length; i++) {
-                if (userUPI == userArray[i].upi) {
-                  setUuid(userArray[i].uuid)
-                }
-              } 
-            })
-            .catch((e) => {
-              console.error(e)
-            })
-        }
-        getUUID()
+        getUUID(idToken)
         console.log(thisUuid)
-
       } else {
         usersApi
           .get(`/users/${thisUuid}`, {
@@ -167,6 +137,27 @@ export const SettingsScreen = observer(function SettingsScreen() {
     })
     
   }, [thisUuid]);
+
+  async function getUUID(idToken) {
+    let userUPI = firebase.auth().currentUser.email.replace("@aucklanduni.ac.nz", "")
+      await usersApi
+        .get(`/users`, {
+          headers: {
+            'auth-token': idToken
+          }
+        })
+        .then((res) => {
+          let userArray = res.data
+          for (var i=0; i<userArray.length; i++) {
+            if (userUPI == userArray[i].upi) {
+              setUuid(userArray[i].uuid)
+            }
+          } 
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+  }
   
   async function changeName(newName: string) {
     const names: string[] = newName.split(" ")
