@@ -117,6 +117,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
         var user = firebase.auth().currentUser;
         user.updatePassword(password).then(() => {
           console.log("Password updated!");
+          setError("")
           setShowReturn(true)
         }).catch((error) => { 
           if (error.code == 'auth/weak-password') {
