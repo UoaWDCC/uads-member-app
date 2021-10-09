@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, View, Switch } from "react-native"
+import { ViewStyle, StyleSheet, View } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
+    fontFamily: 'Sen-Regular',
     fontSize: 18
   },
   
@@ -34,8 +35,10 @@ const styles = StyleSheet.create({
     backgroundColor: color.palette.goldenGlow,
     borderRadius: 10,
     justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
-    flex: 1
+    flex: 1,
+    fontFamily: 'Sen-Regular',
   },
 
   header: {
@@ -47,6 +50,10 @@ const styles = StyleSheet.create({
 
   input: {
     borderColor: color.transparent,
+    paddingLeft: 0,
+    fontWeight: 'normal',
+    fontFamily: 'Sen-Regular',
+    fontSize: 16
   },
 
   notifsButton: {
@@ -73,7 +80,9 @@ const styles = StyleSheet.create({
 
   notifsText: {
     color: color.palette.brown,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: 'Sen-Regular',
+    
   },
 
   signOutButton: {
@@ -86,81 +95,97 @@ const styles = StyleSheet.create({
   signOutText: {
     color: color.palette.black,
     textDecorationLine: 'underline',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: 'Sen-Regular',
   },
 
   textLabel: {
     marginLeft: 15,
     fontWeight: 'bold',
+    fontFamily: 'Sen-Regular',
     fontSize: 16
   }
 })
 
 export const SettingsScreen = observer(function SettingsScreen() {
 
-  const [name, setName] = useState(() => getName());
-  const [notifs, setNotifs] = useState(true);
-  const upi = getUPI();
+  const [name, setName] = useState("");
+  const [notifs, setNotifs] = useState("");
+  const [upi, setUpi] = useState("");
   const { logOut } = React.useContext(AuthContext);
 
   useEffect(() => {
-    //getName();
     firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      console.log("Got token" + idToken)
-    })
+      console.log(idToken)
 
     usersApi
-      .get(`/users`, {
+      .get(`/users/321`, {
         headers: {
-          Authorization: 'auth-token' + 12
+          'auth-token': idToken
         }
       })
       .then((res) => {
-        const data = res.data 
-        console.log(data);
+        const {firstName, lastName, upi, notificationsON} = res.data
+        let name = `${firstName} ${lastName}`
+        setName(name)
+        setUpi(upi)
+        setNotifs(
+          (notificationsON) ? "ON" : "OFF"
+        )
+        
       })
       .catch((e) => {
         console.error(e)
       })
+    })
+    
   }, []);
 
-  async function getName() {
-    var name: string;
+   async function changeName(newName: string) {
+    const names: string[] = newName.split(" ")
+    const firstName = names[0]
+    const lastName = names[1]
 
     firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      console.log(idToken);
-      // axios.get(`http://localhost:9002/users/321`, {
-      //   headers: {
-      //     Authorization: 'auth-token' + idToken,
-      //     'Access-Control-Allow-Origin' : '*', 
-      //     'Access-Control-Allow-Credentials':true
-      //   }
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     name = res.data.university
-    //   });
-    // })
-    // .catch(function(error) {
-    //   console.log(error.response.data);
-     })  
+      console.log(idToken)
+
+    usersApi
+      .put(`/users/321`, {}, {
+        params: {
+          firstname: firstName,
+          lastname: lastName
+        },
+        headers: {
+          'auth-token': idToken
+        }
+      })
+      .then(() => {console.log('name changed!')})
+      .catch((e) => {
+        console.error(e)
+      })
+    })
     
-  }
-
-  function getNotifs() {
-   
-  }
-
-  function getUPI() {
-   
-  }
-
-  function changeName() {
-
-  }
+   }
 
   function changeNotifs() {
+    let newNotifs: boolean = (notifs == "ON") ? false : true
+    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
+      console.log(idToken)
 
+    usersApi
+      .put(`/users/321`, {}, {
+        params: {
+          'notificationson': newNotifs,
+        },
+        headers: {
+          'auth-token': idToken
+        }
+      })
+      .then(() => {console.log('notifs changed!')})
+      .catch((e) => {
+        console.error(e)
+      })
+    })
   }
 
   const navigation = useNavigation()
@@ -179,8 +204,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
           </View>
           <View style = {{flex:2, justifyContent: 'center'}} >
             <Input style={styles.input}
-           //   onChangeText={setName}
-            //  value = {name}
+              onChangeText={text => {setName(text); changeName(text)}}     
+              value = {name}
             />
           </View>
 
@@ -193,30 +218,21 @@ export const SettingsScreen = observer(function SettingsScreen() {
           </View>
           <View style = {{flex: 1, justifyContent: 'center'}} >
             <Button style={styles.notifsButton}
-              onPress={() => setNotifs(!notifs)}
+              onPress={() => {setNotifs( (notifs=="ON" ? "OFF" : "ON")); changeNotifs()}}
             >
-            {notifs ? (<Text style={styles.notifsText}>ON</Text>) : (<Text style={styles.notifsText}>OFF</Text>)}
+            <Text style={styles.notifsText}>{notifs}</Text>
             </Button>
-            
-            
-            {/* {notifs ? (<Text>ON</Text>) : (<Text>OFF</Text>)}
-            <Switch style={styles.notifsSwitch}
-              onValueChange={() => setNotifs(!notifs)}
-              value={notifs}
-              thumbTintColor={color.palette.white}
-              tintColor={color.palette.orange}
-            >
-            </Switch> */}
           </View>
 
         </View>
 
         <View style={styles.displayBox} >
-            <View style={{flex: 1, justifyContent: 'center'}} >
-              <Text style={styles.textLabel} >UPI: {upi} </Text>
+            <View style={{flex: 1}} >
+              <Text style={styles.textLabel} >UPI: </Text>
             </View>
-            <View style = {{flex:1, justifyContent: 'center'}} >
-          </View>
+            <View style = {{flex: 2.5}} >
+              <Text style={{fontWeight: 'normal', fontFamily: 'Sen-Regular', fontSize: 16}}>{upi}</Text>
+            </View>
         </View>
 
         <Button style={styles.displayBox} 
@@ -226,22 +242,6 @@ export const SettingsScreen = observer(function SettingsScreen() {
             Change Password
           </Text>
         </Button>
-
-        
-        {/* <Input
-            style={{ width: 208, height: 60, top: '20%'}}
-            borderRadius="20px"
-            placeholder="UPI: "
-            _light={{
-                placeholderTextColor: color.text,
-                backgroundColor: color.palette.goldenGlow,
-                borderColor: color.palette.goldenGlow
-            }}
-            _dark={{
-                placeholderTextColor: color.text,
-            }}
-            
-        /> */}
 
         </Stack>
         
