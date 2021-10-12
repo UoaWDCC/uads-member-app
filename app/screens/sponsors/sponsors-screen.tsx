@@ -16,8 +16,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   useEffect(() => {
     sponsorsApi
       .get(`/sponsor`)
-      .then((res) => {
-        const data = res.data
+      .then(({ data }) => {
         data.sort((a, b) => (a.tier > b.tier ? 1 : b.tier > a.tier ? -1 : 0))
         setSponsors(data)
       })
