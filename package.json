@@ -13,7 +13,8 @@
     "prestart": "yarn run build",
     "start": "node dist/bin/www.js",
     "types": "ts-node ./script/types.ts",
-    "yaml": "ts-node-dev downloadAPI.ts"
+    "yaml": "ts-node-dev downloadAPI.ts",
+    "husky-init": "npx husky install && chmod ug+x .husky/* && chmod ug+x .git/hooks/*"
   },
   "dependencies": {
     "@types/mongoose": "^5.11.97",
@@ -28,7 +29,8 @@
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
-    "express-openapi-validator": "^4.12.15",
+    "express-openapi-validator": "^4.13.1",
+    "firebase-admin": "^9.11.1",
     "http-errors": "~1.6.3",
     "jest": "^27.0.6",
     "joi": "^17.3.0",
@@ -62,13 +64,20 @@
     "@types/jest": "^26.0.24",
     "@types/mongodb": "^3.6.19",
     "@types/node": "^14.14.33",
+    "husky": "^7.0.2",
     "joi-to-typescript": "^2.1.0",
+    "lint-staged": "^11.1.2",
     "mongoose-tsgen": "^8.3.5",
     "node-fetch": "^2.6.1",
     "openapi-typescript": "^4.0.2",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "write-yaml-file": "^4.2.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ]
   },
   "babel": {
     "presets": [
