@@ -1,6 +1,6 @@
-import { string } from 'joi';
 import { Collection as MongoCollection, Db } from 'mongodb';
 import { MongoAdapter } from '../MongoAdapter';
+import { ISponsor } from '../../domain/Entities';
 
 class SponsorRepository {
   private db: Db;
@@ -39,7 +39,8 @@ class SponsorRepository {
     return dbList;
   }
 
-  public async createSponsor(sponsorDetails): Promise<void> {
+  public async createSponsor(sponsorDetails: ISponsor): Promise<void> {
+    const sponsorCreateTime = Date.now();
     this.sponsorCollection.insertOne(sponsorDetails);
   }
 
@@ -48,6 +49,7 @@ class SponsorRepository {
   }
 
   public async editSponsor(sponsorDetails): Promise<void> {
+    const sponsorModifiedTime = Date.now();
     this.sponsorCollection.updateOne(
       { uuid: sponsorDetails.uuid },
       { $set: sponsorDetails },

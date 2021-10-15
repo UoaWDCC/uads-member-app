@@ -1,9 +1,7 @@
 import { BaseController } from './BaseController';
-import e, { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { SponsorRepository } from '../../infrastructure/repository/SponsorRepository';
-import { Console } from 'console';
-import { mongo } from 'mongoose';
 import { checkValidUrl } from '../../util/ValidationCheck';
 
 class SponsorController extends BaseController {
@@ -48,7 +46,7 @@ class SponsorController extends BaseController {
       sponsorRepo.createSponsor(sponsorDetails);
       res.status(200).json();
     } else {
-      res.status(404).json({}).send('invalid url');
+      res.status(404).json({ message: 'Invalid URL', status: 404 });
     }
   }
 
@@ -87,7 +85,7 @@ class SponsorController extends BaseController {
 
       res.status(200).json();
     } else {
-      res.status(404).json({ message: 'invalid url' });
+      res.status(404).json({ message: 'invalid url', status: 404 });
     }
   }
 }
