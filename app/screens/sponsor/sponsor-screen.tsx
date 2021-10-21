@@ -20,11 +20,6 @@ export const SponsorScreen = observer(function SponsorScreen(props: any) {
 
   const { sponsorName, sponsorDesc } = props.route.params
 
-  useEffect(() => {
-    navigation.setOptions({title: sponsorName})
-
-  }, [])
-
   return (
     <Screen style={ROOT} preset="scroll">
       <Text preset="header" text={sponsorName} />
