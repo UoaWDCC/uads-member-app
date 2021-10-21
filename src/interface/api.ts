@@ -29,13 +29,26 @@ export interface components {
   schemas: {
     /** Data type to store sponsors using the UADS App */
     Sponsor: {
-      /** name of sponsor */
-      name: string;
-      /** clubs affiliated with sponsor */
-      club_affil: components['schemas']['Club'][];
+      /** The UUID of the sponsor */
+      uuid: string;
     };
     /** Data type to store clubs using the UADS App */
-    Club: { [key: string]: unknown };
+    Club: {
+      /** The UUID of the Club */
+      uuid: string;
+      /** The name of the club */
+      name: string;
+      /** A club description */
+      desc?: string;
+      /** A image of the club */
+      imagePath?: string;
+      /** The admin(s) of the club */
+      admins?: string[];
+      /** The sponsor(s) of the club */
+      sponsors?: components['schemas']['Sponsor'][];
+      /** The events hosted by the club */
+      events?: components['schemas']['Event'][];
+    };
     /** Data type to store events using the UADS App */
     Event: {
       /** The UUID of the event */
@@ -49,12 +62,14 @@ export interface components {
       /** The maximum number of attendees, (-1 for no cap) */
       attendanceCap: number;
       /** The sponsor(s) of the event */
-      sponsor?: components['schemas']['Sponsor'][];
+      sponsors?: components['schemas']['Sponsor'][];
       /** An external url for the event */
       url?: string;
       /** The club(s) hosting the event */
       club: components['schemas']['Club'][];
     };
+    /** A user of the app */
+    User: { [key: string]: unknown };
   };
 }
 

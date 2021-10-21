@@ -4,14 +4,14 @@ import { DiscountController } from '../../controller/DiscountController';
 const discountController = new DiscountController();
 
 //Add more middleware handlers in the array
-const get: Handler[] = [discountController.getSponsors];
-const post: Handler[] = [discountController.createSponsor];
-const del: Handler[] = [discountController.deleteSponsor];
-const put: Handler[] = [discountController.editSponsor];
+const get: Handler[] = [discountController.getDiscounts];
+// const post: Handler[] = [discountController.createDiscounts];
+// const del: Handler[] = [discountController.deleteDiscounts];
+// const put: Handler[] = [discountController.editDiscounts];
 
 export {
-  get as GET_SPONSOR,
-  post as POST_SPONSOR,
-  del as DELETE_SPONSOR,
-  put as PUT_SPONSOR,
+  get as GET_DISCOUNT,
+  // post as POST_DISCOUNT,
+  // del as DELETE_DISCOUNT,
+  // put as PUT_DISCOUNT,
 };

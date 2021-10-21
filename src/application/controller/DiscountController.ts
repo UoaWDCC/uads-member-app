@@ -1,16 +1,19 @@
 import { BaseController } from './BaseController';
 import { NextFunction, Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
-import { EventRepository } from '../../infrastructure/repository/EventRepository';
+import { DiscountRepository } from '../../infrastructure/repository/DiscountRepository';
 
 class DiscountController extends BaseController {
-  async getEvents(req: Request, res: Response) {
+  async getDiscounts(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
 
-    const eventRepo = new EventRepository(mongoAdapter, 'eventDetails');
-    await eventRepo.isConnected();
+    const discountRepo = new DiscountRepository(
+      mongoAdapter,
+      'discountDetails'
+    );
+    await discountRepo.isConnected();
 
-    const result = await eventRepo.list();
+    const result = await discountRepo.list();
 
     res.status(200).json(result);
   }
