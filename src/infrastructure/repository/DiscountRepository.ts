@@ -5,7 +5,7 @@ class DiscountRepository {
   private db: Db;
   private mongoAdapter: MongoAdapter;
   private _isConnected: boolean;
-  private eventCollection: MongoCollection;
+  private discountCollection: MongoCollection;
 
   constructor(mongoAdapter: MongoAdapter, collectinName?: string) {
     this.mongoAdapter = mongoAdapter;
@@ -19,7 +19,7 @@ class DiscountRepository {
     this.mongoAdapter.getDb('discount', (err: Error, res: Db) => {
       if (err) throw err;
       this.db = res;
-      this.eventCollection = res.collection(collectionName);
+      this.discountCollection = res.collection(collectionName);
       this._isConnected = true;
     });
   }
@@ -33,10 +33,22 @@ class DiscountRepository {
   }
 
   public async list(): Promise<any[]> {
-    const dbList = await this.eventCollection.find({}).toArray();
+    const dbList = await this.discountCollection.find({}).toArray();
 
     return dbList;
   }
+
+  public async createDiscount(discountDetails): Promise<void> {
+    this.discountCollection.insertOne(discountDetails);
+  }
+
+  // public async editDiscount(discountDetails): Promise<void> {
+  //   this.discountCollection.updateOne(
+  //     { uuid: discountDetails.uuid },
+  //     { $set: discountDetails },
+  //     { upsert: false }
+  //   );
+  // }
 }
 
 export { DiscountRepository };

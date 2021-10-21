@@ -254,6 +254,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/Discount'
           description: Offers successfully received
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request when creating discount
       operationId: GET_DISCOUNT
       summary: Get Discounts
       description: Get all discounts, discounts of a sponsor, and filtered.
@@ -279,6 +285,12 @@ paths:
       summary: Modify discounts
       description: Allows admins to modify discounts
     post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POST-Discount'
+        required: true
       tags:
         - Discount
       responses:
@@ -287,6 +299,7 @@ paths:
             Successfully posted discount
         '404':
           description: Error has occurred
+      operationId: POST_DISCOUNT
       summary: Post discount
       description: Allows the posting of discounts.
     delete:
@@ -768,6 +781,23 @@ components:
         sponsorRepName:
           description: Rep of the sponsor
           type: string
+    POST-Discount:
+      description: Data type to store discounts using the UADS App
+      required:
+        - desc
+        - sponsor
+        - value
+      type: object
+      properties:
+        desc:
+          description: Description of the discount
+          type: string
+        sponsor:
+          description: Name of the sponsor
+          type: string
+        value:
+          description: The value of the discount
+          type: integer
   securitySchemes:
     firebase-key:
       type: apiKey
