@@ -42,6 +42,9 @@ class DiscountRepository {
     this.discountCollection.insertOne(discountDetails);
   }
 
+  public async deleteDiscount(id: string): Promise<void> {
+    this.discountCollection.deleteOne({ uuid: id });
+  }
   // public async editDiscount(discountDetails): Promise<void> {
   //   this.discountCollection.updateOne(
   //     { uuid: discountDetails.uuid },
