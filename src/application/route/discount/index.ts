@@ -7,11 +7,11 @@ const discountController = new DiscountController();
 const get: Handler[] = [discountController.getDiscounts];
 const post: Handler[] = [discountController.createDiscount];
 const del: Handler[] = [discountController.deleteDiscount];
-// const put: Handler[] = [discountController.editDiscounts];
+const put: Handler[] = [discountController.editDiscounts];
 
 export {
   get as GET_DISCOUNT,
   post as POST_DISCOUNT,
   del as DELETE_DISCOUNT,
-  // put as PUT_DISCOUNT,
+  put as PUT_DISCOUNT,
 };

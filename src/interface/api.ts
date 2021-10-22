@@ -420,35 +420,33 @@ export interface operations {
           'application/json': components['schemas']['Discount'][];
         };
       };
+      /** Invalid request when creating discount */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
     };
   };
   /** Allows admins to modify discounts */
   PUT_DISCOUNT: {
     responses: {
       /** Discount successfully put. */
-      200: {
-        content: {
-          'application/json': components['schemas']['Discount'][];
-        };
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['Discount'];
-      };
+      200: unknown;
     };
   };
   /** Allows the posting of discounts. */
   POST_DISCOUNT: {
     responses: {
       /** Successfully posted discount */
-      200: {
-        content: {
-          'application/json': components['schemas']['POST-Discount'];
-        };
-      };
+      200: unknown;
       /** Error has occurred */
       404: unknown;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['POST-Discount'];
+      };
     };
   };
   /** Deleting offers in UADS. */

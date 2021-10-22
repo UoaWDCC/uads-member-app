@@ -46,27 +46,27 @@ class DiscountController extends BaseController {
 
     res.status(200).json();
   }
+
+  async editDiscounts(req: Request, res: Response) {
+    const { uuid } = req.body;
+
+    if (!uuid) {
+      res.status(400).json({ message: 'invalid uuid' });
+      return;
+    }
+
+    const discountDetails = req.body;
+    const mongoAdapter = MongoAdapter.getInstance();
+    const discountRepo = new DiscountRepository(
+      mongoAdapter,
+      'discountDetails'
+    );
+    await discountRepo.isConnected();
+
+    discountRepo.editDiscount(discountDetails);
+
+    res.status(200).json();
+  }
 }
-
-// async editDiscounts(req: Request, res: Response) {
-//   const { uuid } = req.body;
-//   if (!uuid) {
-//     res.status(400).json();
-//     return;
-//   }
-
-//   const discountDetails = req.body;
-//   const mongoAdapter = MongoAdapter.getInstance();
-
-//   const discountRepo = new DiscountRepository(
-//     mongoAdapter,
-//     'discountDetails'
-//   );
-//   await discountRepo.isConnected();
-
-//   discountRepo.editDiscount(discountDetails);
-
-//   res.status(200).json(res);
-// }
 
 export { DiscountController };

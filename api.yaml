@@ -264,23 +264,17 @@ paths:
       summary: Get Discounts
       description: Get all discounts, discounts of a sponsor, and filtered.
     put:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Discount'
-        required: true
       tags:
         - Discount
       responses:
         '200':
+          description: Discount successfully put.
+        '400':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Discount'
-          description: Discount successfully put.
+                $ref: '#/components/schemas/Error'
+          description: Invalid uuid for modifying discounts
       operationId: PUT_DISCOUNT
       summary: Modify discounts
       description: Allows admins to modify discounts

@@ -45,13 +45,14 @@ class DiscountRepository {
   public async deleteDiscount(id: string): Promise<void> {
     this.discountCollection.deleteOne({ uuid: id });
   }
-  // public async editDiscount(discountDetails): Promise<void> {
-  //   this.discountCollection.updateOne(
-  //     { uuid: discountDetails.uuid },
-  //     { $set: discountDetails },
-  //     { upsert: false }
-  //   );
-  // }
+
+  public async editDiscount(discountDetails): Promise<void> {
+    this.discountCollection.updateOne(
+      { uuid: discountDetails.uuid },
+      { $set: discountDetails },
+      { upsert: false }
+    );
+  }
 }
 
 export { DiscountRepository };
