@@ -58,32 +58,30 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
         .auth()
         .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
         .then((res) => {
-          res.user.updateProfile({
+          res.user.getIdToken(true).then(function(idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+            axios.post('http://localhost:9002/users', {
             upi: upi,
+            uuid: upi,
+            "first-name": firstName,
+            "last-name": lastName,
+            university: "University of Auckland",
+            "club-membership": [{
+              club: "WDCC"
+            }],
+            "grad-level": gradLevel
+          },{
+            headers: {
+              'auth-token': idToken
+            }
           })
           console.log("User registered successfully!")
           signUp(res)
         })
-        .catch((error) => console.error(error))  //405 error in backend terminal when posted
-        axios.post('http://localhost:9003/user', {
-          upi: upi,
-          uuid: upi,
-          firstName: firstName,
-          lastName: lastName,
-          university: "University of Auckland",
-          "club-membership": [],
-          "grad-level": gradLevel
-        })
-        .then((response) => {
-          console.log(response);
-        }, (error) => {
-          console.log(error);
-        });
+      }).catch((error) => console.error(error))  // 405 error in backend terminal when posted 
     }
   }
-
-  
-
 
   // const { firstName = '', lastName = '', upi = '', email = '', password };
 
