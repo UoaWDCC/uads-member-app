@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, Dimensions } from "react-native"
 import { Screen, Text } from "../../components"
@@ -9,9 +9,6 @@ import { useEffect } from "react-test-renderer/node_modules/@types/react"
 import firebase from "firebase"
 import { assertExpressionStatement } from "@babel/types"
 import Icon from "react-native-vector-icons/FontAwesome"
-
-const screenWidth = Dimensions.get("window").width
-const screenHeight = Dimensions.get("window").height
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -36,7 +33,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100px",
     margin: 10,
-    paddingHorizontal: 0,
+    maxWidth: "90vw",
+    paddingHorizontal: "10px",
     paddingVertical: 0,
     // borderTopRightRadius: 40,
     // borderTopLeftRadius: 40,
@@ -44,13 +42,21 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: "Sen-Regular",
     fontSize: 40,
-    marginBottom: 10,
+    margin: 10,
+    marginLeft: 20,
     textDecorationColor: color.palette.brown,
+  },
+  textStyle: {
+    textAlign: "center",
+    width: "calc(90vw - 180px)",
   },
 })
 
 export const OffersScreen = observer(function OfferScreen() {
   const navigation = useNavigation()
+
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const [query, setQuery] = useState("")
 
   /* useEffect(() => {
     firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
@@ -85,52 +91,68 @@ export const OffersScreen = observer(function OfferScreen() {
     
   }, [thisUuid]); */
 
-  //TODO: set up hooks
+  // TODO: set up hooks
   const sponsors = [
     {
+      id: 1,
       name: "Giapo",
       image: "https://www.giapo.com/wp-content/uploads/2020/04/GiapoLogo.jpeg",
       details: "Yummy treats",
     },
     {
+      id: 2,
       name: "Shop 2",
       image:
         "https://w7.pngwing.com/pngs/560/389/png-transparent-le-salon-des-desserts-ricolleau-deguisements-pharmacie-atlantique-mr-boutholeau-mme-visset-logo-brand-dessert-logo-purple-food-text.png",
       details: "Yummy treats 2",
     },
     {
+      id: 3,
       name: "Bakery",
       image: "https://logodix.com/logo/955703.jpg",
-      details: "Baked stuffed ahah",
+      details: "Baked stuffed and more yummy treats",
     },
   ]
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Text style={styles.header} preset="header" text="Offers:" />
-        <Icon name="search" size={20} color="#333" />
-        <Input
-          // getRef={input => {
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{ width: screenWidth * 0.9, height: 38 }}
-          borderRadius="40px"
-          placeholder="Search"
-          _light={{
-            placeholderTextColor: color.text,
-            backgroundColor: color.palette.white,
-            borderColor: color.palette.goldenGlow,
-          }}
-          _dark={{
-            placeholderTextColor: color.text,
-          }}
-        />
+        <HStack space={2} alignItems="center">
+          <Input
+            ref={searchInputRef}
+            onChangeText={(text) => setQuery(text)}
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{ width: "calc(90vw - 30px)", height: 38 }}
+            borderRadius="40px"
+            marginLeft="10px"
+            float="left"
+            placeholder="Search"
+            _light={{
+              placeholderTextColor: color.text,
+              backgroundColor: color.palette.white,
+              borderColor: color.palette.goldenGlow,
+            }}
+            _dark={{
+              placeholderTextColor: color.text,
+            }}
+          />
+          <Icon name="search" size={20} color="#333" width="fit-content" />
+        </HStack>
         <Box style={CONTAINER}>
           <FlatList
-            data={sponsors}
+            data={sponsors.filter((sponsor) => {
+              if (query === "") {
+                return true
+              } else if (sponsor.name.toLowerCase().includes(query.toLowerCase())) {
+                return true
+              } else {
+                return false
+              }
+            })}
             renderItem={({ item }) => {
               return (
                 <Box style={styles.cardStyle}>
-                  <HStack space={2} justifyContent="space-between" alignItems="center">
+                  <HStack justifyContent="space-between" alignItems="center">
                     <Image
                       resizeMode={"contain"}
                       size={40}
@@ -140,9 +162,9 @@ export const OffersScreen = observer(function OfferScreen() {
                         uri: item.image,
                       }}
                     />
-                    <VStack>
-                      <Text>{item.name}</Text>
-                      <Text>{item.details}</Text>
+                    <VStack alignItems="center">
+                      <Text style={styles.textStyle}>{item.name}</Text>
+                      <Text style={styles.textStyle}>{item.details}</Text>
                     </VStack>
                   </HStack>
                 </Box>
