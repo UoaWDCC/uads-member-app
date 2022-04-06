@@ -18,25 +18,27 @@ class UserController extends BaseController {
     // for ( const [key, value] of Object.entries(queryParams)) {
     //   query[key] = value;
     // }
-    
+
     // get all by club
-    if (req.query.club){
+    if (req.query.club) {
       query["clubMembership.name"] = req.query.club;
+    } else {
+      query["clubMembership.name"] = "UADS"
     }
 
     // get all by university
-    if (req.query.university){
+    if (req.query.university) {
       query["university"] = req.query.university;
     }
 
     // get all by gradlevel
-    if (req.query.gradlevel){
+    if (req.query.gradlevel) {
       query["gradLevel.type"] = req.query.gradlevel;
     }
 
     const result = await userRepo.getUsers(query);
 
-    res.status(200).json(result);  
+    res.status(200).json(result);
   }
 
   async getUserByID(req: Request, res: Response) {
@@ -48,8 +50,8 @@ class UserController extends BaseController {
 
     const result = await userRepo.getByID(id);
 
-    if (result != null){
-      res.status(200).json(result);      
+    if (result != null) {
+      res.status(200).json(result);
     } else {
       res.status(404).json();
     }
@@ -78,34 +80,34 @@ class UserController extends BaseController {
     var query = {};
 
     const queryParams = req.query;
- /*
-    for ( const [key, value] of Object.entries(queryParams)) {
-      if (key == "notificationsON"){
-        query[key] = value;
-      }
-    }
-  */
+    /*
+       for ( const [key, value] of Object.entries(queryParams)) {
+         if (key == "notificationsON"){
+           query[key] = value;
+         }
+       }
+     */
 
     query["modified"] = Date.now();
-    
+
 
     // modify firstname
-    if (req.query.firstname){
+    if (req.query.firstname) {
       query["firstName"] = req.query.firstname;
     }
 
     //modify last name
-    if (req.query.lastname){
+    if (req.query.lastname) {
       query["lastName"] = req.query.lastname;
     }
-    
+
     //modify university
-    if (req.query.university){
-      query["university"] = req.query.university; 
+    if (req.query.university) {
+      query["university"] = req.query.university;
     }
-    
+
     //modify gradlevel
-    if (req.query.gradlevel){
+    if (req.query.gradlevel) {
       query["gradLevel.type"] = req.query.gradlevel;
     }
 
@@ -116,15 +118,15 @@ class UserController extends BaseController {
 
     //modify notifications on
     if (req.query.notificationson) {
-      if (req.query.notificationson == "true"){
-        query[ "notificationsON" ] = true;
+      if (req.query.notificationson == "true") {
+        query["notificationsON"] = true;
       } else {
-        query[ "notificationsON" ] = false;
+        query["notificationsON"] = false;
       }
     }
 
     const status = await userRepo.modifyUser(id, query);
-    if (!status){
+    if (!status) {
       res.status(404).json();
     } else {
       res.status(200).json();
@@ -142,11 +144,11 @@ class UserController extends BaseController {
 
     const numDeleted = await userRepo.deleteUser(id);
 
-    if (numDeleted == 0){
+    if (numDeleted == 0) {
       res.status(404).json();
     } else {
       res.status(200).json();
-    }    
+    }
   }
 }
 
