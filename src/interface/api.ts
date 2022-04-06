@@ -5,37 +5,98 @@
 
 export interface paths {
   '/event': {
-    /** Getting all the events available to the user */
+    /** Get all events, and filtered. */
     get: operations['GET_EVENT'];
+    /** Allows for the update of events. */
+    put: operations['PUT_EVENT'];
+    /** Allows the posting of events */
+    post: operations['POST_EVENTS'];
+    /** Deleting a specific event type */
+    delete: operations['DELETE_EVENT'];
   };
-  '/user': {};
-  '/club': {};
-  '/sponsor': {};
+  '/club': {
+    /** Get all clubs, and club by name. */
+    get: operations['GET_CLUB'];
+    /** Modify the club things i.e. club name. */
+    put: operations['PUT_CLUB'];
+    post: operations['POST_CLUB'];
+    /** Allows for the deletion of information the club path. */
+    delete: operations['DELETE_CLUB'];
+  };
+  '/sponsor': {
+    /** Get all sponsors, sponsor of a discount, and filtered. */
+    get: operations['GET_SPONSOR'];
+    /** Allows the modification of the sponsors. */
+    put: operations['PUT_SPONSOR'];
+    /** Allows the posting of sponsors */
+    post: operations['POST_SPONSOR'];
+    /** Deleting a sponsor from UADS. */
+    delete: operations['DELETE_SPONSOR'];
+  };
   '/discount': {
-    /** Get all offers for UADS */
-    get: {
+    /** Get all discounts, discounts of a sponsor, and filtered. */
+    get: operations['GET_DISCOUNT'];
+    /** Allows admins to modify discounts */
+    put: operations['PUT_DISCOUNT'];
+    /** Allows the posting of discounts. */
+    post: {
       responses: {
-        /** Offers successfully received */
+        /** Successfully posted discount */
         200: unknown;
+        /** Error has occurred */
+        404: unknown;
+      };
+    };
+    /** Deleting offers in UADS. */
+    delete: operations['DELETE_DISCOUNT'];
+  };
+  '/club/{id}': {
+    put: operations['GET_CLUB_ID'];
+    parameters: {
+      path: {
+        id: number;
       };
     };
   };
-  '/event/{id}': {
-    get: operations['GET_EVENT_ID'];
+  '/users': {
+    /** Get all users / get all users in a particular club */
+    get: operations['GET_USER'];
+    /** Create user upon registration */
+    post: operations['POST_USER'];
+  };
+  '/users/{id}': {
+    get: operations['GET_USER_ID'];
+    /** Change user */
+    put: operations['PUT_USER'];
+    /** Allows to delete user from UADS. */
+    delete: operations['DELETE_USER'];
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
   };
 }
 
 export interface components {
   schemas: {
-    /** Data type to store sponsors using the UADS App */
-    Sponsor: {
-      /** name of sponsor */
-      name: string;
-      /** clubs affiliated with sponsor */
-      club_affil: components['schemas']['Club'][];
-    };
     /** Data type to store clubs using the UADS App */
-    Club: { [key: string]: unknown };
+    Club: {
+      /** The UUID of the Club */
+      uuid: string;
+      /** The name of the club */
+      name: string;
+      /** A club description */
+      desc?: string;
+      /** A image of the club */
+      imagePath?: string;
+      /** The admin(s) of the club */
+      admins?: string[];
+      /** The UUID of the sponsor(s) of the club */
+      sponsors?: string[];
+      /** The events hosted by the club */
+      events?: string[];
+    };
     /** Data type to store events using the UADS App */
     Event: {
       /** The UUID of the event */
@@ -49,22 +110,134 @@ export interface components {
       /** The maximum number of attendees, (-1 for no cap) */
       attendanceCap: number;
       /** The sponsor(s) of the event */
-      sponsor?: components['schemas']['Sponsor'][];
+      sponsors?: string[];
       /** An external url for the event */
       url?: string;
-      /** The club(s) hosting the event */
-      club: components['schemas']['Club'][];
+      /** The UUID of club(s) hosting the event */
+      club: string[];
+    };
+    /** Discounts */
+    Discount: {
+      /** The description of the discount */
+      desc: string;
+      /** The id of the discount */
+      uuid: number;
+      /** The sponsor of the discount */
+      sponsor: string;
+      /** The value of the discount */
+      value: number;
+    };
+    /** Object Type */
+    Socials: {
+      /** Object type */
+      url?: string;
+      /** username */
+      username?: string;
+    };
+    /** Data type to store sponsors using the UADS App */
+    Sponsor: {
+      /** The UUID of the sponsor */
+      uuid: string;
+      /** The name of the sponsor */
+      sponsorName: string;
+      /** The description of the sponsor */
+      sponsorDesc: string;
+      /** Instagram information */
+      instagramHandle?: components['schemas']['Socials'];
+      /** Facebook information */
+      facebookHandle?: components['schemas']['Socials'];
+      /** tier */
+      tier: '1' | '2' | '3' | '4';
+      /** Twitter information */
+      twitterHandle?: components['schemas']['Socials'];
+      /** Address information */
+      address?: components['schemas']['Address'];
+      /** Website link */
+      websiteUrl?: string;
+      /** The IDs of the discounts offered by the sponsor */
+      discountOffered?: string[];
+      /** The IDs of the clubs which are associated with the sponsor */
+      clubs: string[];
+      /** Rep of the sponsor */
+      sponsorRepName?: string;
+    };
+    /** Tier object */
+    Address: {
+      /** The street number */
+      streetNo?: number;
+      /** The street name */
+      streetName?: string;
+      /** The city location */
+      city?: string;
+    };
+    /** Item not found */
+    Error: {
+      /** Error Status */
+      status?: number;
+      /** Error Message */
+      message?: string;
+    };
+    /** Data type to represent the membership status of a user */
+    'Club-membership': {
+      /** The acronym of the club */
+      club: string;
+      /** The start date of the membership */
+      start: string;
+      /** The end date of the membership */
+      end?: string;
+      /** boolean to represent if membership is active */
+      'is-active': boolean;
+    };
+    /** User model */
+    User: {
+      /** The UPI of the student */
+      upi: string;
+      /** The UUID of the student */
+      uuid: string;
+      /** The first name of the student */
+      'first-name': string;
+      /** The last name of the user */
+      'last-name': string;
+      /** The unversity which the user attends */
+      university?: string;
+      /** The acronym of the club(s) which the user is a member of */
+      'club-membership'?: components['schemas']['Club-membership'][];
+      /** The status of the user */
+      'grad-level'?: 'Undergraduate' | 'Postgraduate';
+    };
+    /** Data type to store sponsors using the UADS App */
+    'POST-Sponsor': {
+      /** The name of the sponsor */
+      sponsorName: string;
+      /** The description of the sponsor */
+      sponsorDesc: string;
+      /** Instagram information */
+      instagramHandle?: components['schemas']['Socials'];
+      /** Facebook information */
+      facebookHandle?: components['schemas']['Socials'];
+      /** tier */
+      tier: '1' | '2' | '3' | '4';
+      /** Twitter information */
+      twitterHandle?: components['schemas']['Socials'];
+      /** Address information */
+      address?: components['schemas']['Address'];
+      /** Website link */
+      websiteUrl?: string;
+      /** The IDs of the clubs which are associated with the sponsor */
+      clubs?: string[];
+      /** Rep of the sponsor */
+      sponsorRepName?: string;
     };
   };
 }
 
 export interface operations {
-  /** Getting all the events available to the user */
+  /** Get all events, and filtered. */
   GET_EVENT: {
     parameters: {
       query: {
-        /** Get event with name */
-        name?: string;
+        /** Sort by filter */
+        filter?: string;
       };
     };
     responses: {
@@ -76,19 +249,313 @@ export interface operations {
       };
     };
   };
-  GET_EVENT_ID: {
+  /** Allows for the update of events. */
+  PUT_EVENT: {
+    responses: {
+      /** Successfully modify the events. */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
+    };
+  };
+  /** Allows the posting of events */
+  POST_EVENTS: {
+    responses: {
+      /** Successfully posted events */
+      200: unknown;
+      /** Error has occurred */
+      404: unknown;
+    };
+  };
+  /** Deleting a specific event type */
+  DELETE_EVENT: {
+    responses: {
+      /** Event successfully deleted */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
+    };
+  };
+  /** Get all clubs, and club by name. */
+  GET_CLUB: {
+    parameters: {
+      query: {
+        name?: string;
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          'application/json': components['schemas']['Club'][];
+        };
+      };
+    };
+  };
+  /** Modify the club things i.e. club name. */
+  PUT_CLUB: {
+    responses: {
+      /** Successfully modified club */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Club'];
+      };
+    };
+  };
+  POST_CLUB: {
+    responses: {
+      /** Successful post */
+      200: unknown;
+    };
+  };
+  /** Allows for the deletion of information the club path. */
+  DELETE_CLUB: {
+    responses: {
+      /** Successfully deleted information. */
+      200: unknown;
+      /** An error occurred. */
+      404: unknown;
+    };
+  };
+  /** Get all sponsors, sponsor of a discount, and filtered. */
+  GET_SPONSOR: {
+    parameters: {
+      query: {
+        /** Filter by name of sponsor */
+        name?: string;
+        /** Get by discount */
+        discount?: string;
+        /** Filter by associated club */
+        club?: string;
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          'application/json': components['schemas']['Sponsor'][];
+        };
+      };
+      /** Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /** Allows the modification of the sponsors. */
+  PUT_SPONSOR: {
+    responses: {
+      /** Successfully modify the sponsors. */
+      200: unknown;
+      /** An error has occurred. */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /** Allows the posting of sponsors */
+  POST_SPONSOR: {
+    responses: {
+      /** Successfully posts sponsor */
+      200: unknown;
+      /** Invalid request when creating sponsor */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** Error has occurred */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Sponsor'];
+      };
+    };
+  };
+  /** Deleting a sponsor from UADS. */
+  DELETE_SPONSOR: {
+    responses: {
+      /** Successfully deleted sponsor */
+      200: unknown;
+      /** An error has occurred. */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /** Get all discounts, discounts of a sponsor, and filtered. */
+  GET_DISCOUNT: {
+    parameters: {
+      query: {
+        /** Sort by filter */
+        filter?: string;
+        /** Get discounts from a particular sponsor */
+        sponsor?: string;
+      };
+    };
+    responses: {
+      /** Offers successfully received */
+      200: {
+        content: {
+          'application/json': components['schemas']['Discount'][];
+        };
+      };
+    };
+  };
+  /** Allows admins to modify discounts */
+  PUT_DISCOUNT: {
+    responses: {
+      /** Discount successfully put. */
+      200: {
+        content: {
+          'application/json': components['schemas']['Discount'][];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Discount'];
+      };
+    };
+  };
+  /** Deleting offers in UADS. */
+  DELETE_DISCOUNT: {
+    responses: {
+      /** Successfully deleted offer */
+      200: unknown;
+    };
+  };
+  GET_CLUB_ID: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** Good */
+      200: unknown;
+    };
+  };
+  /** Get all users / get all users in a particular club */
+  GET_USER: {
+    parameters: {
+      query: {
+        /** the members of a given club */
+        club?: string;
+        /** the members of a university */
+        university?: string;
+        /** get members by graduation level */
+        'grad-level'?: string;
+      };
+    };
+    responses: {
+      /** success */
+      200: {
+        content: {
+          'application/json': components['schemas']['User'][];
+        };
+      };
+      /** Action not authorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** No users found */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /** Create user upon registration */
+  POST_USER: {
+    responses: {
+      /** Success */
+      201: unknown;
+      /** fails */
+      404: unknown;
+    };
+    /** User to be added */
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['User'];
+      };
+    };
+  };
+  GET_USER_ID: {
     parameters: {
       path: {
         id: number;
       };
     };
     responses: {
-      /** Got the event */
+      /** Success */
       200: {
         content: {
-          'application/json': components['schemas']['Event'];
+          'application/json': components['schemas']['User'];
         };
       };
+      /** None found */
+      404: unknown;
+    };
+  };
+  /** Change user */
+  PUT_USER: {
+    parameters: {
+      path: {
+        id: number;
+      };
+      query: {
+        /** edit first name */
+        firstname?: string;
+        /** edit last name */
+        lastname?: string;
+        /** edit university */
+        university?: { [key: string]: unknown };
+        /** edit description */
+        gradlevel?: { [key: string]: unknown };
+        /** edit club */
+        club?: { [key: string]: unknown };
+        /** edit notifications on */
+        notificationson?: { [key: string]: unknown };
+      };
+    };
+    responses: {
+      /** Successful change in the user management. */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
+    };
+  };
+  /** Allows to delete user from UADS. */
+  DELETE_USER: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** Successfully deleted user */
+      200: unknown;
+      /** An error has occurred. */
+      404: unknown;
     };
   };
 }

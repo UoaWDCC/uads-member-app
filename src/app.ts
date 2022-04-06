@@ -17,9 +17,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({
-  origin: '*'
-}));
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(apiFile));
 
@@ -27,14 +29,14 @@ app.use(
   OpenApiValidator.middleware({
     apiSpec: 'api.yaml',
     validateRequests: true,
-    validateResponses: false,
+    validateResponses: true,
   })
 );
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   projectId: 'wdcc-uads',
-  databaseURL: 'https://WDCC-UADS.firebaseio.com'
+  databaseURL: 'https://WDCC-UADS.firebaseio.com',
 });
 
 // Error handler
