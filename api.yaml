@@ -133,8 +133,8 @@ paths:
       tags:
         - Sponsor
       parameters:
-        - name: name
-          description: Filter by name of sponsor
+        - name: filter
+          description: name filter/search?
           schema:
             type: string
           in: query
@@ -143,12 +143,6 @@ paths:
           schema:
             type: string
           in: query
-        - name: club
-          description: Filter by associated club
-          schema:
-            type: string
-          in: query
-          required: false
       responses:
         '200':
           content:
@@ -164,8 +158,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Not found
-      security:
-        - firebase-key: []
       operationId: GET_SPONSOR
       summary: Get sponsors
       description: Get all sponsors, sponsor of a discount, and filtered.
@@ -189,19 +181,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/POST-Sponsor'
+              $ref: '#/components/schemas/Sponsor'
         required: true
       tags:
         - Sponsor
       responses:
         '200':
           description: Successfully posts sponsor
-        '400':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Invalid request when creating sponsor
         '404':
           content:
             application/json:
@@ -580,7 +566,6 @@ components:
         - sponsorName
         - sponsorDesc
         - tier
-        - clubs
       type: object
       properties:
         uuid:
@@ -600,12 +585,6 @@ components:
           description: Facebook information
         tier:
           description: tier
-          enum:
-            - '1'
-            - '2'
-            - '3'
-            - '4'
-          type: string
         twitterHandle:
           $ref: '#/components/schemas/Socials'
           description: Twitter information
@@ -616,12 +595,12 @@ components:
           description: Website link
           type: string
         discountOffered:
-          description: The IDs of the discounts offered by the sponsor
+          description: Discount that is offered
           type: array
           items:
             type: string
         clubs:
-          description: The IDs of the clubs which are associated with the sponsor
+          description: Gets information from club
           type: array
           items:
             type: string
@@ -711,51 +690,6 @@ components:
           enum:
             - Undergraduate
             - Postgraduate
-          type: string
-    POST-Sponsor:
-      description: Data type to store sponsors using the UADS App
-      required:
-        - sponsorName
-        - sponsorDesc
-        - tier
-      type: object
-      properties:
-        sponsorName:
-          description: The name of the sponsor
-          type: string
-        sponsorDesc:
-          description: The description of the sponsor
-          type: string
-        instagramHandle:
-          $ref: '#/components/schemas/Socials'
-          description: Instagram information
-        facebookHandle:
-          $ref: '#/components/schemas/Socials'
-          description: Facebook information
-        tier:
-          description: tier
-          enum:
-            - '1'
-            - '2'
-            - '3'
-            - '4'
-          type: string
-        twitterHandle:
-          $ref: '#/components/schemas/Socials'
-          description: Twitter information
-        address:
-          $ref: '#/components/schemas/Address'
-          description: Address information
-        websiteUrl:
-          description: Website link
-          type: string
-        clubs:
-          description: The IDs of the clubs which are associated with the sponsor
-          type: array
-          items:
-            type: string
-        sponsorRepName:
-          description: Rep of the sponsor
           type: string
   securitySchemes:
     firebase-key:

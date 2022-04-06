@@ -45,10 +45,11 @@ class MongoAdapter {
       res = this.client.connections[index].db;
       callBack(null, res);
     } else {
-      createConnection(this.uri, { dbName: dbName }).then((connection) => {
-        res = connection.db;
-        callBack(null, res);
-      });
+      createConnection(this.uri, { dbName: dbName })        
+        .then((connection) => {
+          res = connection.db;
+          callBack(null, res);
+        });
     }
   }
 

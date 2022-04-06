@@ -147,17 +147,17 @@ export interface components {
       /** Facebook information */
       facebookHandle?: components['schemas']['Socials'];
       /** tier */
-      tier: '1' | '2' | '3' | '4';
+      tier: { [key: string]: unknown };
       /** Twitter information */
       twitterHandle?: components['schemas']['Socials'];
       /** Address information */
       address?: components['schemas']['Address'];
       /** Website link */
       websiteUrl?: string;
-      /** The IDs of the discounts offered by the sponsor */
+      /** Discount that is offered */
       discountOffered?: string[];
-      /** The IDs of the clubs which are associated with the sponsor */
-      clubs: string[];
+      /** Gets information from club */
+      clubs?: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
     };
@@ -204,29 +204,6 @@ export interface components {
       'club-membership'?: components['schemas']['Club-membership'][];
       /** The status of the user */
       'grad-level'?: 'Undergraduate' | 'Postgraduate';
-    };
-    /** Data type to store sponsors using the UADS App */
-    'POST-Sponsor': {
-      /** The name of the sponsor */
-      sponsorName: string;
-      /** The description of the sponsor */
-      sponsorDesc: string;
-      /** Instagram information */
-      instagramHandle?: components['schemas']['Socials'];
-      /** Facebook information */
-      facebookHandle?: components['schemas']['Socials'];
-      /** tier */
-      tier: '1' | '2' | '3' | '4';
-      /** Twitter information */
-      twitterHandle?: components['schemas']['Socials'];
-      /** Address information */
-      address?: components['schemas']['Address'];
-      /** Website link */
-      websiteUrl?: string;
-      /** The IDs of the clubs which are associated with the sponsor */
-      clubs?: string[];
-      /** Rep of the sponsor */
-      sponsorRepName?: string;
     };
   };
 }
@@ -325,12 +302,10 @@ export interface operations {
   GET_SPONSOR: {
     parameters: {
       query: {
-        /** Filter by name of sponsor */
-        name?: string;
+        /** name filter/search? */
+        filter?: string;
         /** Get by discount */
         discount?: string;
-        /** Filter by associated club */
-        club?: string;
       };
     };
     responses: {
@@ -366,12 +341,6 @@ export interface operations {
     responses: {
       /** Successfully posts sponsor */
       200: unknown;
-      /** Invalid request when creating sponsor */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
       /** Error has occurred */
       404: {
         content: {
@@ -560,4 +529,4 @@ export interface operations {
   };
 }
 
-export interface external {}
+export interface external { }

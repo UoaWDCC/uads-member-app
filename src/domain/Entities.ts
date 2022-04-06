@@ -93,7 +93,7 @@ interface IUser {
     firstName: string;
     lastName: string;
     university: string;
-    gradLevel: {
+    gradLevel?: {
         type: string;
         enum: ['Undergraduate', 'Postgraduate'];
     },
@@ -105,8 +105,8 @@ interface IUser {
     clubRequested: [{
         name: String,
     }];
-    created: Number;
-    modified: Number;
+    created: number;
+    modified: number;
     notificationsON?: Boolean;
 }
 
