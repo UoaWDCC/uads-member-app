@@ -147,7 +147,7 @@ export interface components {
       /** Facebook information */
       facebookHandle?: components['schemas']['Socials'];
       /** tier */
-      tier: { [key: string]: unknown };
+      tier: unknown;
       /** Twitter information */
       twitterHandle?: components['schemas']['Socials'];
       /** Address information */
@@ -497,13 +497,13 @@ export interface operations {
         /** edit last name */
         lastname?: string;
         /** edit university */
-        university?: { [key: string]: unknown };
+        university?: unknown;
         /** edit description */
-        gradlevel?: { [key: string]: unknown };
+        gradlevel?: unknown;
         /** edit club */
-        club?: { [key: string]: unknown };
+        club?: unknown;
         /** edit notifications on */
-        notificationson?: { [key: string]: unknown };
+        notificationson?: unknown;
       };
     };
     responses: {
@@ -529,4 +529,4 @@ export interface operations {
   };
 }
 
-export interface external { }
+export interface external {}
