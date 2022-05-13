@@ -39,7 +39,14 @@ export interface paths {
     /** Allows admins to modify discounts */
     put: operations['PUT_DISCOUNT'];
     /** Allows the posting of discounts. */
-    post: operations['POST_DISCOUNT'];
+    post: {
+      responses: {
+        /** Successfully posted discount */
+        200: unknown;
+        /** Error has occurred */
+        404: unknown;
+      };
+    };
     /** Deleting offers in UADS. */
     delete: operations['DELETE_DISCOUNT'];
   };
@@ -68,9 +75,6 @@ export interface paths {
         id: number;
       };
     };
-  };
-  '/users/me': {
-    get: operations['GET_USERS_ME'];
   };
 }
 
@@ -143,17 +147,17 @@ export interface components {
       /** Facebook information */
       facebookHandle?: components['schemas']['Socials'];
       /** tier */
-      tier: '1' | '2' | '3' | '4';
+      tier: { [key: string]: unknown };
       /** Twitter information */
       twitterHandle?: components['schemas']['Socials'];
       /** Address information */
       address?: components['schemas']['Address'];
       /** Website link */
       websiteUrl?: string;
-      /** The IDs of the discounts offered by the sponsor */
+      /** Discount that is offered */
       discountOffered?: string[];
-      /** The IDs of the clubs which are associated with the sponsor */
-      clubs: string[];
+      /** Gets information from club */
+      clubs?: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
     };
@@ -189,49 +193,17 @@ export interface components {
       /** The UPI of the student */
       upi: string;
       /** The UUID of the student */
-      uuid?: string;
+      uuid: string;
+      /** The first name of the student */
+      'first-name': string;
+      /** The last name of the user */
+      'last-name': string;
       /** The unversity which the user attends */
       university?: string;
       /** The acronym of the club(s) which the user is a member of */
       'club-membership'?: components['schemas']['Club-membership'][];
-      /** The first name of the student */
-      firstName: string;
-      /** The last name of the user */
-      lastName: string;
       /** The status of the user */
-      gradLevel?: 'Undergraduate' | 'Postgraduate';
-    };
-    /** Data type to store sponsors using the UADS App */
-    'POST-Sponsor': {
-      /** The name of the sponsor */
-      sponsorName: string;
-      /** The description of the sponsor */
-      sponsorDesc: string;
-      /** Instagram information */
-      instagramHandle?: components['schemas']['Socials'];
-      /** Facebook information */
-      facebookHandle?: components['schemas']['Socials'];
-      /** tier */
-      tier: '1' | '2' | '3' | '4';
-      /** Twitter information */
-      twitterHandle?: components['schemas']['Socials'];
-      /** Address information */
-      address?: components['schemas']['Address'];
-      /** Website link */
-      websiteUrl?: string;
-      /** The IDs of the clubs which are associated with the sponsor */
-      clubs?: string[];
-      /** Rep of the sponsor */
-      sponsorRepName?: string;
-    };
-    /** Data type to store discounts using the UADS App */
-    'POST-Discount': {
-      /** Description of the discount */
-      desc: string;
-      /** Name of the sponsor */
-      sponsor: string;
-      /** The value of the discount */
-      value: number;
+      'grad-level'?: 'Undergraduate' | 'Postgraduate';
     };
   };
 }
@@ -330,12 +302,10 @@ export interface operations {
   GET_SPONSOR: {
     parameters: {
       query: {
-        /** Filter by name of sponsor */
-        name?: string;
+        /** name filter/search? */
+        filter?: string;
         /** Get by discount */
         discount?: string;
-        /** Filter by associated club */
-        club?: string;
       };
     };
     responses: {
@@ -371,12 +341,6 @@ export interface operations {
     responses: {
       /** Successfully posts sponsor */
       200: unknown;
-      /** Invalid request when creating sponsor */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
       /** Error has occurred */
       404: {
         content: {
@@ -386,7 +350,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['POST-Sponsor'];
+        'application/json': components['schemas']['Sponsor'];
       };
     };
   };
@@ -420,32 +384,21 @@ export interface operations {
           'application/json': components['schemas']['Discount'][];
         };
       };
-      /** Invalid request when creating discount */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
     };
   };
   /** Allows admins to modify discounts */
   PUT_DISCOUNT: {
     responses: {
       /** Discount successfully put. */
-      200: unknown;
-    };
-  };
-  /** Allows the posting of discounts. */
-  POST_DISCOUNT: {
-    responses: {
-      /** Successfully posted discount */
-      200: unknown;
-      /** Error has occurred */
-      404: unknown;
+      200: {
+        content: {
+          'application/json': components['schemas']['Discount'][];
+        };
+      };
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['POST-Discount'];
+        'application/json': components['schemas']['Discount'];
       };
     };
   };
@@ -574,16 +527,6 @@ export interface operations {
       404: unknown;
     };
   };
-  GET_USERS_ME: {
-    responses: {
-      /** This User */
-      200: {
-        content: {
-          'application/json': components['schemas']['User'];
-        };
-      };
-    };
-  };
 }
 
-export interface external {}
+export interface external { }

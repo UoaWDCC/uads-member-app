@@ -17,7 +17,7 @@ const UserSchema = new Schema<IUser>({
     gradLevel: { type: {
         type: String,
         enum: ['Undergraduate', 'Postgraduate'],
-    }, required: true },
+    }},
     clubMembership: [{
         name: String,
         start: Date,
