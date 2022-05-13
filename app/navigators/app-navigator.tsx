@@ -42,6 +42,7 @@ export type NavigatorParamList = {
   settings: undefined
   sponsors: undefined
   register: undefined
+  "forgot-password": undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
