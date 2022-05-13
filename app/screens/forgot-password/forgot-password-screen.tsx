@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert, View, Button, ColorPropType } from "react-native"
+import { ViewStyle, StyleSheet, Alert, View } from "react-native"
 import { Screen, Text, SendLinkButton, Popup } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { color, spacing } from "../../theme"
+import { color } from "../../theme"
 import { Box, Input, NativeBaseProvider, Stack, Modal } from "native-base"
 import { useNavigation } from "@react-navigation/native";
-import { style } from "styled-system";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -107,8 +104,6 @@ const styles = StyleSheet.create({
 })
 
 export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
   const [upi, setUpi] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [text, setText] = useState("Check your email to reset your password!")
@@ -141,7 +136,6 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
 
   return (
     <Screen style={ROOT} preset="scroll">
-      { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
       <Text style={styles.forgotPasswordStyle} preset="header" text="Forgot Password?"/>
       <Text style={styles.enterEmailStyle} text="Enter your UPI and we will send instructions to your university email to reset your password."/>
       <NativeBaseProvider>
@@ -164,7 +158,6 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
         <Stack space={4} >
         
                 <Input
-                    // getRef={input => {
                     // eslint-disable-next-line react-native/no-inline-styles
                     style={{ width: 215, height: 45}}
                     borderRadius="40px"

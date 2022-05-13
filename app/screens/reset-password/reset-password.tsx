@@ -2,17 +2,11 @@ import React, { useState } from "react";
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, Alert } from "react-native"
 import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { color } from "../../theme"
-import { UpiInputField } from "../../components/input-fields/upi-input-field/upi-input-field"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
-import { PasswordInputField } from "../../components/input-fields/password-input-field/password-input-field"
 import { useNavigation } from "@react-navigation/native";
-
-const uadsLogo = require("../../components/logo/logos/logo.png")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -70,15 +64,11 @@ export const ForgotPasswordScreen = observer(function ForgotPasswordScreen() {
 
   return (
     <Screen style={ROOT} preset="scroll">
-      { /* <Image source={require("../../../assets/images/logo.png")} /> */ }
       
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
         <Stack space={4}>
-          {/* <UpiInputField/>
-          <PasswordInputField/> */}
                 <Input
-                    // getRef={input => {
                     // eslint-disable-next-line react-native/no-inline-styles
                     style={{ width: 208, height: 38}}
                     borderRadius="40px"
