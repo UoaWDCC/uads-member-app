@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Dimensions } from "react-native"
+import { ViewStyle, StyleSheet } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Input, Box, FlatList, VStack, HStack, Image } from "native-base"
-import { useEffect } from "react-test-renderer/node_modules/@types/react"
 import firebase from "firebase"
-import { assertExpressionStatement } from "@babel/types"
 import Icon from "react-native-vector-icons/FontAwesome"
+import axios from "axios"
+
+const BASE_URL = process.env.baseURL
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -57,62 +58,37 @@ export const OffersScreen = observer(function OfferScreen() {
 
   const searchInputRef = useRef<HTMLInputElement | null>(null)
   const [query, setQuery] = useState("")
+  const [discounts, setDiscounts] = useState<
+    {
+      desc: string
+      uuid: number
+      sponsor: string
+      value: number
+      imageLink: string
+    }[]
+  >([])
 
-  /* useEffect(() => {
-    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-
-      axios.get()
-
-      if (thisUuid == "") {
-        getUUID(idToken)
-        console.log(thisUuid)
-      } else {
-        usersApi
-          .get(`/users/${thisUuid}`, {
+  useEffect(() => {
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(function (idToken) {
+        axios
+          .get(`http://localhost:9002/discount`, {
             headers: {
-              'auth-token': idToken
-            }
+              "auth-token": idToken,
+            },
           })
           .then((res) => {
-            const {firstName, lastName, upi, notificationsON} = res.data
-            let name = `${firstName} ${lastName}`
-            setName(name)
-            setUpi(upi)
-            setNotifs(
-              (notificationsON) ? "ON" : "OFF"
-            )
-            
+            const discounts = res.data
+            setDiscounts(discounts)
           })
           .catch((e) => {
             console.error(e)
           })
-      }
-    })
-    
-  }, [thisUuid]); */
+      })
+  }, [])
 
-  // TODO: set up hooks
-  const sponsors = [
-    {
-      id: 1,
-      name: "Giapo",
-      image: "https://www.giapo.com/wp-content/uploads/2020/04/GiapoLogo.jpeg",
-      details: "Yummy treats",
-    },
-    {
-      id: 2,
-      name: "Shop 2",
-      image:
-        "https://w7.pngwing.com/pngs/560/389/png-transparent-le-salon-des-desserts-ricolleau-deguisements-pharmacie-atlantique-mr-boutholeau-mme-visset-logo-brand-dessert-logo-purple-food-text.png",
-      details: "Yummy treats 2",
-    },
-    {
-      id: 3,
-      name: "Bakery",
-      image: "https://logodix.com/logo/955703.jpg",
-      details: "Baked stuffed and more yummy treats",
-    },
-  ]
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
@@ -140,31 +116,33 @@ export const OffersScreen = observer(function OfferScreen() {
         </HStack>
         <Box style={CONTAINER}>
           <FlatList
-            data={sponsors.filter((sponsor) => {
+            data={discounts.filter((discount) => {
               if (query === "") {
                 return true
-              } else if (sponsor.name.toLowerCase().includes(query.toLowerCase())) {
+              } else if (discount.sponsor.toLowerCase().includes(query.toLowerCase())) {
+                return true
+              } else if (discount.desc.toLowerCase().includes(query.toLowerCase())) {
                 return true
               } else {
                 return false
               }
             })}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               return (
-                <Box style={styles.cardStyle}>
+                <Box key={index} style={styles.cardStyle}>
                   <HStack justifyContent="space-between" alignItems="center">
                     <Image
                       resizeMode={"contain"}
                       size={40}
                       height="100px"
-                      alt={item.name}
+                      alt={item.sponsor}
                       source={{
-                        uri: item.image,
+                        uri: item.imageLink,
                       }}
                     />
                     <VStack alignItems="center">
-                      <Text style={styles.textStyle}>{item.name}</Text>
-                      <Text style={styles.textStyle}>{item.details}</Text>
+                      <Text style={styles.textStyle}>{item.sponsor}</Text>
+                      <Text style={styles.textStyle}>{item.desc}</Text>
                     </VStack>
                   </HStack>
                 </Box>
