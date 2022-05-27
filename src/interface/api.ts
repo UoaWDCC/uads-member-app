@@ -126,6 +126,8 @@ export interface components {
       sponsor: string;
       /** The value of the discount */
       value: number;
+      /** The image of the discount */
+      imageLink: string;
     };
     /** Object Type */
     Socials: {
@@ -160,6 +162,8 @@ export interface components {
       clubs?: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
+      /** Image of the sponsor */
+      imageLink: string;
     };
     /** Tier object */
     Address: {

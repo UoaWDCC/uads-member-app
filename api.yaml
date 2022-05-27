@@ -775,6 +775,9 @@ components:
         sponsorRepName:
           description: Rep of the sponsor
           type: string
+        imageLink:
+          description: A link to the image associated with the sponsor
+          type: string
     POST-Discount:
       description: Data type to store discounts using the UADS App
       required:
@@ -792,6 +795,9 @@ components:
         value:
           description: The value of the discount
           type: integer
+        imageLink:
+          description: A link to the image associated with the discount
+          type: string
   securitySchemes:
     firebase-key:
       type: apiKey
