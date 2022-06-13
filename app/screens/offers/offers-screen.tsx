@@ -8,8 +8,7 @@ import { NativeBaseProvider, Input, Box, FlatList, VStack, HStack, Image } from 
 import firebase from "firebase"
 import Icon from "react-native-vector-icons/FontAwesome"
 import axios from "axios"
-
-const BASE_URL = process.env.baseURL
+import { BASE_URL } from "@env"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -74,7 +73,7 @@ export const OffersScreen = observer(function OfferScreen() {
       .currentUser.getIdToken(true)
       .then(function (idToken) {
         axios
-          .get(`http://localhost:9002/discount`, {
+          .get(BASE_URL + `/discount`, {
             headers: {
               "auth-token": idToken,
             },

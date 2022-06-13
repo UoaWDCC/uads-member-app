@@ -84,3 +84,6 @@ app/config/env.*.js
 node_modules/
 node_modules
 firebaseSetup.ts
+
+# Env
+.env*
