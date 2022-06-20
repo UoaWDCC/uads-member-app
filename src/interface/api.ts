@@ -126,6 +126,8 @@ export interface components {
       sponsor: string;
       /** The value of the discount */
       value: number;
+      /** The image of the discount */
+      imageLink: string;
     };
     /** Object Type */
     Socials: {
@@ -147,7 +149,7 @@ export interface components {
       /** Facebook information */
       facebookHandle?: components['schemas']['Socials'];
       /** tier */
-      tier: { [key: string]: unknown };
+      tier: unknown;
       /** Twitter information */
       twitterHandle?: components['schemas']['Socials'];
       /** Address information */
@@ -160,6 +162,8 @@ export interface components {
       clubs?: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
+      /** Image of the sponsor */
+      imageLink: string;
     };
     /** Tier object */
     Address: {
@@ -497,13 +501,13 @@ export interface operations {
         /** edit last name */
         lastname?: string;
         /** edit university */
-        university?: { [key: string]: unknown };
+        university?: unknown;
         /** edit description */
-        gradlevel?: { [key: string]: unknown };
+        gradlevel?: unknown;
         /** edit club */
-        club?: { [key: string]: unknown };
+        club?: unknown;
         /** edit notifications on */
-        notificationson?: { [key: string]: unknown };
+        notificationson?: unknown;
       };
     };
     responses: {
@@ -529,4 +533,4 @@ export interface operations {
   };
 }
 
-export interface external { }
+export interface external {}
