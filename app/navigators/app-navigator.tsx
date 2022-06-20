@@ -83,10 +83,9 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   React.useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) 
-        dispatch({ type: "LOG_IN", user: user })
-      
-      dispatch({ type: "FINISHED_LOADING"})
+      if (user) dispatch({ type: "LOG_IN", user: user })
+
+      dispatch({ type: "FINISHED_LOADING" })
     })
     return () => unsubscribe()
   }, [])

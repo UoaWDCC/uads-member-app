@@ -23,7 +23,7 @@ export const viewPresets: Record<string, ViewStyle> = {
 }
 
 export const textPresets: Record<PopupPresets, TextStyle> = {
-  primary: {fontSize: 15, color: color.palette.white} as TextStyle
+  primary: { fontSize: 15, color: color.palette.white } as TextStyle,
 }
 
 /**

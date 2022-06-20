@@ -1,16 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Alert, Button, ViewStyle, StyleSheet } from "react-native"
+import { Alert, ViewStyle, StyleSheet } from "react-native"
 import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { paddingBottom } from "styled-system"
 import { AuthContext } from "../../../context/AuthContext"
-import Signup from "../../components/input-fields/singup-component/singup-component"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -56,7 +54,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
         .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
         .then((res) => {
           res.user.updateProfile({
-            upi: upi,
+            // upi: upi,
           })
           console.log("User registered successfully!")
           signUp(res)

@@ -22,11 +22,10 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-    
   forgotPasswordStyle: {
     flex: 1,
-    position: 'absolute',
-    top: '72%',
+    position: "absolute",
+    top: "72%",
   },
 
   logoStyle: {
@@ -36,16 +35,16 @@ const styles = StyleSheet.create({
   },
 
   signUpStyle: {
-      flex: 1,
-      position: 'absolute',
-      top: '69%',
+    flex: 1,
+    position: "absolute",
+    top: "69%",
   },
-  
+
   textStyle: {
     flex: 1,
     position: "absolute",
     top: "68%",
-  }
+  },
 })
 
 export const LoginScreen = observer(function LoginScreen() {
@@ -56,7 +55,7 @@ export const LoginScreen = observer(function LoginScreen() {
   const [show] = React.useState(false)
 
   const { logIn } = React.useContext(AuthContext)
-  
+
   function userLogin() {
     if (upi === "" && password === "") {
       Alert.alert("Enter details to signin!")
@@ -82,55 +81,61 @@ export const LoginScreen = observer(function LoginScreen() {
 
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
-        <Image source={uadsLogo} style={ styles.logoStyle } />
-        <Stack space={2}>
-          {/* <UpiInputField/>
+          <Image source={uadsLogo} style={styles.logoStyle} />
+          <Stack space={2}>
+            {/* <UpiInputField/>
           <PasswordInputField/> */}
-                <Input
-                    // getRef={input => {
-                    // eslint-disable-next-line react-native/no-inline-styles
-                    style={{ width: 208, height: 38, top: '20%'}}
-                    borderRadius="40px"
-                    placeholder="UPI..."
-                    _light={{
-                        placeholderTextColor: color.text,
-                        backgroundColor: color.palette.goldenGlow,
-                        borderColor: color.palette.goldenGlow
-                    }}
-                    _dark={{
-                        placeholderTextColor: color.text,
-                    }}
-                    onChangeText={upi => setUpi(upi)}
-                />
+            <Input
+              // getRef={input => {
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{ width: 208, height: 38, top: "20%" }}
+              borderRadius="40px"
+              placeholder="UPI..."
+              _light={{
+                placeholderTextColor: color.text,
+                backgroundColor: color.palette.goldenGlow,
+                borderColor: color.palette.goldenGlow,
+              }}
+              _dark={{
+                placeholderTextColor: color.text,
+              }}
+              onChangeText={(upi) => setUpi(upi)}
+            />
 
-                <Input
-                    // eslint-disable-next-line react-native/no-inline-styles
-                    style={{ 
-                        width: 208, 
-                        height: 38,
-                        top: '30%'
-                        }}
-                    borderRadius="40px"
-                    type={show ? "text" : "password"}
-                    placeholder="Password..."
-
-                    _light={{
-                        placeholderTextColor: color.text,
-                        backgroundColor: color.palette.goldenGlow,
-                        borderColor: color.palette.goldenGlow
-                    }}
-                    _dark={{
-                        placeholderTextColor: color.palette.goldenGlow,
-                    }}
-                    onChangeText={password => setPassword(password)}
-                />
-                
+            <Input
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                width: 208,
+                height: 38,
+                top: "30%",
+              }}
+              borderRadius="40px"
+              type={show ? "text" : "password"}
+              placeholder="Password..."
+              _light={{
+                placeholderTextColor: color.text,
+                backgroundColor: color.palette.goldenGlow,
+                borderColor: color.palette.goldenGlow,
+              }}
+              _dark={{
+                placeholderTextColor: color.palette.goldenGlow,
+              }}
+              onChangeText={(password) => setPassword(password)}
+            />
           </Stack>
         </Box>
       </NativeBaseProvider>
-      <Text text="Don't have an account? Sign up!" style={styles.signUpStyle} onPress={() => navigation.navigate('register')}></Text>
-      <Text text="Forgot password?" style={styles.forgotPasswordStyle} onPress={() => navigation.navigate('forgot-password')}></Text>
-      <MainButton text='SIGN IN' onPress={() => userLogin()}/>
+      <Text
+        text="Don't have an account? Sign up!"
+        style={styles.signUpStyle}
+        onPress={() => navigation.navigate("register")}
+      ></Text>
+      <Text
+        text="Forgot password?"
+        style={styles.forgotPasswordStyle}
+        onPress={() => navigation.navigate("forgot-password")}
+      ></Text>
+      <MainButton text="SIGN IN" onPress={() => userLogin()} />
     </Screen>
   )
 })

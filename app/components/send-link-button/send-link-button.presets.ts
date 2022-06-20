@@ -12,7 +12,7 @@ const BASE_VIEW: ViewStyle = {
   width: "70%",
   height: 60,
   position: "absolute",
-  top: "78%"
+  top: "78%",
 }
 
 const BASE_TEXT: TextStyle = {
@@ -28,9 +28,7 @@ export const viewPresets: Record<string, ViewStyle> = {
   /**
    * A smaller piece of secondard information.
    */
-  primary: { ...BASE_VIEW,
-    backgroundColor: color.primaryDarker,
-  } as ViewStyle,
+  primary: { ...BASE_VIEW, backgroundColor: color.primaryDarker } as ViewStyle,
 
   /**
    * A button without extras.
