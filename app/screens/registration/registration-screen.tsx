@@ -1,17 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Alert, Dimensions, ViewStyle } from "react-native"
+import { Alert, Dimensions, ViewStyle, StyleSheet } from "react-native"
 import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
-import { StyleSheet } from "react-native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { paddingBottom } from "styled-system"
 import { AuthContext } from "../../../context/AuthContext"
-import Signup from "../../components/input-fields/singup-component/singup-component"
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -31,14 +28,14 @@ const ROOT: ViewStyle = {
 // }
 
 const styles = StyleSheet.create({
-  textStyle: {
-    flex: 1,
-    position: "absolute",
-    bottom: - 1 * sHeight * 0.2,
-  },
-
   inputStyle: {
     width: sWidth * 0.8,
+  },
+
+  textStyle: {
+    bottom: -1 * sHeight * 0.2,
+    flex: 1,
+    position: "absolute",
   },
 })
 
@@ -169,14 +166,17 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
               borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="University..." />  */}
             {/* <GradLevel></GradLevel> */}
           </Stack>
-          <MainButton style={{marginTop: sHeight * 0.15}} text="SIGN UP" onPress={() => registerUser()} />
+          <MainButton
+            style={{ marginTop: sHeight * 0.15 }}
+            text="SIGN UP"
+            onPress={() => registerUser()}
+          />
 
           <Text
             text="Already have an account? Sign in!"
             style={styles.textStyle}
             onPress={() => navigation.navigate("login")}
           ></Text>
-        
         </Box>
       </NativeBaseProvider>
     </Screen>
