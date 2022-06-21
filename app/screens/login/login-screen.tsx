@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert } from "react-native"
+import { ViewStyle, StyleSheet, Alert, Dimensions } from "react-native"
 import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -12,6 +12,9 @@ import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 
 const uadsLogo = require("../../components/logo/logos/logo.png")
+
+const sWidth = Dimensions.get("window").width
+const sHeight = Dimensions.get("window").height
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -28,10 +31,14 @@ const styles = StyleSheet.create({
     top: "72%",
   },
 
+  inputStyle: {
+    width: sWidth * 0.8,
+  },
+
   logoStyle: {
     alignSelf: "center",
-    height: 350,
-    width: 350,
+    height: sWidth,
+    width: sWidth,
   },
 
   signUpStyle: {
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
   textStyle: {
     flex: 1,
     position: "absolute",
-    top: "68%",
+    top: sHeight * 0.8,
   },
 })
 
@@ -88,7 +95,7 @@ export const LoginScreen = observer(function LoginScreen() {
             <Input
               // getRef={input => {
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{ width: 208, height: 38, top: "20%" }}
+              style={styles.inputStyle}
               borderRadius="40px"
               placeholder="UPI..."
               _light={{
@@ -104,11 +111,7 @@ export const LoginScreen = observer(function LoginScreen() {
 
             <Input
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                width: 208,
-                height: 38,
-                top: "30%",
-              }}
+              style={styles.inputStyle}
               borderRadius="40px"
               type={show ? "text" : "password"}
               placeholder="Password..."
@@ -123,19 +126,14 @@ export const LoginScreen = observer(function LoginScreen() {
               onChangeText={(password) => setPassword(password)}
             />
           </Stack>
+          <Text
+            text="Don't have an account? Sign up!"
+            style={styles.textStyle}
+            onPress={() => navigation.navigate("register")}
+          ></Text>
+          <MainButton style={{ top: sHeight * 0.85 }} text="SIGN IN" onPress={() => userLogin()} />
         </Box>
       </NativeBaseProvider>
-      <Text
-        text="Don't have an account? Sign up!"
-        style={styles.signUpStyle}
-        onPress={() => navigation.navigate("register")}
-      ></Text>
-      <Text
-        text="Forgot password?"
-        style={styles.forgotPasswordStyle}
-        onPress={() => navigation.navigate("forgot-password")}
-      ></Text>
-      <MainButton text="SIGN IN" onPress={() => userLogin()} />
     </Screen>
   )
 })
