@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/AuthContext"
 import {
   LoginScreen,
   RegistrationScreen,
+  ForgotPasswordScreen,
   AboutScreen,
   HomeScreen,
   OffersScreen,
@@ -41,6 +42,7 @@ export type NavigatorParamList = {
   settings: undefined
   sponsors: undefined
   register: undefined
+  "forgot-password": undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -56,6 +58,7 @@ const AppStack = () => {
     >
       <Stack.Screen name="login" component={LoginScreen} />
       <Stack.Screen name="register" component={RegistrationScreen} />
+      <Stack.Screen name="forgot-password" component={ForgotPasswordScreen} />
     </Stack.Navigator>
   )
 }
@@ -80,10 +83,9 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   React.useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) 
-        dispatch({ type: "LOG_IN", user: user })
-      
-      dispatch({ type: "FINISHED_LOADING"})
+      if (user) dispatch({ type: "LOG_IN", user: user })
+
+      dispatch({ type: "FINISHED_LOADING" })
     })
     return () => unsubscribe()
   }, [])
