@@ -4,11 +4,13 @@ import { observer } from "mobx-react-lite"
 import { Alert, Dimensions, ViewStyle, StyleSheet } from "react-native"
 import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
-import { Box, Input, NativeBaseProvider, Stack } from "native-base"
+import { Radio, Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
+import Signup from "../../components/input-fields/singup-component/singup-component"
+import axios from 'axios'
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -49,6 +51,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   const [password, setPassword] = useState("")
   const [show] = React.useState(false)
   const navigation = useNavigation()
+  const [gradLevel, setGradLevel] = React.useState("undergraduate")
 
   const { signUp } = React.useContext(AuthContext)
 
@@ -60,13 +63,28 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
         .auth()
         .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
         .then((res) => {
-          res.user.updateProfile({
-            // upi: upi,
+          res.user.getIdToken(true).then(function(idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+            axios.post('http://localhost:9002/users', {
+            upi: upi,
+            uuid: upi,
+            "first-name": firstName,
+            "last-name": lastName,
+            university: "University of Auckland",
+            "club-membership": [{
+              club: "WDCC"
+            }],
+            "grad-level": gradLevel
+          },{
+            headers: {
+              'auth-token': idToken
+            }
           })
           console.log("User registered successfully!")
           signUp(res)
         })
-        .catch((error) => console.error(error))
+      }).catch((error) => console.error(error))  // 405 error in backend terminal when posted 
     }
   }
 
@@ -146,25 +164,23 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
               onChangeText={(password) => setPassword(password)}
             />
 
-            {/* <FormControl>
-          <EmailInputField ref={emailRef}></EmailInputField>
-        </FormControl> */}
+            <Radio.Group
+                  name="myRadioGroup"
+                  accessibilityLabel="gradLevel"
+                  value={gradLevel}
+                  onChange={(nextValue) => {
+                    setGradLevel(nextValue)
+                  }}
+                >
+                  <Radio value="undergraduate">
+                    Undergraduate
+                  </Radio>
+                  <Radio value="postgraduate">
+                    Postgraduate
+                  </Radio>
+                </Radio.Group>
 
-            {/* <FirstNameInput></FirstNameInput>
-            <LastNameInput></LastNameInput>
-            <UpiInputField></UpiInputField>
-            <FormControl>
-            <PasswordInputField></PasswordInputField>
-            </FormControl> */}
-
-            {/* <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
-              borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="First Name..."/>
-              value={this.state.username} />
-            <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
-              borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="Last Name..." /> */}
-            {/* <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
-              borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="University..." />  */}
-            {/* <GradLevel></GradLevel> */}
+            
           </Stack>
           <MainButton
             style={{ marginTop: sHeight * 0.15 }}
