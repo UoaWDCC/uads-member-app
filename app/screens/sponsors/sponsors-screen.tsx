@@ -8,20 +8,34 @@ import { color, typography } from "../../theme"
 import { NativeBaseProvider, Box, FlatList } from "native-base"
 
 import sponsorsApi from "../../api/backend"
+import firebase from "firebase"
+import axios from "axios"
+import { BASE_URL } from "@env"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
 
+  // const BASE_URL = process.env.BASE_URL;
+
   useEffect(() => {
-    sponsorsApi
-      .get(`/sponsor`)
-      .then(({ data }) => {
-        data.sort((a, b) => (a.tier > b.tier ? 1 : b.tier > a.tier ? -1 : 0))
-        setSponsors(data)
-      })
-      .catch((e) => {
-        console.error(e)
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(function (idToken) {
+        axios
+          .get(BASE_URL + `/sponsor`, {
+            headers: {
+              "auth-token": idToken,
+            },
+          })
+          .then(({ data }) => {
+            data.sort((a, b) => (a.tier > b.tier ? 1 : b.tier > a.tier ? -1 : 0))
+            setSponsors(data)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
       })
   }, [])
 
@@ -35,10 +49,10 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
             numColumns={3}
             keyExtractor={(item, index) => item.uuid}
             renderItem={({ item }) => {
-              const { sponsorName, uuid } = item
+              const { sponsorName, uuid, imageLink } = item
               const prop = {
                 name: `${sponsorName}`,
-                imgUrl: "https://wallpaperaccess.com/thumb/6336218.png",
+                imgUrl: imageLink,
               }
               return (
                 <Box style={SPONSORICON}>
