@@ -78,6 +78,13 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# environment
+.env
+.env.*
+*env.*
+!*env.*.example
+!.env.example
+
 # Configurations
 app/config/env.*.js
 !env.js
