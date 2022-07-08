@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/AuthContext"
 import {
   LoginScreen,
   RegistrationScreen,
+  ForgotPasswordScreen,
   AboutScreen,
   HomeScreen,
   OffersScreen,
@@ -37,6 +38,7 @@ import {
 export type StackNavigatorParamList = {
   login: undefined
   register: undefined
+  "forgot-password": undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -52,6 +54,7 @@ const AppStack = () => {
     >
       <Stack.Screen name="login" component={LoginScreen} />
       <Stack.Screen name="register" component={RegistrationScreen} />
+      <Stack.Screen name="forgot-password" component={ForgotPasswordScreen} />
     </Stack.Navigator>
   )
 }
