@@ -17,6 +17,7 @@ import {
   AboutScreen,
   HomeScreen,
   OffersScreen,
+  OfferScreen,
   SettingsScreen,
   SponsorsScreen,
   SponsorScreen,
@@ -87,6 +88,34 @@ const AppSponsorScreen = () => {
   )
 }
 
+export type OfferNavigatorParamList = {
+  offers: undefined
+  offer: undefined
+}
+
+const Offer = createStackNavigator<OfferNavigatorParamList>()
+
+const AppOfferScreen = () => {
+  return (
+    <Offer.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="offers"
+    >
+      <Offer.Screen name="offers" component={OffersScreen} />
+      <Offer.Screen
+        name="offer"
+        component={OfferScreen}
+        options={{
+          headerShown: true,
+          title: "",
+        }}
+      />
+    </Offer.Navigator>
+  )
+}
+
 export type TabNavigatorParamList = {
   home: undefined
   about: undefined
@@ -106,7 +135,7 @@ const AppTab = () => {
     >
       <Tab.Screen name="home" component={HomeScreen} />
       <Tab.Screen name="about" component={AboutScreen} />
-      <Tab.Screen name="offers" component={OffersScreen} />
+      <Tab.Screen name="offers" component={AppOfferScreen} />
       <Tab.Screen name="settings" component={SettingsScreen} />
       <Tab.Screen name="sponsors" component={AppSponsorScreen} />
     </Tab.Navigator>
