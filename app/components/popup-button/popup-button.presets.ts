@@ -28,7 +28,7 @@ export const viewPresets: Record<string, ViewStyle> = {
   /**
    * A smaller piece of secondard information.
    */
-  primary: { ...BASE_VIEW, backgroundColor: color.primary } as ViewStyle,
+  primary: { ...BASE_VIEW, backgroundColor: color.palette.grey } as ViewStyle,
 
   /**
    * A button without extras.
@@ -41,8 +41,13 @@ export const viewPresets: Record<string, ViewStyle> = {
   } as ViewStyle,
 }
 
-export const textPresets: Record<ButtonPresetNames, TextStyle> = {
-  primary: { ...BASE_TEXT, fontSize: 22, color: color.text, fontWeight: "bold" } as TextStyle,
+export const textPresets: Record<PopupButtonPresetNames, TextStyle> = {
+  primary: {
+    ...BASE_TEXT,
+    fontSize: 22,
+    color: color.palette.white,
+    fontWeight: "bold",
+  } as TextStyle,
   link: {
     ...BASE_TEXT,
     color: color.text,
@@ -54,4 +59,4 @@ export const textPresets: Record<ButtonPresetNames, TextStyle> = {
 /**
  * A list of preset names.
  */
-export type ButtonPresetNames = keyof typeof viewPresets
+export type PopupButtonPresetNames = keyof typeof viewPresets

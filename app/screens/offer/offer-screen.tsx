@@ -1,7 +1,7 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet } from "react-native"
-import { Screen, Text, SubButton } from "../../components"
+import { ViewStyle, StyleSheet, View } from "react-native"
+import { Screen, Text, SubButton, RedeemPopup, PopupButton } from "../../components"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, VStack, Image } from "native-base"
 
@@ -36,11 +36,38 @@ const styles = StyleSheet.create({
     // borderTopRightRadius: 40,
     // borderTopLeftRadius: 40,
   },
+  centeredView: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
   header: {
     fontFamily: "Sen-Regular",
     fontSize: 40,
     margin: 10,
     marginLeft: 20,
+    textDecorationColor: color.palette.brown,
+  },
+  modalView: {
+    alignItems: "center",
+    backgroundColor: color.palette.popupGrey,
+    borderRadius: 20,
+    elevation: 5,
+    marginHorizontal: 20,
+    shadowColor: color.palette.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  popuphead: {
+    fontFamily: "Sen-Regular",
+    fontSize: 22,
+    fontWeight: "bold",
+    margin: 10,
+    textAlign: "center",
     textDecorationColor: color.palette.brown,
   },
   subhead: {
@@ -61,10 +88,26 @@ const styles = StyleSheet.create({
 export const OfferScreen = observer(function OfferScreen(props: any) {
   const { desc, uuid, sponsor, value, imageLink } = props.route.params
 
+  const [isModalVisible, setIsModalVisible] = React.useState(false)
+
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Text style={styles.header} preset="header" text="Offers:" />
+        <RedeemPopup isVisible={isModalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <VStack>
+                <Text style={styles.popuphead} text="Are you sure?" />
+                <Text
+                  style={styles.textStyle}
+                  text="You only have 10 minutes to claim this deal!"
+                />
+                <PopupButton text="Redeem" onPress={() => setIsModalVisible(false)} />
+              </VStack>
+            </View>
+          </View>
+        </RedeemPopup>
         <Box style={CONTAINER}>
           <VStack>
             <Text style={styles.subhead} text={sponsor} />
@@ -84,7 +127,7 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
               </Box>
             }
             <Text style={styles.textStyle}>{desc}</Text>
-            <SubButton text="Redeem" onPress={() => console.log("hello")} />
+            <SubButton text="Redeem" onPress={() => setIsModalVisible(true)} />
           </VStack>
         </Box>
       </NativeBaseProvider>
