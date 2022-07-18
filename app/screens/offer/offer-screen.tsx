@@ -4,6 +4,7 @@ import { ViewStyle, StyleSheet, View } from "react-native"
 import { Screen, Text, SubButton, RedeemPopup, PopupButton } from "../../components"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, VStack, Image } from "native-base"
+import CountDown from "react-native-countdown-component"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -40,6 +41,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
+  },
+  digitStyle: {
+    backgroundColor: color.palette.white,
+    width: "70%",
+  },
+  digitText: {
+    color: color.palette.brown,
+    fontSize: 40,
   },
   header: {
     fontFamily: "Sen-Regular",
@@ -89,6 +98,13 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
   const { desc, uuid, sponsor, value, imageLink } = props.route.params
 
   const [isModalVisible, setIsModalVisible] = React.useState(false)
+  const [isRedeeming, setIsRedeeming] = React.useState(false)
+  const [hasRedeemed, setHasRedeemed] = React.useState(false)
+
+  const finalRedeem = () => {
+    setIsModalVisible(false)
+    setIsRedeeming(true)
+  }
 
   return (
     <Screen style={ROOT} preset="scroll">
@@ -103,7 +119,7 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
                   style={styles.textStyle}
                   text="You only have 10 minutes to claim this deal!"
                 />
-                <PopupButton text="Redeem" onPress={() => setIsModalVisible(false)} />
+                <PopupButton text="Redeem" onPress={finalRedeem} />
               </VStack>
             </View>
           </View>
@@ -127,7 +143,23 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
               </Box>
             }
             <Text style={styles.textStyle}>{desc}</Text>
-            <SubButton text="Redeem" onPress={() => setIsModalVisible(true)} />
+            {hasRedeemed ? (
+              <Text style={styles.textStyle} text="This offer has already been redeemed" />
+            ) : isRedeeming ? (
+              <CountDown
+                until={600}
+                onFinish={() => setHasRedeemed(true)}
+                size={40}
+                digitStyle={styles.digitStyle}
+                digitTxtStyle={styles.digitText}
+                separatorStyle={styles.digitText}
+                timeToShow={["M", "S"]}
+                timeLabels={{ m: null, s: null }}
+                showSeparator
+              />
+            ) : (
+              <SubButton text="Redeem" onPress={() => setIsModalVisible(true)} />
+            )}
           </VStack>
         </Box>
       </NativeBaseProvider>
