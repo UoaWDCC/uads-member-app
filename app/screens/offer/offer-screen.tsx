@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, View } from "react-native"
+import { ViewStyle, StyleSheet, View, TouchableOpacity } from "react-native"
 import { Screen, Text, SubButton, RedeemPopup, PopupButton } from "../../components"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, VStack, Image } from "native-base"
@@ -56,6 +56,11 @@ const styles = StyleSheet.create({
     margin: 10,
     marginLeft: 20,
     textDecorationColor: color.palette.brown,
+  },
+  modalExit: {
+    marginHorizontal: 20,
+    marginTop: 10,
+    textAlign: "right",
   },
   modalView: {
     alignItems: "center",
@@ -114,6 +119,9 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <VStack>
+                <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                  <Text style={styles.modalExit}>X</Text>
+                </TouchableOpacity>
                 <Text style={styles.popuphead} text="Are you sure?" />
                 <Text
                   style={styles.textStyle}
