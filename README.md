@@ -14,4 +14,4 @@ To automatically download the OAS from apicurio, run `yarn run api`, this will d
 
 To view docs, go to route /api-docs
 
-monday
+monday 18th
