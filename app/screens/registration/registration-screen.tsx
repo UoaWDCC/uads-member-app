@@ -11,6 +11,7 @@ import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import Signup from "../../components/input-fields/singup-component/singup-component"
 import axios from "axios"
+import { BASE_URL } from "@env"
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -67,7 +68,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
             // Send token to your backend via HTTPS
             // ...
             axios.post(
-              "http://localhost:9002/users",
+              BASE_URL + "/users",
               {
                 upi: upi,
                 uuid: upi,

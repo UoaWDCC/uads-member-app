@@ -1,5 +1,6 @@
 import axios from "axios"
+import { BASE_URL } from "@env"
 
 export default axios.create({
-  baseURL: "http://192.168.68.59:9002",
+  baseURL: BASE_URL,
 })
