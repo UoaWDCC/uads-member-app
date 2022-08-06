@@ -9,7 +9,7 @@ import { NativeBaseProvider, Box, FlatList } from "native-base"
 import sponsorsApi from "../../api/backend"
 import firebase from "firebase"
 import axios from "axios"
-import { BASE_URL } from "@env"
+import { BASE_URL } from "@env" 
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   const navigation = useNavigation()

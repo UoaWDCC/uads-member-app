@@ -28,7 +28,7 @@ const ROOT: ViewStyle = {
 
 // const ROOT: ViewStyle = {
 //   backgroundColor: color.background,
-//
+// 
 // }
 
 const styles = StyleSheet.create({

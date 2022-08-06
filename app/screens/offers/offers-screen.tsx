@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     width: "calc(90vw - 180px)",
   },
 })
-
+ 
 export const OffersScreen = observer(function OfferScreen() {
   const navigation = useNavigation()
 

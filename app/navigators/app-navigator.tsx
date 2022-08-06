@@ -21,6 +21,7 @@ import {
   SponsorsScreen,
   SponsorScreen,
   LoadingScreen,
+  ComingSoonScreen
 } from "../screens"
 
 /**
@@ -104,10 +105,10 @@ const AppTab = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="home" component={HomeScreen} />
-      <Tab.Screen name="about" component={AboutScreen} />
+      <Tab.Screen name="home" component={ComingSoonScreen} />
+      <Tab.Screen name="about" component={ComingSoonScreen} />
       <Tab.Screen name="offers" component={OffersScreen} />
-      <Tab.Screen name="settings" component={SettingsScreen} />
+      <Tab.Screen name="settings" component={ComingSoonScreen} />
       <Tab.Screen name="sponsors" component={AppSponsorScreen} />
     </Tab.Navigator>
   )
