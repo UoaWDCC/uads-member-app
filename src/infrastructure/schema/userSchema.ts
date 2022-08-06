@@ -2,15 +2,7 @@ import { model, Schema } from 'mongoose';
 import { IUser } from '../../domain/Entities';
 
 const UserSchema = new Schema<IUser>({
-    firebaseAuth: {
-        type: String,
-        upi: {type: String, required: true}, //add firebase id and mongoose uuid
-        displayName: {type: String, required: true},
-        email: {type: String, required: true},
-        emailVerified: {type: String, required: true},
-        imagePath: String, //Path or URL?
-    },
-    uuid: {type: String, required: true },
+    upi: {type: String, required: true },
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     university: {type: String, required: true},
@@ -18,18 +10,10 @@ const UserSchema = new Schema<IUser>({
         type: String,
         enum: ['Undergraduate', 'Postgraduate'],
     }},
-    clubMembership: [{
-        name: String,
-        start: Date,
-        end: Date,
-    }],
-    clubRequested: [{
-        name: String,
-    }],
-    
-    created: { type: Schema.Types.Number, required: true },
-    modified: { type: Schema.Types.Number, required: true },
-    notificationsON: {type: Schema.Types.Boolean, default: false }
+    notificationsOn: {type: Schema.Types.Boolean, default: false }
+},
+{
+    timestamps: true
 });
 
 export const Users = model<IUser>('Users', UserSchema);
