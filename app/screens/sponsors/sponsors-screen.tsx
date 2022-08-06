@@ -93,6 +93,7 @@ const CONTAINER: ViewStyle = {
   borderTopRightRadius: 40,
   borderTopLeftRadius: 40,
 }
+
 const SPONSORICON: ViewStyle = {
   flexDirection: "column",
   margin: 1,
