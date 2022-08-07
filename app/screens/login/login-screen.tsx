@@ -27,8 +27,9 @@ const ROOT: ViewStyle = {
 const styles = StyleSheet.create({
   forgotPasswordStyle: {
     flex: 1,
-    position: "absolute",
-    top: "72%",
+    position: "relative",
+    textAlign: "center",
+    marginTop: "5%",
   },
 
   inputStyle: {
@@ -126,6 +127,11 @@ export const LoginScreen = observer(function LoginScreen() {
               onChangeText={(password) => setPassword(password)}
             />
           </Stack>
+          <Text
+            text="Forgot your Password? Click here!"
+            style={styles.forgotPasswordStyle}
+            onPress={() => navigation.navigate("forgotPassword")}
+          ></Text>
           <Text
             text="Don't have an account? Sign up!"
             style={styles.textStyle}
