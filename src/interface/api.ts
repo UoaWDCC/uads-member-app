@@ -548,6 +548,12 @@ export interface operations {
           'application/json': components['schemas']['Discount'];
         };
       };
+      /** Unauthorised */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
       /** Cannot find the discount */
       404: {
         content: {

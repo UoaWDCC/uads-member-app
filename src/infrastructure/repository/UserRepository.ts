@@ -44,11 +44,11 @@ class UserRepository {
   }
 
   //get single user
-  public async getByID(id: string): Promise<IUser> {
-    const allUserDetails = await this.userCollection.findOne({ uuid: id });
-
-    console.log(allUserDetails);
-
+  public async getByUpi(upi: string): Promise<IUser> {
+    const allUserDetails = await this.userCollection.findOne({"upi": upi});
+    
+    console.log(allUserDetails)
+    
     return allUserDetails;
   }
 
@@ -59,21 +59,19 @@ class UserRepository {
     this.userCollection.insertOne(user);
   }
 
-  public async deleteUser(id: string): Promise<number> {
-    const status = await this.userCollection.deleteOne({ uuid: id });
+  public async deleteUser(upi: string): Promise<number> {
+    const status = await this.userCollection.deleteOne({"upi": upi});
 
     return status.deletedCount;
   }
 
-  public async modifyUser(id: string, query: any): Promise<boolean> {
+  public async modifyUser(upi: string, query: any): Promise<boolean> {
+  
     const update = {
-      $set: query,
+      "$set": query
     };
-
-    const status = await this.userCollection.findOneAndUpdate(
-      { uuid: id },
-      update
-    );
+    
+    const status = await this.userCollection.findOneAndUpdate({"upi": upi}, update);
     return status.lastErrorObject.updatedExisting;
   }
 }
