@@ -11,7 +11,7 @@ import { color } from "../../theme"
 import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 
-const uadsLogo = require("../../components/logo/logos/logo.png")
+const uadsLogo = require("../../resources/logo.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -25,14 +25,16 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-  forgotPasswordStyle: {
-    flex: 1,
-    position: "absolute",
-    top: "72%",
-  },
-
   inputStyle: {
     width: sWidth * 0.8,
+  },
+
+  signinButtonStyle: {
+    alignSelf: "center",
+    flex: 1,
+    marginTop: 10,
+    padding: 15,
+    width: 275,
   },
 
   logoStyle: {
@@ -49,8 +51,9 @@ const styles = StyleSheet.create({
 
   textStyle: {
     flex: 1,
-    position: "absolute",
-    top: sHeight * 0.8,
+    marginTop: 10,
+    textAlign: "center",
+    textDecorationLine: "underline",
   },
 })
 
@@ -84,8 +87,6 @@ export const LoginScreen = observer(function LoginScreen() {
 
   return (
     <Screen style={ROOT} preset="scroll">
-      {/* <Image source={require("../../../assets/images/logo.png")} /> */}
-
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
           <Image source={uadsLogo} style={styles.logoStyle} />
@@ -125,13 +126,22 @@ export const LoginScreen = observer(function LoginScreen() {
               }}
               onChangeText={(password) => setPassword(password)}
             />
+            <Text
+              text="Forgot your Password? Click here!"
+              style={styles.textStyle}
+              onPress={() => navigation.navigate("forgotPassword")}
+            ></Text>
+            <Text
+              text="Don't have an account? Sign up!"
+              style={styles.textStyle}
+              onPress={() => navigation.navigate("register")}
+            ></Text>
+            <MainButton
+              style={styles.signinButtonStyle}
+              text="SIGN IN"
+              onPress={() => userLogin()}
+            />
           </Stack>
-          <Text
-            text="Don't have an account? Sign up!"
-            style={styles.textStyle}
-            onPress={() => navigation.navigate("register")}
-          ></Text>
-          <MainButton style={{ top: sHeight * 0.85 }} text="SIGN IN" onPress={() => userLogin()} />
         </Box>
       </NativeBaseProvider>
     </Screen>

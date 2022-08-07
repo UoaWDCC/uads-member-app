@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios"
 import firebase from "firebase"
-const { BACKEND_URL } = require("../config/env")
+import { BASE_URL } from "@env"
 
 const requestConfig: AxiosRequestConfig = {
-  baseURL: BACKEND_URL,
+  baseURL: BASE_URL,
   headers: {
     "auth-token": async () => await firebase.auth().currentUser.getIdToken(true),
   },

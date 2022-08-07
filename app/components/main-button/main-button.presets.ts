@@ -5,14 +5,11 @@ import { color, spacing } from "../../theme"
  * All text will start off looking like this.
  */
 const BASE_VIEW: ViewStyle = {
-  paddingTop: 0,
   borderRadius: 50,
   justifyContent: "center",
   alignItems: "center",
   width: "70%",
   height: 60,
-  position: "absolute",
-  top: "78%"
 }
 
 const BASE_TEXT: TextStyle = {
@@ -28,9 +25,7 @@ export const viewPresets: Record<string, ViewStyle> = {
   /**
    * A smaller piece of secondard information.
    */
-  primary: { ...BASE_VIEW,
-    backgroundColor: color.primaryDarker,
-  } as ViewStyle,
+  primary: { ...BASE_VIEW, backgroundColor: color.primaryDarker } as ViewStyle,
 
   /**
    * A button without extras.

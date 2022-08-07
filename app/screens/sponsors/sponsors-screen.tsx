@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
 import { color, typography } from "../../theme"
 import { NativeBaseProvider, Box, FlatList } from "native-base"
-
 import sponsorsApi from "../../api/backend"
 import firebase from "firebase"
 import axios from "axios"
@@ -94,6 +93,7 @@ const CONTAINER: ViewStyle = {
   borderTopRightRadius: 40,
   borderTopLeftRadius: 40,
 }
+
 const SPONSORICON: ViewStyle = {
   flexDirection: "column",
   margin: 1,
