@@ -6,7 +6,6 @@ import { DiscountRepository } from '../../infrastructure/repository/DiscountRepo
 class DiscountController extends BaseController {
   async getDiscounts(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
-
     const discountRepo = new DiscountRepository(
       mongoAdapter,
       'discountDetails'
@@ -17,7 +16,6 @@ class DiscountController extends BaseController {
 
     res.status(200).json(result);
   }
-
   async createDiscount(req: Request, res: Response) {
     const discountDetails = req.body;
     const mongoAdapter = MongoAdapter.getInstance();
@@ -32,6 +30,42 @@ class DiscountController extends BaseController {
     res.status(200).json();
   }
 
+  async getDiscount(req: Request, res: Response) {
+    const discountId = parseInt(req.params['id']);
+    const userId = res.locals['uid'];
+
+    const mongoAdapter = MongoAdapter.getInstance();
+    const discountRepo = new DiscountRepository(
+      mongoAdapter,
+      'discountDetails'
+    );
+    await discountRepo.isConnected();
+
+    const query = {
+      uuid: discountId,
+    };
+    const result = await discountRepo.list(query);
+
+    if (result.length < 1) {
+      res
+        .status(404)
+        .send({
+          status: 404,
+          message: `Cannot find the discount with id ${discountId}`,
+        });
+      return;
+    }
+
+    discountRepo.connectCollection('redemption');
+    await discountRepo.isConnected();
+
+    const timeUntilAvailable = await discountRepo.getRedemptionHistory(
+      userId,
+      discountId
+    );
+
+    res.status(200).send({ ...result[0], cooldown: timeUntilAvailable });
+  }
   async deleteDiscount(req: Request, res: Response) {
     const { uuid } = req.body;
     const mongoAdapter = MongoAdapter.getInstance();
@@ -66,6 +100,48 @@ class DiscountController extends BaseController {
     discountRepo.editDiscount(discountDetails);
 
     res.status(200).json();
+  }
+  async redeemDiscount(req: Request, res: Response) {
+    const discountId = parseInt(req.params['id']);
+    const userId = res.locals['uid'];
+
+    const mongoAdapter = MongoAdapter.getInstance();
+    const discountRepo = new DiscountRepository(
+      mongoAdapter,
+      'discountDetails'
+    );
+    await discountRepo.isConnected();
+
+    const query = {
+      uuid: discountId,
+    };
+    const result = await discountRepo.list(query);
+
+    if (result.length < 1) {
+      res
+        .status(404)
+        .send({
+          status: 404,
+          message: `Cannot find the discount with id ${discountId}`,
+        });
+      return;
+    }
+
+    discountRepo.connectCollection('redemption');
+    await discountRepo.isConnected();
+    const timeUntilAvailable: number = await discountRepo.getRedemptionHistory(
+      userId,
+      discountId
+    );
+
+    if (timeUntilAvailable > 0) {
+      res.status(400).send({ ...result[0], cooldown: timeUntilAvailable });
+      return;
+    }
+
+    const success = await discountRepo.redeemDiscount(userId, discountId);
+
+    res.status(200).send({ success: true });
   }
 }
 
