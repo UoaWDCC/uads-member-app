@@ -5,6 +5,7 @@ import { DiscountRepository } from '../../infrastructure/repository/DiscountRepo
 
 class DiscountController extends BaseController {
   async getDiscounts(req: Request, res: Response) {
+    const userId = res.locals['uid'];
     const mongoAdapter = MongoAdapter.getInstance();
     const discountRepo = new DiscountRepository(
       mongoAdapter,
@@ -12,7 +13,7 @@ class DiscountController extends BaseController {
     );
     await discountRepo.isConnected();
 
-    const result = await discountRepo.list();
+    const result = await discountRepo.list({}, userId);
 
     res.status(200).json(result);
   }
@@ -45,7 +46,7 @@ class DiscountController extends BaseController {
     const query = {
       uuid: discountId,
     };
-    const result = await discountRepo.list(query);
+    const result = await discountRepo.list(query, userId);
 
     if (result.length < 1) {
       res
@@ -57,15 +58,7 @@ class DiscountController extends BaseController {
       return;
     }
 
-    discountRepo.connectCollection('redemption');
-    await discountRepo.isConnected();
-
-    const timeUntilAvailable = await discountRepo.getRedemptionHistory(
-      userId,
-      discountId
-    );
-
-    res.status(200).send({ ...result[0], cooldown: timeUntilAvailable });
+    res.status(200).send( result[0]);
   }
   async deleteDiscount(req: Request, res: Response) {
     const { uuid } = req.body;
@@ -116,7 +109,7 @@ class DiscountController extends BaseController {
     const query = {
       uuid: discountId,
     };
-    const result = await discountRepo.list(query);
+    const result = await discountRepo.list(query, userId);
 
     if (result.length < 1) {
       res
@@ -128,15 +121,11 @@ class DiscountController extends BaseController {
       return;
     }
 
-    discountRepo.connectCollection('redemption');
-    await discountRepo.isConnected();
-    const timeUntilAvailable: number = await discountRepo.getRedemptionHistory(
-      userId,
-      discountId
-    );
+   const timeUntilAvailable = result[0]['cooldown']
+
 
     if (timeUntilAvailable > 0) {
-      res.status(400).send({ ...result[0], cooldown: timeUntilAvailable });
+      res.status(400).send(result[0]);
       return;
     }
 

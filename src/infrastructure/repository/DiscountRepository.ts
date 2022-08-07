@@ -33,21 +33,76 @@ class DiscountRepository {
     return true;
   }
 
-  public async list(query = null): Promise<any[]> {
+  public async list(query = null, userId): Promise<any[]> {
     const dbList = await this.discountCollection
-      .find(
+      .aggregate([
         {
-          ...query,
+          $match: {...query},
+        }, {
+          $lookup: {
+            from: 'redemption',
+            let: {discountId: "$uuid"},
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {$eq: ["$userId", userId]},
+                      {$eq: ["$discountId", "$$discountId"]}
+                    ],
+                  }
+                }
+              }
+            ],
+            as: 'cooldown',
+          }
         },
         {
-          projection: {
+          $unwind: {
+            path: '$cooldown',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $sort: {
+            "cooldown._id": -1
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            desc: { $first: "$desc"},
+            sponsor: { $first: "$sponsor"},
+            value: { $first: "$value"},
+            imageLink:  { $first: "$imageLink"},
+            uuid: { $first: "$uuid"},
+            cooldown: { $first: "$cooldown"},
+          }
+        },
+        {
+          $project: {
             _id: 0,
-          },
+          }
         }
-      )
+      ])
       .toArray();
 
-    return dbList;
+    const discountWithCooldown = dbList.map((discount) => {
+      if (discount['cooldown'] != null){
+        const today = new Date();
+        const lastRedemptionTime = discount['cooldown']['_id'].getTimestamp();
+        const diff = (today.getTime() - lastRedemptionTime.getTime()) / 1000;
+        if (diff > 86400) {
+          return {...discount, cooldown: 0};
+        } else {
+          return {...discount, cooldown: Math.floor(86400 - diff)}
+        }
+      } else {
+        return {...discount, cooldown: 0}
+      }
+    })
+
+    return discountWithCooldown;
   }
   public async createDiscount(discountDetails): Promise<void> {
     this.discountCollection.insertOne(discountDetails);
