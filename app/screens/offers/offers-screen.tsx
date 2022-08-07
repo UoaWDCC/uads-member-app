@@ -36,8 +36,6 @@ const styles = StyleSheet.create({
     maxWidth: "90vw",
     paddingHorizontal: "10px",
     paddingVertical: 0,
-    // borderTopRightRadius: 40,
-    // borderTopLeftRadius: 40,
   },
   header: {
     fontFamily: "Sen-Regular",
