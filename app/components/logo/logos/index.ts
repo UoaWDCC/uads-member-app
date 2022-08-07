@@ -1,5 +1,5 @@
 export const logos = {
-  uads: require("./logo.png"),
+  uads: require("../../../resources/logo.png"),
 }
 
 export type LogoTypes = keyof typeof logos

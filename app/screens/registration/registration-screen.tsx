@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Dimensions, ViewStyle, StyleSheet, View } from "react-native"
+import { Dimensions, ViewStyle, StyleSheet, View, Linking } from "react-native"
 import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
 import { Radio, Box, Input, NativeBaseProvider, Stack, Modal } from "native-base"
@@ -28,7 +28,7 @@ const ROOT: ViewStyle = {
 
 // const ROOT: ViewStyle = {
 //   backgroundColor: color.background,
-// 
+//
 // }
 
 const styles = StyleSheet.create({
@@ -77,14 +77,25 @@ const styles = StyleSheet.create({
   signUpButtonStyle: {
     alignSelf: "center",
     flex: 1,
-    marginTop: "200px",
-    position: "absolute",
+    padding: 15,
+    width: 275,
+  },
+
+  smallTextStyle: {
+    fontFamily: "Sen-Regular",
+    fontSize: 20,
+    margin: 10,
+    marginBottom: 40,
+    marginLeft: 20,
+    textAlign: "center",
+    textDecorationColor: color.palette.brown,
+    textDecorationLine: "underline",
   },
 
   textStyle: {
     flex: 1,
-    marginTop: "100px",
-    position: "absolute",
+    textAlign: "center",
+    textDecorationLine: "underline",
   },
 })
 
@@ -166,7 +177,12 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="Registration" style={{ paddingBottom: 50 }} />
+      <Text preset="header" text="Registration" style={{ paddingBottom: 30 }} />
+      <Text
+        text="Click here to sign up to the club before registering to the app!"
+        style={styles.smallTextStyle}
+        onPress={() => Linking.openURL("https://forms.gle/GDxUn3SnTBvjoqqV7")}
+      ></Text>
 
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center" style={styles.boxStyle}>
@@ -252,6 +268,18 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
                 Postgraduate
               </Radio>
             </Radio.Group>
+
+            <Text
+              text="Already have an account? Sign in!"
+              style={styles.textStyle}
+              onPress={() => navigation.navigate("login")}
+            ></Text>
+
+            <MainButton
+              style={styles.signUpButtonStyle}
+              text="SIGN UP"
+              onPress={() => registerUser()}
+            />
           </Stack>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -273,14 +301,6 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
           </Modal>
         </Box>
       </NativeBaseProvider>
-
-      <MainButton style={styles.signUpButtonStyle} text="SIGN UP" onPress={() => registerUser()} />
-
-      <Text
-        text="Already have an account? Sign in!"
-        style={styles.textStyle}
-        onPress={() => navigation.navigate("login")}
-      ></Text>
     </Screen>
   )
 })
