@@ -21,7 +21,7 @@ export function ToggleStorybook(props) {
       // Load the setting from storage if it's there
       loadString("devStorybook").then((storedSetting) => {
         // Set the initial value
-        setShowStorybook(storedSetting === "on")
+        setShowStorybook(storedSetting === "off")
 
         // Add our toggle command to the menu
         DevSettings.addMenuItem("Toggle Storybook", () => {

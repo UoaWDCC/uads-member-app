@@ -76,11 +76,19 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-web-build/
+
+# environment
+.env
+.env.*
+*env.*
+!*env.*.example
+!.env.example
 
 # Configurations
 app/config/env.*.js
 !env.js
 node_modules/
 node_modules
-firebaseSetup.ts
+
+# Env
+.env

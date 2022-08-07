@@ -1,16 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Alert, Button, ViewStyle, StyleSheet } from "react-native"
+import { Dimensions, ViewStyle, StyleSheet, View, Linking } from "react-native"
 import { MainButton, Screen, Text } from "../../components"
 import { color } from "../../theme"
-import { Box, Input, NativeBaseProvider, Stack } from "native-base"
+import { Radio, Box, Input, NativeBaseProvider, Stack, Modal } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { paddingBottom } from "styled-system"
 import { AuthContext } from "../../../context/AuthContext"
-import Signup from "../../components/input-fields/singup-component/singup-component"
+import axios from "axios"
+import { BASE_URL } from "@env"
+import eligibility from "../../../eligibility.json"
+import { position } from "styled-system"
+
+const sWidth = Dimensions.get("window").width
+const sHeight = Dimensions.get("window").height
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -27,10 +32,70 @@ const ROOT: ViewStyle = {
 // }
 
 const styles = StyleSheet.create({
-  textStyle: {
+  boxStyle: {
+    alignSelf: "center",
     flex: 1,
     position: "absolute",
-    top: "68%",
+    width: "99%",
+  },
+
+  centeredView: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    position: "absolute",
+    top: "5%",
+  },
+
+  inputStyle: {
+    alignSelf: "center",
+    flex: 1,
+    padding: "10px",
+    width: "275px",
+  },
+
+  modalStyle: {
+    backgroundColor: color.palette.brown,
+    margin: 0,
+    padding: 0,
+  },
+
+  modalText: {
+    color: color.palette.white,
+    textAlign: "center",
+  },
+
+  modalView: {
+    alignItems: "center",
+    backgroundColor: color.palette.brown,
+    borderRadius: 20,
+    margin: 5,
+    padding: 5,
+    width: "80vw",
+  },
+
+  signUpButtonStyle: {
+    alignSelf: "center",
+    flex: 1,
+    padding: 15,
+    width: 275,
+  },
+
+  smallTextStyle: {
+    fontFamily: "Sen-Regular",
+    fontSize: 20,
+    margin: 10,
+    marginBottom: 40,
+    marginLeft: 20,
+    textAlign: "center",
+    textDecorationColor: color.palette.brown,
+    textDecorationLine: "underline",
+  },
+
+  textStyle: {
+    flex: 1,
+    textAlign: "center",
+    textDecorationLine: "underline",
   },
 })
 
@@ -44,24 +109,65 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   const [password, setPassword] = useState("")
   const [show] = React.useState(false)
   const navigation = useNavigation()
+  const [gradLevel, setGradLevel] = React.useState("Undergraduate")
+  const [showModal, setShowModal] = useState(false)
+  const [text, setText] = useState("Enter details to signup!")
 
   const { signUp } = React.useContext(AuthContext)
 
-  function registerUser() {
+  async function registerUser() {
     if (upi === "" && password === "") {
-      Alert.alert("Enter details to signup!")
+      setText("Enter details to signup!")
+      setShowModal(true)
     } else {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
-        .then((res) => {
-          res.user.updateProfile({
-            upi: upi,
-          })
-          console.log("User registered successfully!")
-          signUp(res)
-        })
-        .catch((error) => console.error(error))
+      let inDatabase = false
+      for (let key in eligibility) {
+        if (key.toLocaleLowerCase() === upi.toLocaleLowerCase()) {
+          inDatabase = true
+          if (eligibility[key].App_Eligible === "y") {
+            await firebase
+              .auth()
+              .createUserWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password)
+              .then((res) => {
+                res.user.getIdToken(true).then(function (idToken) {
+                  // Send token to your backend via HTTPS
+                  // ...
+                  axios.post(
+                    BASE_URL + "/users",
+                    {
+                      upi: upi,
+                      firstName: firstName,
+                      lastName: lastName,
+                      university: "University of Auckland",
+                      gradLevel: gradLevel,
+                    },
+                    {
+                      headers: {
+                        "auth-token": idToken,
+                      },
+                    },
+                  )
+                  console.log("User registered successfully!")
+                  signUp(res)
+                })
+              })
+              .catch((error) => {
+                setText(error.message)
+                setShowModal(true)
+              }) // 405 error in backend terminal when posted
+          } else {
+            // User in database but not paid
+            setText("Please talk to an exec about membership payment")
+            setShowModal(true)
+          }
+          break
+        }
+      }
+      // User not in database
+      if (!inDatabase) {
+        setText("Invalid member. Please sign up to UADS.")
+        setShowModal(true)
+      }
     }
   }
 
@@ -71,13 +177,19 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="Registration" style={{ paddingBottom: 50 }} />
+      <Text preset="header" text="Registration" style={{ paddingBottom: 30 }} />
+      <Text
+        text="Click here to sign up to the club before registering to the app!"
+        style={styles.smallTextStyle}
+        onPress={() => Linking.openURL("https://forms.gle/GDxUn3SnTBvjoqqV7")}
+      ></Text>
+
       <NativeBaseProvider>
-        <Box alignItems="center" justifyContent="center">
+        <Box alignItems="center" justifyContent="center" style={styles.boxStyle}>
           <Stack space={4}>
             <Input
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{ width: 208, height: 38 }}
+              style={styles.inputStyle}
               borderRadius="40px"
               placeholder="First Name..."
               _light={{
@@ -93,7 +205,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
 
             <Input
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{ width: 208, height: 38 }}
+              style={styles.inputStyle}
               borderRadius="40px"
               placeholder="Last Name..."
               _light={{
@@ -110,7 +222,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
             <Input
               // getRef={input => {
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{ width: 208, height: 38 }}
+              style={styles.inputStyle}
               borderRadius="40px"
               placeholder="UPI..."
               _light={{
@@ -126,11 +238,7 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
 
             <Input
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                width: 208,
-                height: 38,
-                top: "40%",
-              }}
+              style={styles.inputStyle}
               borderRadius="40px"
               type={show ? "text" : "password"}
               placeholder="Password..."
@@ -145,34 +253,54 @@ export const RegistrationScreen = observer(function RegistrationScreen() {
               onChangeText={(password) => setPassword(password)}
             />
 
-            {/* <FormControl>
-          <EmailInputField ref={emailRef}></EmailInputField>
-        </FormControl> */}
+            <Radio.Group
+              name="myRadioGroup"
+              accessibilityLabel="gradLevel"
+              value={gradLevel}
+              onChange={(nextValue) => {
+                setGradLevel(nextValue)
+              }}
+            >
+              <Radio value="Undergraduate" style={{ margin: "7px", marginHorizontal: "auto" }}>
+                Undergraduate
+              </Radio>
+              <Radio value="Postgraduate" style={{ margin: "7px", marginHorizontal: "auto" }}>
+                Postgraduate
+              </Radio>
+            </Radio.Group>
 
-            {/* <FirstNameInput></FirstNameInput>
-            <LastNameInput></LastNameInput>
-            <UpiInputField></UpiInputField>
-            <FormControl>
-            <PasswordInputField></PasswordInputField>
-            </FormControl> */}
+            <Text
+              text="Already have an account? Sign in!"
+              style={styles.textStyle}
+              onPress={() => navigation.navigate("login")}
+            ></Text>
 
-            {/* <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
-              borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="First Name..."/>
-              value={this.state.username} />
-            <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
-              borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="Last Name..." /> */}
-            {/* <Input style={{ width: 208, height: 38, placeholderTextColor: color.text, backgroundColor: color.palette.goldenGlow,
-              borderColor: color.palette.goldenGlow}} borderRadius="40px" placeholder="University..." />  */}
-            {/* <GradLevel></GradLevel> */}
+            <MainButton
+              style={styles.signUpButtonStyle}
+              text="SIGN UP"
+              onPress={() => registerUser()}
+            />
           </Stack>
+
+          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Modal.Content style={styles.modalStyle}>
+                  <Modal.CloseButton />
+                  <Modal.Body>
+                    <Text style={styles.modalText}>{text}</Text>
+                    {/* {showButton ? (
+                        <Text style={styles.linkText} onPress={() => navigation.navigate("login")}>
+                          Return to log in
+                        </Text>
+                      ) : null} */}
+                  </Modal.Body>
+                </Modal.Content>
+              </View>
+            </View>
+          </Modal>
         </Box>
       </NativeBaseProvider>
-      <Text
-        text="Already have an account? Sign in!"
-        style={styles.textStyle}
-        onPress={() => navigation.navigate("login")}
-      ></Text>
-      <MainButton text="SIGN UP" onPress={() => registerUser()} />
     </Screen>
   )
 })

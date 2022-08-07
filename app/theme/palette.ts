@@ -8,9 +8,10 @@ export const palette = {
   lighterGrey: "#CDD4DA",
   angry: "#dd3333",
   deepPurple: "#5D2555",
-  earlyDawn: '#fff4de', // background color (primary colour)
-  goldenGlow: '#ffd788', // secondary color
-  tangelo:'#ffad70', // sign-in button colour (tertiary color)
-  brown: '#503106', // text color
+  earlyDawn: "#fff4de", // background color (primary colour)
+  goldenGlow: "#ffd788", // secondary color
+  tangelo: "#ffad70", // sign-in button colour (tertiary color)
+  brown: "#503106", // text color
+  popupGrey: "#EAE7E7",
+  grey: "#A09D9D",
 }
-

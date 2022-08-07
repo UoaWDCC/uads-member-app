@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react-native/no-inline-styles */
 /**
  * This is the navigator you will modify to display the logged-in screens of your app.
  * You can use RootNavigator to also display an auth flow or other user flows.
@@ -5,6 +7,7 @@
  * You'll likely spend most of your time in this file.
  */
 import React from "react"
+import { StyleSheet, Image } from "react-native"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -17,11 +20,19 @@ import {
   AboutScreen,
   HomeScreen,
   OffersScreen,
+  OfferScreen,
   SettingsScreen,
   SponsorsScreen,
+  SponsorScreen,
   LoadingScreen,
   ChangePasswordScreen,
+  ComingSoonScreen,
 } from "../screens"
+const uadsLogo = require("../resources/logo.png")
+const handshakeIcon = require("../resources/handshake-simple-solid.svg")
+const infoIcon = require("../resources/circle-info-solid.svg")
+const offersIcon = require("../resources/tags-solid.svg")
+const settingsIcon = require("../resources/gear-solid.svg")
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -35,18 +46,22 @@ import {
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
-export type NavigatorParamList = {
+
+const styles = StyleSheet.create({
+  iconStyle: {
+    width: 30,
+    height: 30,
+  },
+})
+
+export type StackNavigatorParamList = {
   login: undefined
-  home: undefined
-  about: undefined
-  offers: undefined
-  settings: undefined
-  sponsors: undefined
   register: undefined
+  forgotPassword: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createStackNavigator<NavigatorParamList>()
+const Stack = createStackNavigator<StackNavigatorParamList>()
 
 const AppStack = () => {
   return (
@@ -58,7 +73,7 @@ const AppStack = () => {
     >
       <Stack.Screen name="login" component={LoginScreen} />
       <Stack.Screen name="register" component={RegistrationScreen} />
-      <Stack.Screen name="forgot-password" component={ForgotPasswordScreen} />
+      <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen} />
     </Stack.Navigator>
   )
 }
@@ -80,16 +95,115 @@ const AppSettingsScreen = () => {
   )
 }
 
-const Tab = createBottomTabNavigator<NavigatorParamList>()
+export type SponsorNavigatorParamList = {
+  sponsors: undefined
+  sponsor: undefined
+}
+
+const Sponsor = createStackNavigator<SponsorNavigatorParamList>()
+
+const AppSponsorScreen = () => {
+  return (
+    <Sponsor.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="sponsors"
+    >
+      <Sponsor.Screen name="sponsors" component={SponsorsScreen} />
+      <Sponsor.Screen
+        name="sponsor"
+        component={SponsorScreen}
+        options={{
+          headerShown: true,
+          title: "",
+        }}
+      />
+    </Sponsor.Navigator>
+  )
+}
+
+export type OfferNavigatorParamList = {
+  offers: undefined
+  offer: undefined
+}
+
+const Offer = createStackNavigator<OfferNavigatorParamList>()
+
+const AppOfferScreen = () => {
+  return (
+    <Offer.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="offers"
+    >
+      <Offer.Screen name="offers" component={OffersScreen} />
+      <Offer.Screen
+        name="offer"
+        component={OfferScreen}
+        options={{
+          headerShown: true,
+          title: "",
+        }}
+      />
+    </Offer.Navigator>
+  )
+}
+
+export type TabNavigatorParamList = {
+  home: undefined
+  about: undefined
+  offers: undefined
+  settings: undefined
+  sponsors: undefined
+}
+
+const Tab = createBottomTabNavigator<TabNavigatorParamList>()
 
 const AppTab = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="home" component={HomeScreen} />
-      <Tab.Screen name="about" component={AboutScreen} />
-      <Tab.Screen name="offers" component={OffersScreen} />
-      <Tab.Screen name="settings" component={AppSettingsScreen} />
-      <Tab.Screen name="sponsors" component={SponsorsScreen} />
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+      }}
+    >
+      <Tab.Screen
+        name="about"
+        component={AboutScreen}
+        options={{
+          tabBarIcon: () => <Image source={infoIcon} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="sponsors"
+        component={AppSponsorScreen}
+        options={{
+          tabBarIcon: () => <Image source={handshakeIcon} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: () => <Image source={uadsLogo} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="offers"
+        component={AppOfferScreen}
+        options={{
+          tabBarIcon: () => <Image source={offersIcon} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="settings"
+        component={AppSettingsScreen}
+        options={{
+          tabBarIcon: () => <Image source={settingsIcon} style={styles.iconStyle} />,
+        }}
+      />
     </Tab.Navigator>
   )
 }
@@ -100,10 +214,9 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   React.useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) 
-        dispatch({ type: "LOG_IN", user: user })
-      
-      dispatch({ type: "FINISHED_LOADING"})
+      if (user) dispatch({ type: "LOG_IN", user: user })
+
+      dispatch({ type: "FINISHED_LOADING" })
     })
     return () => unsubscribe()
   }, [])
