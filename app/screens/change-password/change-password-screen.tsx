@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, View, TextInput } from "react-native"
+import { ViewStyle, StyleSheet, View, TextInput, TouchableOpacity } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color,typography } from "../../theme"
 import { NativeBaseProvider, Box, Button, Stack, Input} from "native-base"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
-import { AuthContext } from "../../../context/AuthContext"
-import usersApi from "../../api/backend"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
   },
 
   changeButton: {
-    backgroundColor: color.palette.orange,
+    backgroundColor: color.palette.orangeDarker,
     minWidth: 140,
     maxHeight: 60,
     marginLeft: 15
@@ -104,6 +102,8 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
   const [show] = React.useState(false);
   const [showReturn, setShowReturn] = useState(false)
 
+  let isButtonDisabled = currentPassword === "" || password === "" || verify === "";
+
   async function reauthenticate(currentPassword: string) {
     var user = firebase.auth().currentUser;
     var cred = firebase.auth.EmailAuthProvider.credential(
@@ -126,7 +126,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
         });
       }).catch((error) => { 
         if (error.code == 'auth/wrong-password') {
-          setError('The password is incorrect.')
+          setError('Current password is incorrect.')
         }
       });
     } else {
@@ -149,7 +149,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
           <Input
             borderRadius="40px"
             type={show ? "text" : "password"}
-            placeholder="Current Password..."
+            placeholder="Current Password"
             _light={{
                 placeholderTextColor: color.text,
                 backgroundColor: color.palette.goldenGlow,
@@ -158,6 +158,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
             _dark={{
                 placeholderTextColor: color.text,
             }}
+            value={showReturn ? "" : currentPassword}
             onChangeText={currentPassword => setCurrentPassword(currentPassword)}
           />
         </View>
@@ -166,7 +167,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
           <Input
             borderRadius="40px"
             type={show ? "text" : "password"}
-            placeholder="New Password..."
+            placeholder="New Password"
             _light={{
                 placeholderTextColor: color.text,
                 backgroundColor: color.palette.goldenGlow,
@@ -175,6 +176,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
             _dark={{
                 placeholderTextColor: color.text,
             }}
+            value={showReturn ? "" : password}
             onChangeText={password => setPassword(password)}
           />
         </View>
@@ -183,7 +185,7 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
           <Input
             borderRadius="40px"
             type={show ? "text" : "password"}
-            placeholder="Verify..."
+            placeholder="Repeat Password"
             _light={{
                 placeholderTextColor: color.text,
                 backgroundColor: color.palette.goldenGlow,
@@ -192,34 +194,46 @@ export const ChangePasswordScreen = observer(function SettingsScreen() {
             _dark={{
                 placeholderTextColor: color.text,
             }}
+            value={showReturn ? "" : verify}
             onChangeText={verify => setVerify(verify)}
           />
         </View>
 
         <View style={styles.buttonsContainer}>
             <View style={{flex: 1, justifyContent: 'center'}} >
-              <Button style={styles.cancelButton}
-                  onPress={() => { 
-                    navigation.navigate('settings')
-                  }}
-              >
-              <Text style={styles.changePassword} >
-                Cancel
-              </Text>
+              <Button
+                style={({pressed}) => [
+                  {
+                    opacity: pressed ? 0.2 : 1
+                  },
+                  styles.cancelButton
+                ]}
+                onPress={() => { 
+                  navigation.navigate('settings')
+                }}
+                >
+                <Text style={styles.changePassword} >
+                  Cancel
+                </Text>
               </Button>   
             </View>
-
-            <View style={{flex: 2, justifyContent: 'center'}} >
-                <Button style={styles.changeButton}
+              <View style={{flex: 2, justifyContent: 'center'}} >
+                <Button style={({pressed}) => [
+                  {
+                    opacity: pressed ? 0.2 : isButtonDisabled ? 0.7 : 1
+                  },
+                  styles.changeButton
+                ]}
+                  disabled={isButtonDisabled}
                   onPress={() => { 
                     changePassword()
                   }}
                 >
-                <Text style={styles.changePassword} >
-                  Change Password
-                </Text>
+                  <Text style={styles.changePassword} >
+                    Change Password
+                  </Text>
                 </Button>
-            </View>
+              </View>
   
         </View>
 

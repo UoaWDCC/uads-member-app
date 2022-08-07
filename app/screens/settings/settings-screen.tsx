@@ -4,7 +4,7 @@ import { ViewStyle, StyleSheet, View } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Box, Button, Stack, Input} from "native-base"
+import { NativeBaseProvider, Box, Button, Stack, Input } from "native-base"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
@@ -19,191 +19,177 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-  
   changePassword: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
-    fontFamily: 'Sen-Regular',
-    fontSize: 18
+    alignItems: "center",
+    fontFamily: "Sen-Regular",
+    fontSize: 18,
+    fontWeight: "bold",
+    justifyContent: "center",
   },
-  
+
   displayBox: {
-    width: 208, 
-    minHeight: 60, 
-    marginBottom: 15,
+    alignItems: "center",
     backgroundColor: color.palette.goldenGlow,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    fontFamily: 'Sen-Regular',
+    fontFamily: "Sen-Regular",
+    justifyContent: "center",
+    marginBottom: 15,
+    minHeight: 60,
+    width: 208,
   },
 
   header: {
     fontSize: 40,
-    fontFamily: 'Sen-Regular',
+    fontFamily: "Sen-Regular",
     marginBottom: 50,
     textDecorationColor: color.palette.brown,
   },
 
   input: {
     borderColor: color.transparent,
+    fontFamily: "Sen-Regular",
+    fontSize: 16,
+    fontWeight: "normal",
     paddingLeft: 0,
-    fontWeight: 'normal',
-    fontFamily: 'Sen-Regular',
-    fontSize: 16
   },
 
   notifsButton: {
     backgroundColor: color.palette.tangelo,
-    maxHeight: 37,
-    minWidth: 50,
-    justifyContent: 'center',
-    marginRight: 15,
-    borderRadius: 15,
     borderColor: color.palette.white,
+    borderRadius: 15,
     borderWidth: 3,
-    shadowOffset: {width: 4, height: 4},
+    justifyContent: "center",
+    marginRight: 15,
+    maxHeight: 37,
+    minHeight: 37,
+    minWidth: 50,
+    shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 4
+    shadowRadius: 4,
   },
 
   notifsText: {
     color: color.palette.brown,
-    fontWeight: 'bold',
-    fontFamily: 'Sen-Regular',
-    
+    fontFamily: "Sen-Regular",
+    fontWeight: "bold",
   },
 
   signOutButton: {
-    backgroundColor: color.palette.goldenGlow,
-    width: 160,
+    alignItems: "center",
+    backgroundColor: color.palette.orange,
     marginTop: 20,
-    alignItems: 'center',
+    width: 160,
   },
 
   signOutText: {
     color: color.palette.black,
-    textDecorationLine: 'underline',
-    fontWeight: 'bold',
-    fontFamily: 'Sen-Regular',
+    fontFamily: "Sen-Regular",
+    fontWeight: "bold",
+    textDecorationLine: "underline",
   },
 
   textLabel: {
+    fontFamily: "Sen-Regular",
+    fontSize: 16,
+    fontWeight: "bold",
     marginLeft: 15,
-    fontWeight: 'bold',
-    fontFamily: 'Sen-Regular',
-    fontSize: 16
-  }
+  },
 })
 
 export const SettingsScreen = observer(function SettingsScreen() {
-
-  const [name, setName] = useState("");
-  const [notifs, setNotifs] = useState("");
-  const [upi, setUpi] = useState("");
-  const [thisUuid, setUuid] = useState("")
-  const { logOut } = React.useContext(AuthContext);
+  const [name, setName] = useState("")
+  const [notifs, setNotifs] = useState("")
+  const [upi, setUpi] = useState("")
+  const { logOut } = React.useContext(AuthContext)
 
   useEffect(() => {
-    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-
-      if (thisUuid == "") {
-        getUUID(idToken)
-        console.log(thisUuid)
-      } else {
-        usersApi
-          .get(`/users/${thisUuid}`, {
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(async idToken => {
+        setUpi(getUpi());
+        await usersApi
+          .get(`/users/${upi}`, {
             headers: {
-              'auth-token': idToken
-            }
+              "auth-token": idToken,
+            },
           })
           .then((res) => {
-            const {firstName, lastName, upi, notificationsON} = res.data
-            let name = `${firstName} ${lastName}`
+            const { firstName, lastName, notificationsON } = res.data
+            const name = firstName === undefined || lastName === undefined? "" : `${firstName} ${lastName}`
             setName(name)
-            setUpi(upi)
-            setNotifs(
-              (notificationsON) ? "ON" : "OFF"
-            )
-            
+            setNotifs(notificationsON ? "ON" : "OFF")
           })
           .catch((e) => {
             console.error(e)
           })
-      }
-    })
-    
-  }, [thisUuid]);
+        })
+      }, [upi])
 
-  async function getUUID(idToken) {
-    let userUPI = firebase.auth().currentUser.email.replace("@aucklanduni.ac.nz", "")
-      await usersApi
-        .get(`/users`, {
-          headers: {
-            'auth-token': idToken
-          }
-        })
-        .then((res) => {
-          let userArray = res.data
-          for (var i=0; i<userArray.length; i++) {
-            if (userUPI == userArray[i].upi) {
-              setUuid(userArray[i].uuid)
-            }
-          } 
-        })
-        .catch((e) => {
-          console.error(e)
-        })
+  function getUpi(): string{
+    const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "");
+    return userUpi;
   }
-  
+
   async function changeName(newName: string) {
     const names: string[] = newName.split(" ")
     const firstName = names[0]
     const lastName = names[1]
 
-    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      console.log(idToken)
-
-    usersApi
-      .put(`/users/321`, {}, {
-        params: {
-          firstname: firstName,
-          lastname: lastName
-        },
-        headers: {
-          'auth-token': idToken
-        }
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(async function (idToken) {
+        await usersApi
+          .put(
+            `/users/${upi}`,
+            {},
+            {
+              params: {
+                firstname: firstName,
+                lastname: lastName,
+              },
+              headers: {
+                "auth-token": idToken,
+              },
+            },
+          )
+          .then(() => {
+            console.log("name changed!")
+          })
+          .catch((e) => {
+            console.error(e)
+          })
       })
-      .then(() => {console.log('name changed!')})
-      .catch((e) => {
-        console.error(e)
-      })
-    })
-    
   }
 
   function changeNotifs() {
-    let newNotifs: boolean = (notifs == "ON") ? false : true
-    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      console.log(idToken)
-
-    usersApi
-      .put(`/users/321`, {}, {
-        params: {
-          'notificationson': newNotifs,
-        },
-        headers: {
-          'auth-token': idToken
-        }
+    const newNotifs: boolean = notifs !== "ON"
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(async function (idToken) {
+        await usersApi
+          .put(
+            `/users/${upi}`,
+            {},
+            {
+              params: {
+                notificationson: newNotifs,
+              },
+              headers: {
+                "auth-token": idToken,
+              },
+            },
+          )
+          .then(() => {
+          })
+          .catch((e) => {
+            console.error(e)
+          })
       })
-      .then(() => {console.log('notifs changed!')})
-      .catch((e) => {
-        console.error(e)
-      })
-    })
   }
 
   const navigation = useNavigation()
@@ -211,67 +197,80 @@ export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box  flex ={1} alignItems="center" justifyContent="center">
-        <Stack space={5}>
-        <Text style={styles.header} preset="header" text="Settings:"/>
+        <Box flex={1} alignItems="center" justifyContent="center">
+          <Stack space={5}>
+            <Text style={styles.header} preset="header" text="Settings:" />
 
-        <View style={styles.displayBox} >
-          
-          <View style={{flex: 1, justifyContent: 'center'}} >
-            <Text style={styles.textLabel} >Name:</Text>
-          </View>
-          <View style = {{flex:2, justifyContent: 'center'}} >
-            <Input style={styles.input}
-              onChangeText={text => {setName(text); changeName(text)}}     
-              value = {name}
-            />
-          </View>
+            <View style={styles.displayBox}>
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <Text style={styles.textLabel}>Name:</Text>
+              </View>
+              <View style={{ flex: 2, justifyContent: "center" }}>
+                <Input
+                  style={styles.input}
+                  onChangeText={(text) => {
+                    setName(text)
+                    changeName(text)
+                  }}
+                  value={name === "" || notifs === "" ? "" : name}
+                />
+              </View>
+            </View>
 
-        </View>
+            <View style={styles.displayBox}>
+              <View style={{ flex: 2, justifyContent: "center" }}>
+                <Text style={styles.textLabel}>Notifications:</Text>
+              </View>
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <Button
+                  style={styles.notifsButton}
+                  onPress={() => {
+                    setNotifs(notifs === "ON" ? "OFF" : "ON")
+                    changeNotifs()
+                  }}
+                >
+                  <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
+                </Button>
+              </View>
+            </View>
 
-        <View style={styles.displayBox} >
-          
-          <View style={{flex: 2, justifyContent: 'center'}} >
-            <Text style={styles.textLabel} >Notifications:</Text>
-          </View>
-          <View style = {{flex: 1, justifyContent: 'center'}} >
-            <Button style={styles.notifsButton}
-              onPress={() => {setNotifs( (notifs=="ON" ? "OFF" : "ON")); changeNotifs()}}
+            <View style={styles.displayBox}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textLabel}>UPI: </Text>
+              </View>
+              <View style={{ flex: 2.5 }}>
+                <Text style={{ fontWeight: "normal", fontFamily: "Sen-Regular", fontSize: 16 }}>
+                  {name === "" || notifs === "" ? "" : upi}
+                </Text>
+              </View>
+            </View>
+
+            <Button
+              style={({pressed}) => [
+                {
+                  opacity: pressed ? 0.2 : 1
+                },
+                styles.displayBox
+              ]}
+              onPress={() => navigation.navigate("change-password")}
             >
-            <Text style={styles.notifsText}>{notifs}</Text>
+              <Text style={styles.changePassword}>Change Password</Text>
             </Button>
-          </View>
+          </Stack>
 
-        </View>
-
-        <View style={styles.displayBox} >
-            <View style={{flex: 1}} >
-              <Text style={styles.textLabel} >UPI: </Text>
-            </View>
-            <View style = {{flex: 2.5}} >
-              <Text style={{fontWeight: 'normal', fontFamily: 'Sen-Regular', fontSize: 16}}>{upi}</Text>
-            </View>
-        </View>
-
-        <Button style={styles.displayBox} 
-           onPress={() => navigation.navigate('change-password')}
-        >
-          <Text style={styles.changePassword} >
-            Change Password
-          </Text>
-        </Button>
-
-        </Stack>
-        
-          <Button style={styles.signOutButton}
-            onPress={() => { 
+          <Button
+            style={({pressed}) => [
+              {
+                opacity: pressed ? 0.2 : 1
+              },
+              styles.signOutButton
+            ]}
+            onPress={() => {
               firebase.auth().signOut()
               logOut()
             }}
           >
-          <Text style={styles.signOutText} >
-            Sign Out
-          </Text>
+            <Text style={styles.signOutText}>Sign Out</Text>
           </Button>
         </Box>
       </NativeBaseProvider>
