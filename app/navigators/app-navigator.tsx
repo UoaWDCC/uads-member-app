@@ -25,6 +25,7 @@ import {
   SponsorsScreen,
   SponsorScreen,
   LoadingScreen,
+  ChangePasswordScreen,
   ComingSoonScreen,
 } from "../screens"
 const uadsLogo = require("../resources/logo.png")
@@ -74,6 +75,23 @@ const AppStack = () => {
       <Stack.Screen name="register" component={RegistrationScreen} />
       <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen} />
     </Stack.Navigator>
+  )
+}
+
+const Settings = createStackNavigator<NavigatorParamList>()
+
+const AppSettingsScreen = () => {
+  return (
+    <Settings.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="settings"
+    >
+      <Settings.Screen name="settings" component={SettingsScreen} />
+      <Settings.Screen name="change-password" component={ChangePasswordScreen} />
+    </Settings.Navigator>
+
   )
 }
 
@@ -181,7 +199,7 @@ const AppTab = () => {
       />
       <Tab.Screen
         name="settings"
-        component={ComingSoonScreen}
+        component={AppSettingsScreen}
         options={{
           tabBarIcon: () => <Image source={settingsIcon} style={styles.iconStyle} />,
         }}
@@ -250,7 +268,7 @@ export const AppNavigator = React.forwardRef<
       }}
     >
       <NavigationContainer {...props} ref={ref}>
-        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack />}
+        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack /> }
       </NavigationContainer>
     </AuthContext.Provider>
   )
