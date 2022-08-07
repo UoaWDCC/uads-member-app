@@ -41,14 +41,14 @@ class UserController extends BaseController {
     res.status(200).json(result);
   }
 
-  async getUserByID(req: Request, res: Response) {
-    var id = req.params.id.toString();
+  async getUserByUpi(req: Request, res: Response) {
+    var upi = req.params.upi.toString();
     const mongoAdapter = MongoAdapter.getInstance();
 
     const userRepo = new UserRepository(mongoAdapter, 'userDetails');
     await userRepo.isConnected();
 
-    const result = await userRepo.getByID(id);
+    const result = await userRepo.getByUpi(upi);
 
     if (result != null) {
       res.status(200).json(result);
@@ -75,7 +75,7 @@ class UserController extends BaseController {
     const userRepo = new UserRepository(mongoAdapter, 'userDetails');
     await userRepo.isConnected();
 
-    var id = req.params.id.toString();
+    var upi = req.params.upi.toString();
 
     var query = {};
 
@@ -125,7 +125,7 @@ class UserController extends BaseController {
       }
     }
 
-    const status = await userRepo.modifyUser(id, query);
+    const status = await userRepo.modifyUser(upi, query);
     if (!status) {
       res.status(404).json();
     } else {
@@ -140,9 +140,9 @@ class UserController extends BaseController {
     const userRepo = new UserRepository(mongoAdapter, 'userDetails');
     await userRepo.isConnected();
 
-    var id = req.params.id.toString();
+    var upi = req.params.upi.toString();
 
-    const numDeleted = await userRepo.deleteUser(id);
+    const numDeleted = await userRepo.deleteUser(upi);
 
     if (numDeleted == 0) {
       res.status(404).json();
