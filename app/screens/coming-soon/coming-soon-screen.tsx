@@ -6,7 +6,7 @@ import "firebase/auth"
 import { color } from "../../theme"
 import { Box, NativeBaseProvider } from "native-base"
 
-const uadsLogo = require("../../components/logo/logos/logo.png")
+const uadsLogo = require("../../resources/logo.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -20,13 +20,12 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-
   logoStyle: {
     alignSelf: "center",
     height: sWidth,
     width: sWidth,
   },
-  
+
   textStyle: {
     fontFamily: "Sen-Regular",
     fontSize: 40,
@@ -42,11 +41,7 @@ export const ComingSoonScreen = observer(function ComingSoonScreen() {
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
           <Image source={uadsLogo} style={styles.logoStyle} />
-          <Text
-            preset="header"
-            text="Coming Soon!"
-            style={styles.textStyle}
-          ></Text>
+          <Text preset="header" text="Coming Soon!" style={styles.textStyle}></Text>
         </Box>
       </NativeBaseProvider>
     </Screen>

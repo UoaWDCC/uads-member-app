@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react-native/no-inline-styles */
 /**
  * This is the navigator you will modify to display the logged-in screens of your app.
  * You can use RootNavigator to also display an auth flow or other user flows.
@@ -5,6 +7,7 @@
  * You'll likely spend most of your time in this file.
  */
 import React from "react"
+import { StyleSheet } from "react-native"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -21,8 +24,15 @@ import {
   SponsorsScreen,
   SponsorScreen,
   LoadingScreen,
-  ComingSoonScreen
+  ComingSoonScreen,
 } from "../screens"
+import { width } from "styled-system"
+import { Image } from "react-native"
+const uadsLogo = require("../resources/logo.png")
+const handshakeIcon = require("../resources/handshake-simple-solid.svg")
+const infoIcon = require("../resources/circle-info-solid.svg")
+const offersIcon = require("../resources/tags-solid.svg")
+const settingsIcon = require("../resources/gear-solid.svg")
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -36,6 +46,14 @@ import {
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
+
+const styles = StyleSheet.create({
+  iconStyle: {
+    width: 30,
+    height: 30,
+  },
+})
+
 export type StackNavigatorParamList = {
   login: undefined
   register: undefined
@@ -103,13 +121,44 @@ const AppTab = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
       }}
     >
-      <Tab.Screen name="home" component={ComingSoonScreen} />
-      <Tab.Screen name="about" component={ComingSoonScreen} />
-      <Tab.Screen name="offers" component={OffersScreen} />
-      <Tab.Screen name="settings" component={ComingSoonScreen} />
-      <Tab.Screen name="sponsors" component={AppSponsorScreen} />
+      <Tab.Screen
+        name="about"
+        component={AboutScreen}
+        options={{
+          tabBarIcon: () => <Image source={infoIcon} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="sponsors"
+        component={AppSponsorScreen}
+        options={{
+          tabBarIcon: () => <Image source={handshakeIcon} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: () => <Image source={uadsLogo} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="offers"
+        component={OffersScreen}
+        options={{
+          tabBarIcon: () => <Image source={offersIcon} style={styles.iconStyle} />,
+        }}
+      />
+      <Tab.Screen
+        name="settings"
+        component={ComingSoonScreen}
+        options={{
+          tabBarIcon: () => <Image source={settingsIcon} style={styles.iconStyle} />,
+        }}
+      />
     </Tab.Navigator>
   )
 }
