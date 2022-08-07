@@ -37,7 +37,7 @@ class UserRepository {
   //get all users
   public async getUsers(query: any): Promise<IUser[]> {
     var dbList = null;
- 
+
     dbList = await this.userCollection.find(query).toArray();
 
     return dbList;
@@ -45,10 +45,10 @@ class UserRepository {
 
   //get single user
   public async getByID(id: string): Promise<IUser> {
-    const allUserDetails = await this.userCollection.findOne({"uuid": id});
-    
-    console.log(allUserDetails)
-    
+    const allUserDetails = await this.userCollection.findOne({ uuid: id });
+
+    console.log(allUserDetails);
+
     return allUserDetails;
   }
 
@@ -60,18 +60,20 @@ class UserRepository {
   }
 
   public async deleteUser(id: string): Promise<number> {
-    const status = await this.userCollection.deleteOne({"uuid": id});
+    const status = await this.userCollection.deleteOne({ uuid: id });
 
     return status.deletedCount;
   }
 
   public async modifyUser(id: string, query: any): Promise<boolean> {
-  
     const update = {
-      "$set": query
+      $set: query,
     };
-    
-    const status = await this.userCollection.findOneAndUpdate({"uuid": id}, update);
+
+    const status = await this.userCollection.findOneAndUpdate(
+      { uuid: id },
+      update
+    );
     return status.lastErrorObject.updatedExisting;
   }
 }

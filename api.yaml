@@ -408,6 +408,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Discount'
           description: A singular discount
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorised
         '404':
           content:
             application/json:

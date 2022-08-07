@@ -1,13 +1,14 @@
 import { Handler } from 'express';
 import { DiscountController } from '../../controller/DiscountController';
+import {isAuthenticated} from "../../../middleware/authentication";
 
 const discountController = new DiscountController();
 
 //Add more middleware handlers in the array
-const get: Handler[] = [discountController.getDiscounts];
-const post: Handler[] = [discountController.createDiscount];
-const del: Handler[] = [discountController.deleteDiscount];
-const put: Handler[] = [discountController.editDiscounts];
+const get: Handler[] = [isAuthenticated, discountController.getDiscounts];
+const post: Handler[] = [isAuthenticated, discountController.createDiscount];
+const del: Handler[] = [isAuthenticated, discountController.deleteDiscount];
+const put: Handler[] = [isAuthenticated, discountController.editDiscounts];
 
 export {
   get as GET_DISCOUNT,

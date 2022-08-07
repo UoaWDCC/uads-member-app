@@ -16,6 +16,7 @@ class DiscountController extends BaseController {
 
     res.status(200).json(result);
   }
+
   async createDiscount(req: Request, res: Response) {
     const discountDetails = req.body;
     const mongoAdapter = MongoAdapter.getInstance();
