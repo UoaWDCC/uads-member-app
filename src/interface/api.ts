@@ -61,7 +61,7 @@ export interface paths {
     get: operations['GET_DISCOUNT_ID'];
   };
   '/discount/{id}/redeem': {
-    post: operations['POST_DISCOUNT_ID_AVA'];
+    post: operations['POST_DISCOUNT_ID_REDEEM'];
   };
   '/discount/{id}/available': {
     get: operations['GET_DISCOUNT_ID_AVA'];
@@ -128,6 +128,8 @@ export interface components {
       sponsor: string;
       /** The value of the discount */
       value: number;
+      /** cooldown until next available */
+      cooldown?: number;
     };
     /** Object Type */
     Socials: {
@@ -546,6 +548,12 @@ export interface operations {
           'application/json': components['schemas']['Discount'];
         };
       };
+      /** Unauthorised */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
       /** Cannot find the discount */
       404: {
         content: {
@@ -554,7 +562,7 @@ export interface operations {
       };
     };
   };
-  POST_DISCOUNT_ID_AVA: {
+  POST_DISCOUNT_ID_REDEEM: {
     parameters: {
       path: {
         id: number;
@@ -565,6 +573,18 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['Success'];
+        };
+      };
+      /** Discount is not avaliable */
+      400: {
+        content: {
+          'application/json': components['schemas']['Discount'];
+        };
+      };
+      /** Cannot find the discount */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
         };
       };
     };
@@ -613,13 +633,13 @@ export interface operations {
         /** edit last name */
         lastname?: string;
         /** edit university */
-        university?: { [key: string]: unknown };
+        university?: unknown;
         /** edit description */
-        gradlevel?: { [key: string]: unknown };
+        gradlevel?: unknown;
         /** edit club */
-        club?: { [key: string]: unknown };
+        club?: unknown;
         /** edit notifications on */
-        notificationson?: { [key: string]: unknown };
+        notificationson?: unknown;
       };
     };
     responses: {

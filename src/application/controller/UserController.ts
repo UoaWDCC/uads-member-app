@@ -2,10 +2,9 @@ import { BaseController } from './BaseController';
 import { NextFunction, Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { UserRepository } from '../../infrastructure/repository/UserRepository';
-import { operations } from "../../interface/api";
+import { operations } from '../../interface/api';
 
 class UserController extends BaseController {
-
   async getUsers(req: Request, res: Response) {
     const mongoAdapter = MongoAdapter.getInstance();
 
@@ -21,19 +20,19 @@ class UserController extends BaseController {
 
     // get all by club
     if (req.query.club) {
-      query["clubMembership.name"] = req.query.club;
+      query['clubMembership.name'] = req.query.club;
     } else {
-      query["clubMembership.name"] = "UADS"
+      query['clubMembership.name'] = 'UADS';
     }
 
     // get all by university
     if (req.query.university) {
-      query["university"] = req.query.university;
+      query['university'] = req.query.university;
     }
 
     // get all by gradlevel
     if (req.query.gradlevel) {
-      query["gradLevel.type"] = req.query.gradlevel;
+      query['gradLevel.type'] = req.query.gradlevel;
     }
 
     const result = await userRepo.getUsers(query);
@@ -88,27 +87,26 @@ class UserController extends BaseController {
        }
      */
 
-    query["modified"] = Date.now();
-
+    query['modified'] = Date.now();
 
     // modify firstname
     if (req.query.firstname) {
-      query["firstName"] = req.query.firstname;
+      query['firstName'] = req.query.firstname;
     }
 
     //modify last name
     if (req.query.lastname) {
-      query["lastName"] = req.query.lastname;
+      query['lastName'] = req.query.lastname;
     }
 
     //modify university
     if (req.query.university) {
-      query["university"] = req.query.university;
+      query['university'] = req.query.university;
     }
 
     //modify gradlevel
     if (req.query.gradlevel) {
-      query["gradLevel.type"] = req.query.gradlevel;
+      query['gradLevel.type'] = req.query.gradlevel;
     }
 
     //modify club
@@ -118,10 +116,10 @@ class UserController extends BaseController {
 
     //modify notifications on
     if (req.query.notificationson) {
-      if (req.query.notificationson == "true") {
-        query["notificationsON"] = true;
+      if (req.query.notificationson == 'true') {
+        query['notificationsON'] = true;
       } else {
-        query["notificationsON"] = false;
+        query['notificationsON'] = false;
       }
     }
 
@@ -131,7 +129,6 @@ class UserController extends BaseController {
     } else {
       res.status(200).json();
     }
-
   }
 
   async deleteUser(req: Request, res: Response) {

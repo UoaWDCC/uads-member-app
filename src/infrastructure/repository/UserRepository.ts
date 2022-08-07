@@ -37,7 +37,7 @@ class UserRepository {
   //get all users
   public async getUsers(query: any): Promise<IUser[]> {
     var dbList = null;
- 
+
     dbList = await this.userCollection.find(query).toArray();
 
     return dbList;

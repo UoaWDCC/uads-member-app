@@ -408,6 +408,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Discount'
           description: A singular discount
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorised
         '404':
           content:
             application/json:
@@ -430,7 +436,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/Success'
           description: Is the item was redeemed successfully
-      operationId: POST_DISCOUNT_ID_AVA
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discount'
+          description: Discount is not avaliable
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Cannot find the discount
+      operationId: POST_DISCOUNT_ID_REDEEM
   /discount/{id}/available:
     get:
       parameters:
@@ -458,6 +476,12 @@ paths:
     get:
       tags:
         - User
+      parameters:
+        - name: upi
+          schema:
+            type: string
+          in: path
+          required: true
       responses:
         '200':
           content:
@@ -623,6 +647,9 @@ components:
           type: string
         value:
           description: The value of the discount
+          type: integer
+        cooldown:
+          description: cooldown until next available
           type: integer
     Socials:
       description: Object Type
