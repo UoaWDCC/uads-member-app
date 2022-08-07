@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, Alert, View } from "react-native"
-import { Screen, Text, SendLinkButton, Popup } from "../../components"
+import { Screen, Text, SendLinkButton } from "../../components"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { color } from "../../theme"

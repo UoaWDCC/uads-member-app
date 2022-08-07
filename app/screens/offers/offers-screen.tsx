@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet } from "react-native"
+import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -36,8 +36,6 @@ const styles = StyleSheet.create({
     maxWidth: "90vw",
     paddingHorizontal: "10px",
     paddingVertical: 0,
-    // borderTopRightRadius: 40,
-    // borderTopLeftRadius: 40,
   },
   header: {
     fontFamily: "Sen-Regular",
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
     width: "calc(90vw - 180px)",
   },
 })
- 
+
 export const OffersScreen = observer(function OfferScreen() {
   const navigation = useNavigation()
 
@@ -129,21 +127,27 @@ export const OffersScreen = observer(function OfferScreen() {
             renderItem={({ item, index }) => {
               return (
                 <Box key={index} style={styles.cardStyle}>
-                  <HStack justifyContent="space-between" alignItems="center">
-                    <Image
-                      resizeMode={"contain"}
-                      size={40}
-                      height="100px"
-                      alt={item.sponsor}
-                      source={{
-                        uri: item.imageLink,
-                      }}
-                    />
-                    <VStack alignItems="center">
-                      <Text style={styles.textStyle}>{item.sponsor}</Text>
-                      <Text style={styles.textStyle}>{item.desc}</Text>
-                    </VStack>
-                  </HStack>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("offer", item)
+                    }}
+                  >
+                    <HStack justifyContent="space-between" alignItems="center">
+                      <Image
+                        resizeMode={"contain"}
+                        size={40}
+                        height="100px"
+                        alt={item.sponsor}
+                        source={{
+                          uri: item.imageLink,
+                        }}
+                      />
+                      <VStack alignItems="center">
+                        <Text style={styles.textStyle}>{item.sponsor}</Text>
+                        <Text style={styles.textStyle}>{item.desc}</Text>
+                      </VStack>
+                    </HStack>
+                  </TouchableOpacity>
                 </Box>
               )
             }}

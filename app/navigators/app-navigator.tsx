@@ -7,7 +7,7 @@
  * You'll likely spend most of your time in this file.
  */
 import React from "react"
-import { StyleSheet } from "react-native"
+import { StyleSheet, Image } from "react-native"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -20,14 +20,13 @@ import {
   AboutScreen,
   HomeScreen,
   OffersScreen,
+  OfferScreen,
   SettingsScreen,
   SponsorsScreen,
   SponsorScreen,
   LoadingScreen,
   ComingSoonScreen,
 } from "../screens"
-import { width } from "styled-system"
-import { Image } from "react-native"
 const uadsLogo = require("../resources/logo.png")
 const handshakeIcon = require("../resources/handshake-simple-solid.svg")
 const infoIcon = require("../resources/circle-info-solid.svg")
@@ -106,6 +105,34 @@ const AppSponsorScreen = () => {
   )
 }
 
+export type OfferNavigatorParamList = {
+  offers: undefined
+  offer: undefined
+}
+
+const Offer = createStackNavigator<OfferNavigatorParamList>()
+
+const AppOfferScreen = () => {
+  return (
+    <Offer.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="offers"
+    >
+      <Offer.Screen name="offers" component={OffersScreen} />
+      <Offer.Screen
+        name="offer"
+        component={OfferScreen}
+        options={{
+          headerShown: true,
+          title: "",
+        }}
+      />
+    </Offer.Navigator>
+  )
+}
+
 export type TabNavigatorParamList = {
   home: undefined
   about: undefined
@@ -147,7 +174,7 @@ const AppTab = () => {
       />
       <Tab.Screen
         name="offers"
-        component={OffersScreen}
+        component={AppOfferScreen}
         options={{
           tabBarIcon: () => <Image source={offersIcon} style={styles.iconStyle} />,
         }}
