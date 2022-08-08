@@ -6,6 +6,7 @@ export async function isAuthenticated(
   res: Response,
   next: Function
 ) {
+  console.log(JSON.stringify(req.headers))
   const token = req.headers['auth-token'];
   console.log(`Recived token: ${token}`)
 
