@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, View, TouchableOpacity } from "react-native"
 import { Screen, Text, SubButton, RedeemPopup, PopupButton } from "../../components"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, VStack, Image } from "native-base"
 import CountDown from "react-native-countdown-component"
+import axios from "axios"
+import firebase from "firebase"
+import { BASE_URL } from "@env"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -100,15 +103,42 @@ const styles = StyleSheet.create({
 })
 
 export const OfferScreen = observer(function OfferScreen(props: any) {
-  const { desc, uuid, sponsor, value, imageLink } = props.route.params
+  const { desc, uuid, sponsor, value, imageLink, cooldown } = props.route.params
 
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [isRedeeming, setIsRedeeming] = React.useState(false)
   const [hasRedeemed, setHasRedeemed] = React.useState(false)
 
+  useEffect(() => {
+    if (cooldown !== 0) {
+      setHasRedeemed(true)
+    }
+  })
+
   const finalRedeem = () => {
-    setIsModalVisible(false)
-    setIsRedeeming(true)
+    // Make redeem call to backend.
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(function (idToken) {
+        axios({
+          method: "post",
+          url: BASE_URL + "/discount/" + uuid + "/redeem",
+          headers: { "auth-token": idToken },
+        })
+          .then((res) => {
+            setIsModalVisible(false)
+            setIsRedeeming(true)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
+      })
+  }
+
+  const finishRedeeming = () => {
+    setIsRedeeming(false)
+    setHasRedeemed(true)
   }
 
   return (
@@ -151,12 +181,10 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
               </Box>
             }
             <Text style={styles.textStyle}>{desc}</Text>
-            {hasRedeemed ? (
-              <Text style={styles.textStyle} text="This offer has already been redeemed" />
-            ) : isRedeeming ? (
+            {isRedeeming ? (
               <CountDown
                 until={600}
-                onFinish={() => setHasRedeemed(true)}
+                onFinish={() => finishRedeeming()}
                 size={40}
                 digitStyle={styles.digitStyle}
                 digitTxtStyle={styles.digitText}
@@ -165,6 +193,8 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
                 timeLabels={{ m: null, s: null }}
                 showSeparator
               />
+            ) : hasRedeemed ? (
+              <Text style={styles.textStyle} text="This offer has already been redeemed" />
             ) : (
               <SubButton text="Redeem" onPress={() => setIsModalVisible(true)} />
             )}
