@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
 import { Screen, Text } from "../../components"
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Input, Box, FlatList, VStack, HStack, Image } from "native-base"
 import firebase from "firebase"
@@ -37,6 +37,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: "10px",
     paddingVertical: 0,
   },
+  disabledCardStyle: {
+    backgroundColor: color.palette.offWhite,
+    borderRadius: 30,
+    flex: 1,
+    height: "100px",
+    margin: 10,
+    maxWidth: "90vw",
+    paddingHorizontal: "10px",
+    paddingVertical: 0,
+  },
   header: {
     fontFamily: "Sen-Regular",
     fontSize: 40,
@@ -52,6 +62,7 @@ const styles = StyleSheet.create({
 
 export const OffersScreen = observer(function OfferScreen() {
   const navigation = useNavigation()
+  const isVisible = useIsFocused()
 
   const searchInputRef = useRef<HTMLInputElement | null>(null)
   const [query, setQuery] = useState("")
@@ -62,6 +73,7 @@ export const OffersScreen = observer(function OfferScreen() {
       sponsor: string
       value: number
       imageLink: string
+      cooldown: number
     }[]
   >([])
 
@@ -84,7 +96,7 @@ export const OffersScreen = observer(function OfferScreen() {
             console.error(e)
           })
       })
-  }, [])
+  }, [isVisible])
 
   return (
     <Screen style={ROOT} preset="scroll">
@@ -126,8 +138,12 @@ export const OffersScreen = observer(function OfferScreen() {
             })}
             renderItem={({ item, index }) => {
               return (
-                <Box key={index} style={styles.cardStyle}>
+                <Box
+                  key={index}
+                  style={item.cooldown === 0 ? styles.cardStyle : styles.disabledCardStyle}
+                >
                   <TouchableOpacity
+                    disabled={item.cooldown !== 0}
                     onPress={() => {
                       navigation.navigate("offer", item)
                     }}
