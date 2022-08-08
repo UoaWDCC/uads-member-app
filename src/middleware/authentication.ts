@@ -9,6 +9,7 @@ export async function isAuthenticated(
   const token = req.headers['auth-token'];
 
   try {
+    // res.locals = {...res.locals, uid: "12345"}
     const decodedToken: admin.auth.DecodedIdToken = await admin
       .auth()
       .verifyIdToken(token);

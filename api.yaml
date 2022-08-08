@@ -393,11 +393,8 @@ paths:
       operationId: POST_USER
       summary: Add user
       description: Create user upon registration
-  /users/{id}:
-    summary: Route for Users By ID
+  /discount/{id}:
     get:
-      tags:
-        - User
       parameters:
         - name: id
           schema:
@@ -409,12 +406,93 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/Discount'
+          description: A singular discount
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorised
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Cannot find the discount
+      operationId: GET_DISCOUNT_ID
+  /discount/{id}/redeem:
+    post:
+      parameters:
+        - name: id
+          schema:
+            type: integer
+          in: path
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+          description: Is the item was redeemed successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discount'
+          description: Discount is not avaliable
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Cannot find the discount
+      operationId: POST_DISCOUNT_ID_REDEEM
+  /discount/{id}/available:
+    get:
+      parameters:
+        - name: id
+          schema:
+            type: integer
+          in: path
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Available'
+                required:
+                  - available
+                properties:
+                  available:
+                    type: boolean
+          description: 'The discount available '
+      operationId: GET_DISCOUNT_ID_AVA
+      summary: Checking the given discount is available for the user
+  /users/{upi}:
+    summary: Route for Users By UPI
+    get:
+      tags:
+        - User
+      parameters:
+        - name: upi
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/User'
           description: Success
         '404':
           description: None found
-      operationId: GET_USER_ID
-      summary: Getting users by ID
+      operationId: GET_USER_UPI
+      summary: Getting users by UPI
     put:
       tags:
         - User
@@ -451,7 +529,7 @@ paths:
         '404':
           description: An error has occurred.
       operationId: PUT_USER
-      summary: Modify the user by ID
+      summary: Modify the user by UPI
       description: 'Change user '
     delete:
       tags:
@@ -462,26 +540,14 @@ paths:
         '404':
           description: An error has occurred.
       operationId: DELETE_USER
-      summary: Delete user by ID
+      summary: Delete user by UPI
       description: Allows to delete user from UADS.
     parameters:
-      - name: id
+      - name: upi
         schema:
-          type: integer
+          type: string
         in: path
         required: true
-  /users/me:
-    get:
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: This User
-      security:
-        - firebase-key: []
-      operationId: GET_USERS_ME
 components:
   schemas:
     Club:
@@ -581,6 +647,9 @@ components:
           type: string
         value:
           description: The value of the discount
+          type: integer
+        cooldown:
+          description: cooldown until next available
           type: integer
     Socials:
       description: Object Type
@@ -775,9 +844,6 @@ components:
         sponsorRepName:
           description: Rep of the sponsor
           type: string
-        imageLink:
-          description: A link to the image associated with the sponsor
-          type: string
     POST-Discount:
       description: Data type to store discounts using the UADS App
       required:
@@ -795,9 +861,24 @@ components:
         value:
           description: The value of the discount
           type: integer
-        imageLink:
-          description: A link to the image associated with the discount
-          type: string
+    Available:
+      description: ''
+      required:
+        - available
+      type: object
+      properties:
+        available:
+          description: ''
+          type: boolean
+    Success:
+      title: Root Type for Success
+      description: ''
+      type: object
+      properties:
+        success:
+          type: boolean
+      example:
+        success: true
   securitySchemes:
     firebase-key:
       type: apiKey

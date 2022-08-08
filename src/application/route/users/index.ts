@@ -7,4 +7,4 @@ const userController = new UserController();
 const get: Handler[] = [userController.getUsers];
 const post: Handler[] = [userController.createUser];
 
-export { get as GET_USER, post as POST_USER};
+export { get as GET_USER, post as POST_USER };

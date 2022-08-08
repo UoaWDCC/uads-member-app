@@ -39,14 +39,7 @@ export interface paths {
     /** Allows admins to modify discounts */
     put: operations['PUT_DISCOUNT'];
     /** Allows the posting of discounts. */
-    post: {
-      responses: {
-        /** Successfully posted discount */
-        200: unknown;
-        /** Error has occurred */
-        404: unknown;
-      };
-    };
+    post: operations['POST_DISCOUNT'];
     /** Deleting offers in UADS. */
     delete: operations['DELETE_DISCOUNT'];
   };
@@ -64,15 +57,24 @@ export interface paths {
     /** Create user upon registration */
     post: operations['POST_USER'];
   };
-  '/users/{id}': {
-    get: operations['GET_USER_ID'];
+  '/discount/{id}': {
+    get: operations['GET_DISCOUNT_ID'];
+  };
+  '/discount/{id}/redeem': {
+    post: operations['POST_DISCOUNT_ID_REDEEM'];
+  };
+  '/discount/{id}/available': {
+    get: operations['GET_DISCOUNT_ID_AVA'];
+  };
+  '/users/{upi}': {
+    get: operations['GET_USER_UPI'];
     /** Change user */
     put: operations['PUT_USER'];
     /** Allows to delete user from UADS. */
     delete: operations['DELETE_USER'];
     parameters: {
       path: {
-        id: number;
+        upi: string;
       };
     };
   };
@@ -126,8 +128,8 @@ export interface components {
       sponsor: string;
       /** The value of the discount */
       value: number;
-      /** The image of the discount */
-      imageLink: string;
+      /** cooldown until next available */
+      cooldown?: number;
     };
     /** Object Type */
     Socials: {
@@ -149,21 +151,19 @@ export interface components {
       /** Facebook information */
       facebookHandle?: components['schemas']['Socials'];
       /** tier */
-      tier: unknown;
+      tier: '1' | '2' | '3' | '4';
       /** Twitter information */
       twitterHandle?: components['schemas']['Socials'];
       /** Address information */
       address?: components['schemas']['Address'];
       /** Website link */
       websiteUrl?: string;
-      /** Discount that is offered */
+      /** The IDs of the discounts offered by the sponsor */
       discountOffered?: string[];
-      /** Gets information from club */
-      clubs?: string[];
+      /** The IDs of the clubs which are associated with the sponsor */
+      clubs: string[];
       /** Rep of the sponsor */
       sponsorRepName?: string;
-      /** Image of the sponsor */
-      imageLink: string;
     };
     /** Tier object */
     Address: {
@@ -197,17 +197,55 @@ export interface components {
       /** The UPI of the student */
       upi: string;
       /** The UUID of the student */
-      uuid: string;
-      /** The first name of the student */
-      'first-name': string;
-      /** The last name of the user */
-      'last-name': string;
+      uuid?: string;
       /** The unversity which the user attends */
       university?: string;
       /** The acronym of the club(s) which the user is a member of */
       'club-membership'?: components['schemas']['Club-membership'][];
+      /** The first name of the student */
+      firstName: string;
+      /** The last name of the user */
+      lastName: string;
       /** The status of the user */
-      'grad-level'?: 'Undergraduate' | 'Postgraduate';
+      gradLevel?: 'Undergraduate' | 'Postgraduate';
+    };
+    /** Data type to store sponsors using the UADS App */
+    'POST-Sponsor': {
+      /** The name of the sponsor */
+      sponsorName: string;
+      /** The description of the sponsor */
+      sponsorDesc: string;
+      /** Instagram information */
+      instagramHandle?: components['schemas']['Socials'];
+      /** Facebook information */
+      facebookHandle?: components['schemas']['Socials'];
+      /** tier */
+      tier: '1' | '2' | '3' | '4';
+      /** Twitter information */
+      twitterHandle?: components['schemas']['Socials'];
+      /** Address information */
+      address?: components['schemas']['Address'];
+      /** Website link */
+      websiteUrl?: string;
+      /** The IDs of the clubs which are associated with the sponsor */
+      clubs?: string[];
+      /** Rep of the sponsor */
+      sponsorRepName?: string;
+    };
+    /** Data type to store discounts using the UADS App */
+    'POST-Discount': {
+      /** Description of the discount */
+      desc: string;
+      /** Name of the sponsor */
+      sponsor: string;
+      /** The value of the discount */
+      value: number;
+    };
+    Available: {
+      available: boolean;
+    };
+    Success: {
+      success?: boolean;
     };
   };
 }
@@ -306,10 +344,12 @@ export interface operations {
   GET_SPONSOR: {
     parameters: {
       query: {
-        /** name filter/search? */
-        filter?: string;
+        /** Filter by name of sponsor */
+        name?: string;
         /** Get by discount */
         discount?: string;
+        /** Filter by associated club */
+        club?: string;
       };
     };
     responses: {
@@ -345,6 +385,12 @@ export interface operations {
     responses: {
       /** Successfully posts sponsor */
       200: unknown;
+      /** Invalid request when creating sponsor */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
       /** Error has occurred */
       404: {
         content: {
@@ -354,7 +400,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['Sponsor'];
+        'application/json': components['schemas']['POST-Sponsor'];
       };
     };
   };
@@ -388,21 +434,38 @@ export interface operations {
           'application/json': components['schemas']['Discount'][];
         };
       };
+      /** Invalid request when creating discount */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
     };
   };
   /** Allows admins to modify discounts */
   PUT_DISCOUNT: {
     responses: {
       /** Discount successfully put. */
-      200: {
+      200: unknown;
+      /** Invalid uuid for modifying discounts */
+      400: {
         content: {
-          'application/json': components['schemas']['Discount'][];
+          'application/json': components['schemas']['Error'];
         };
       };
     };
+  };
+  /** Allows the posting of discounts. */
+  POST_DISCOUNT: {
+    responses: {
+      /** Successfully posted discount */
+      200: unknown;
+      /** Error has occurred */
+      404: unknown;
+    };
     requestBody: {
       content: {
-        'application/json': components['schemas']['Discount'];
+        'application/json': components['schemas']['POST-Discount'];
       };
     };
   };
@@ -472,10 +535,79 @@ export interface operations {
       };
     };
   };
-  GET_USER_ID: {
+  GET_DISCOUNT_ID: {
     parameters: {
       path: {
         id: number;
+      };
+    };
+    responses: {
+      /** A singular discount */
+      200: {
+        content: {
+          'application/json': components['schemas']['Discount'];
+        };
+      };
+      /** Unauthorised */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** Cannot find the discount */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  POST_DISCOUNT_ID_REDEEM: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** Is the item was redeemed successfully */
+      200: {
+        content: {
+          'application/json': components['schemas']['Success'];
+        };
+      };
+      /** Discount is not avaliable */
+      400: {
+        content: {
+          'application/json': components['schemas']['Discount'];
+        };
+      };
+      /** Cannot find the discount */
+      404: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  GET_DISCOUNT_ID_AVA: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** The discount available */
+      200: {
+        content: {
+          'application/json': components['schemas']['Available'];
+        };
+      };
+    };
+  };
+  GET_USER_UPI: {
+    parameters: {
+      path: {
+        upi: string;
       };
     };
     responses: {
@@ -493,7 +625,7 @@ export interface operations {
   PUT_USER: {
     parameters: {
       path: {
-        id: number;
+        upi: string;
       };
       query: {
         /** edit first name */
@@ -521,7 +653,7 @@ export interface operations {
   DELETE_USER: {
     parameters: {
       path: {
-        id: number;
+        upi: string;
       };
     };
     responses: {
