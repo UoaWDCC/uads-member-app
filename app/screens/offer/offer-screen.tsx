@@ -183,7 +183,7 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
             <Text style={styles.textStyle}>{desc}</Text>
             {isRedeeming ? (
               <CountDown
-                until={10}
+                until={600}
                 onFinish={() => finishRedeeming()}
                 size={40}
                 digitStyle={styles.digitStyle}

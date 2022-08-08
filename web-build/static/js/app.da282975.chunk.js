@@ -1939,7 +1939,7 @@
                       Object(q.jsx)(eA, { style: kt.textStyle, children: t }),
                       C
                         ? Object(q.jsx)(Pt.a, {
-                            until: 10,
+                            until: 600,
                             onFinish: function () {
                               return p(!1), void y(!0)
                             },
@@ -4089,4 +4089,4 @@
   },
   [[431, 1, 2]],
 ])
-//# sourceMappingURL=app.2b82c0f3.chunk.js.map
+//# sourceMappingURL=app.da282975.chunk.js.map
