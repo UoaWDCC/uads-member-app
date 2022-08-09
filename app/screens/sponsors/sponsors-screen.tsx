@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
 import { color, typography } from "../../theme"
 import { NativeBaseProvider, Box, FlatList } from "native-base"
-import sponsorsApi from "../../api/backend"
 import firebase from "firebase"
 import axios from "axios"
 import { BASE_URL } from "@env"
@@ -14,8 +13,6 @@ import { BASE_URL } from "@env"
 export const SponsorsScreen = observer(function SponsorsScreen() {
   const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
-
-  // const BASE_URL = process.env.BASE_URL;
 
   useEffect(() => {
     firebase

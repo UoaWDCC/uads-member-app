@@ -22,8 +22,6 @@ const CONTAINER: ViewStyle = {
   flex: 1,
   backgroundColor: color.background,
   marginTop: 10,
-  // borderTopRightRadius: 40,
-  // borderTopLeftRadius: 40,
 }
 
 const styles = StyleSheet.create({

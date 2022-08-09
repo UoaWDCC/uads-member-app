@@ -1898,18 +1898,16 @@
                                 .auth()
                                 .currentUser.getIdToken(!0)
                                 .then(function (A) {
-                                  Gt()({
-                                    method: "post",
-                                    url:
-                                      "https://uads-backend-33333.herokuapp.com/discount/" +
-                                      r +
-                                      "/redeem",
-                                    headers: { "auth-token": A },
-                                  })
-                                    .then(function (A) {
-                                      c(!1), p(!0)
-                                    })
-                                    .catch(function (A) {
+                                  c(!1),
+                                    p(!0),
+                                    Gt()({
+                                      method: "post",
+                                      url:
+                                        "https://uads-backend-33333.herokuapp.com/discount/" +
+                                        r +
+                                        "/redeem",
+                                      headers: { "auth-token": A },
+                                    }).catch(function (A) {
                                       console.error(A)
                                     })
                                 })
@@ -4091,4 +4089,4 @@
   },
   [[431, 1, 2]],
 ])
-//# sourceMappingURL=app.0856a611.chunk.js.map
+//# sourceMappingURL=app.bd06dab8.chunk.js.map

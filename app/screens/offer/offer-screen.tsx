@@ -23,8 +23,6 @@ const CONTAINER: ViewStyle = {
   marginTop: 10,
   width: "90vw",
   borderRadius: 20,
-  // borderTopRightRadius: 40,
-  // borderTopLeftRadius: 40,
 }
 
 const styles = StyleSheet.create({
@@ -37,8 +35,6 @@ const styles = StyleSheet.create({
     maxWidth: "90vw",
     paddingHorizontal: "10px",
     paddingVertical: 0,
-    // borderTopRightRadius: 40,
-    // borderTopLeftRadius: 40,
   },
   centeredView: {
     alignItems: "center",
@@ -121,18 +117,15 @@ export const OfferScreen = observer(function OfferScreen(props: any) {
       .auth()
       .currentUser.getIdToken(true)
       .then(function (idToken) {
+        setIsModalVisible(false)
+        setIsRedeeming(true)
         axios({
           method: "post",
           url: BASE_URL + "/discount/" + uuid + "/redeem",
           headers: { "auth-token": idToken },
+        }).catch((e) => {
+          console.error(e)
         })
-          .then((res) => {
-            setIsModalVisible(false)
-            setIsRedeeming(true)
-          })
-          .catch((e) => {
-            console.error(e)
-          })
       })
   }
 
