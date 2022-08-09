@@ -15,16 +15,18 @@ const PRIMARY_TEXT: TextStyle = {
   fontFamily: typography.primary,
   fontWeight: "bold",
   alignSelf: "center",
-  fontSize: "40px",
+  fontSize: 40,
   marginTop: "20px",
+  marginHorizontal: "20px",
+  textAlign: "center",
 }
 
 const SECONDARY_TEXT: TextStyle = {
   fontFamily: typography.primary,
-  alignSelf: "left",
-  fontSize: "20px",
+  textAlign: "justify",
+  fontSize: 20,
   marginTop: "20px",
-  marginLeft: "30px",
+  marginHorizontal: "20px",
 }
 
 export const SponsorScreen = observer(function SponsorScreen(props: any) {

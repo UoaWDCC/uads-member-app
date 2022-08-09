@@ -216,8 +216,8 @@
       var G = D.a,
         R = E.a.createContext(null),
         T = t(6),
-        f = t(209),
-        O = t(28),
+        O = t(209),
+        f = t(28),
         P = t(39),
         L = t(7),
         S = t.n(L),
@@ -629,7 +629,7 @@
             inner: { justifyContent: "flex-start", alignItems: "stretch" },
           },
         }
-      function fA(A, e) {
+      function OA(A, e) {
         var t = Object.keys(A)
         if (Object.getOwnPropertySymbols) {
           var r = Object.getOwnPropertySymbols(A)
@@ -641,16 +641,16 @@
         }
         return t
       }
-      function OA(A) {
+      function fA(A) {
         for (var e = 1; e < arguments.length; e++) {
           var t = null != arguments[e] ? arguments[e] : {}
           e % 2
-            ? fA(Object(t), !0).forEach(function (e) {
+            ? OA(Object(t), !0).forEach(function (e) {
                 N()(A, e, t[e])
               })
             : Object.getOwnPropertyDescriptors
             ? Object.defineProperties(A, Object.getOwnPropertyDescriptors(t))
-            : fA(Object(t)).forEach(function (e) {
+            : OA(Object(t)).forEach(function (e) {
                 Object.defineProperty(A, e, Object.getOwnPropertyDescriptor(t, e))
               })
         }
@@ -699,8 +699,8 @@
       }
       function kA(A) {
         return (e = A.preset) && TA[e] && "fixed" !== e
-          ? Object(q.jsx)(SA, OA({}, A))
-          : Object(q.jsx)(LA, OA({}, A))
+          ? Object(q.jsx)(SA, fA({}, A))
+          : Object(q.jsx)(LA, fA({}, A))
         var e
       }
       t(21), t(75), t(205), H.palette.offWhite
@@ -1124,8 +1124,8 @@
         { backgroundColor: H.palette.popupGrey },
       )
       var Te = { primary: { fontSize: 15, color: H.palette.white } },
-        fe = ["preset", "tx", "text", "textStyle", "children", "isVisible"]
-      function Oe(A, e) {
+        Oe = ["preset", "tx", "text", "textStyle", "children", "isVisible"]
+      function fe(A, e) {
         var t = Object.keys(A)
         if (Object.getOwnPropertySymbols) {
           var r = Object.getOwnPropertySymbols(A)
@@ -1141,12 +1141,12 @@
         for (var e = 1; e < arguments.length; e++) {
           var t = null != arguments[e] ? arguments[e] : {}
           e % 2
-            ? Oe(Object(t), !0).forEach(function (e) {
+            ? fe(Object(t), !0).forEach(function (e) {
                 N()(A, e, t[e])
               })
             : Object.getOwnPropertyDescriptors
             ? Object.defineProperties(A, Object.getOwnPropertyDescriptors(t))
-            : Oe(Object(t)).forEach(function (e) {
+            : fe(Object(t)).forEach(function (e) {
                 Object.defineProperty(A, e, Object.getOwnPropertyDescriptor(t, e))
               })
         }
@@ -1160,7 +1160,7 @@
           n = A.textStyle,
           i = A.children,
           s = A.isVisible,
-          o = S()(A, fe),
+          o = S()(A, Oe),
           g = [Te[t] || Te.primary, n],
           B = i || Object(q.jsx)(eA, { tx: r, text: a, style: g })
         return Object(q.jsx)(De.a, Pe(Pe({ visible: s, transparent: !0 }, o), {}, { children: B }))
@@ -1320,7 +1320,7 @@
         lt = { paddingVertical: K[4], paddingHorizontal: K[4] },
         Et =
           (Object(P.a)(function () {
-            var A = Object(O.useNavigation)()
+            var A = Object(f.useNavigation)()
             return Object(q.jsxs)(T.a, {
               testID: "WelcomeScreen",
               style: $e,
@@ -1362,7 +1362,7 @@
                     }),
                   ],
                 }),
-                Object(q.jsx)(f.a, {
+                Object(q.jsx)(O.a, {
                   style: Qt,
                   children: Object(q.jsx)(T.a, {
                     style: lt,
@@ -1422,7 +1422,7 @@
             g = E.a.useState(!1),
             B = n()(g, 1)[0],
             c = E.a.useContext(R).logIn
-          var Q = Object(O.useNavigation)()
+          var Q = Object(f.useNavigation)()
           return Object(q.jsx)(kA, {
             style: pt,
             preset: "scroll",
@@ -1622,7 +1622,7 @@
           alignContent: "center",
         },
         Tt = { flex: 1, backgroundColor: H.background, marginTop: 10 },
-        ft = h.a.create({
+        Ot = h.a.create({
           cardStyle: {
             backgroundColor: H.palette.white,
             borderRadius: 30,
@@ -1652,9 +1652,9 @@
           },
           textStyle: { textAlign: "center", width: "calc(90vw - 180px)" },
         }),
-        Ot = Object(P.a)(function () {
-          var A = Object(O.useNavigation)(),
-            e = Object(O.useIsFocused)(),
+        ft = Object(P.a)(function () {
+          var A = Object(f.useNavigation)(),
+            e = Object(f.useIsFocused)(),
             t = Object(l.useRef)(null),
             r = Object(l.useState)(""),
             a = n()(r, 2),
@@ -1691,7 +1691,7 @@
               preset: "scroll",
               children: Object(q.jsxs)(me.NativeBaseProvider, {
                 children: [
-                  Object(q.jsx)(eA, { style: ft.header, preset: "header", text: "Offers:" }),
+                  Object(q.jsx)(eA, { style: Ot.header, preset: "header", text: "Offers:" }),
                   Object(q.jsxs)(me.HStack, {
                     space: 2,
                     alignItems: "center",
@@ -1737,7 +1737,7 @@
                         return Object(q.jsx)(
                           me.Box,
                           {
-                            style: 0 === t.cooldown ? ft.cardStyle : ft.disabledCardStyle,
+                            style: 0 === t.cooldown ? Ot.cardStyle : Ot.disabledCardStyle,
                             children: Object(q.jsx)(oA.a, {
                               disabled: 0 !== t.cooldown,
                               onPress: function () {
@@ -1758,10 +1758,10 @@
                                     alignItems: "center",
                                     children: [
                                       Object(q.jsx)(eA, {
-                                        style: ft.textStyle,
+                                        style: Ot.textStyle,
                                         children: t.sponsor,
                                       }),
-                                      Object(q.jsx)(eA, { style: ft.textStyle, children: t.desc }),
+                                      Object(q.jsx)(eA, { style: Ot.textStyle, children: t.desc }),
                                     ],
                                   }),
                                 ],
@@ -2131,7 +2131,7 @@
             },
             [Q],
           )
-          var I = Object(O.useNavigation)()
+          var I = Object(f.useNavigation)()
           return Object(q.jsx)(kA, {
             style: Wt,
             preset: "scroll",
@@ -2339,7 +2339,7 @@
           })
         }),
         Vt = Object(P.a)(function () {
-          var A = Object(O.useNavigation)(),
+          var A = Object(f.useNavigation)(),
             e = Object(l.useState)([]),
             t = n()(e, 2),
             r = t[0],
@@ -2484,7 +2484,7 @@
             u = p[1],
             w = E.a.useState(!1),
             y = n()(w, 1)[0],
-            F = Object(O.useNavigation)(),
+            F = Object(f.useNavigation)(),
             b = E.a.useState("Undergraduate"),
             Y = n()(b, 2),
             d = Y[0],
@@ -2495,7 +2495,7 @@
             M = j[1],
             x = Object(l.useState)("Enter details to signup!"),
             D = n()(x, 2),
-            f = D[0],
+            O = D[0],
             P = D[1],
             L = E.a.useContext(R).signUp
           return Object(q.jsxs)(kA, {
@@ -2713,7 +2713,7 @@
                             children: [
                               Object(q.jsx)(me.Modal.CloseButton, {}),
                               Object(q.jsx)(me.Modal.Body, {
-                                children: Object(q.jsx)(eA, { style: tr.modalText, children: f }),
+                                children: Object(q.jsx)(eA, { style: tr.modalText, children: O }),
                               }),
                             ],
                           }),
@@ -2801,7 +2801,7 @@
             m = n()(E, 2),
             C = m[0],
             p = m[1]
-          var I = Object(O.useNavigation)()
+          var I = Object(f.useNavigation)()
           return Object(q.jsxs)(kA, {
             style: ar,
             preset: "scroll",
@@ -2984,7 +2984,7 @@
           top: { marginBottom: "auto", marginTop: 0 },
         }),
         Qr = Object(P.a)(function () {
-          var A = Object(O.useNavigation)(),
+          var A = Object(f.useNavigation)(),
             e = Object(l.useState)(""),
             t = n()(e, 2),
             r = t[0],
@@ -3195,18 +3195,20 @@
           fontFamily: v.primary,
           fontWeight: "bold",
           alignSelf: "center",
-          fontSize: "40px",
+          fontSize: 40,
           marginTop: "20px",
+          marginHorizontal: "20px",
+          textAlign: "center",
         },
         mr = {
           fontFamily: v.primary,
-          alignSelf: "left",
-          fontSize: "20px",
+          textAlign: "justify",
+          fontSize: 20,
           marginTop: "20px",
-          marginLeft: "30px",
+          marginHorizontal: "20px",
         },
         Cr = Object(P.a)(function (A) {
-          Object(O.useNavigation)()
+          Object(f.useNavigation)()
           var e = A.route.params,
             t = e.sponsorName,
             r = e.sponsorDesc,
@@ -3344,14 +3346,14 @@
             ],
           })
         },
-        fr = Object(M.a)(),
-        Or = function () {
-          return Object(q.jsxs)(fr.Navigator, {
+        Or = Object(M.a)(),
+        fr = function () {
+          return Object(q.jsxs)(Or.Navigator, {
             screenOptions: { headerShown: !1 },
             initialRouteName: "offers",
             children: [
-              Object(q.jsx)(fr.Screen, { name: "offers", component: Ot }),
-              Object(q.jsx)(fr.Screen, {
+              Object(q.jsx)(Or.Screen, { name: "offers", component: ft }),
+              Object(q.jsx)(Or.Screen, {
                 name: "offer",
                 component: Jt,
                 options: { headerShown: !0, title: "" },
@@ -3393,7 +3395,7 @@
               }),
               Object(q.jsx)(Pr.Screen, {
                 name: "offers",
-                component: Or,
+                component: fr,
                 options: {
                   tabBarIcon: function () {
                     return Object(q.jsx)(j.a, { source: hr, style: Ur.iconStyle })
@@ -4089,4 +4091,4 @@
   },
   [[431, 1, 2]],
 ])
-//# sourceMappingURL=app.da282975.chunk.js.map
+//# sourceMappingURL=app.0856a611.chunk.js.map
