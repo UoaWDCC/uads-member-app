@@ -18,7 +18,6 @@ import {
   RegistrationScreen,
   ForgotPasswordScreen,
   AboutScreen,
-  HomeScreen,
   OffersScreen,
   OfferScreen,
   SettingsScreen,
@@ -27,6 +26,7 @@ import {
   LoadingScreen,
   ChangePasswordScreen,
   ComingSoonScreen,
+  EventsScreen,
 } from "../screens"
 const uadsLogo = require("../resources/logo.png")
 const handshakeIcon = require("../resources/handshake-simple-solid.svg")
@@ -49,8 +49,8 @@ const settingsIcon = require("../resources/gear-solid.svg")
 
 const styles = StyleSheet.create({
   iconStyle: {
-    width: 30,
     height: 30,
+    width: 30,
   },
 })
 
@@ -78,7 +78,12 @@ const AppStack = () => {
   )
 }
 
-const Settings = createStackNavigator<NavigatorParamList>()
+export type SettingsNavigatorParamList = {
+  settings: undefined
+  "change-password": undefined
+}
+
+const Settings = createStackNavigator<SettingsNavigatorParamList>()
 
 const AppSettingsScreen = () => {
   return (
@@ -91,7 +96,6 @@ const AppSettingsScreen = () => {
       <Settings.Screen name="settings" component={SettingsScreen} />
       <Settings.Screen name="change-password" component={ChangePasswordScreen} />
     </Settings.Navigator>
-
   )
 }
 
@@ -151,12 +155,41 @@ const AppOfferScreen = () => {
   )
 }
 
+export type EventNavigatorParamList = {
+  events: undefined
+  event: undefined
+}
+
+const Event = createStackNavigator<EventNavigatorParamList>()
+
+const AppEventScreen = () => {
+  return (
+    <Event.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="events"
+    >
+      <Event.Screen name="events" component={EventsScreen} />
+      <Event.Screen
+        name="event"
+        component={OfferScreen}
+        options={{
+          headerShown: true,
+          title: "",
+        }}
+      />
+    </Event.Navigator>
+  )
+}
+
 export type TabNavigatorParamList = {
   home: undefined
   about: undefined
   offers: undefined
   settings: undefined
   sponsors: undefined
+  events: undefined
 }
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>()
@@ -184,8 +217,8 @@ const AppTab = () => {
         }}
       />
       <Tab.Screen
-        name="home"
-        component={HomeScreen}
+        name="events"
+        component={AppEventScreen}
         options={{
           tabBarIcon: () => <Image source={uadsLogo} style={styles.iconStyle} />,
         }}
@@ -268,7 +301,7 @@ export const AppNavigator = React.forwardRef<
       }}
     >
       <NavigationContainer {...props} ref={ref}>
-        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack /> }
+        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack />}
       </NavigationContainer>
     </AuthContext.Provider>
   )
