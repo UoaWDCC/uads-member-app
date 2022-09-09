@@ -9,6 +9,7 @@ import firebase from "firebase"
 import Icon from "react-native-vector-icons/FontAwesome"
 import axios from "axios"
 import { BASE_URL } from "@env"
+import { autorun } from "mobx"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -26,24 +27,14 @@ const CONTAINER: ViewStyle = {
 
 const styles = StyleSheet.create({
   cardStyle: {
-    backgroundColor: color.palette.white,
-    borderRadius: 30,
+    backgroundColor: color.palette.goldenGlow,
+    borderRadius: 15,
     flex: 1,
-    height: "100px",
+    height: "180px",
     margin: 10,
-    maxWidth: "90vw",
     paddingHorizontal: "10px",
-    paddingVertical: 0,
-  },
-  disabledCardStyle: {
-    backgroundColor: color.palette.offWhite,
-    borderRadius: 30,
-    flex: 1,
-    height: "100px",
-    margin: 10,
-    maxWidth: "90vw",
-    paddingHorizontal: "10px",
-    paddingVertical: 0,
+    paddingVertical: "10px",
+    width: "100px",
   },
   header: {
     fontFamily: "Sen-Regular",
@@ -52,9 +43,17 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     textDecorationColor: color.palette.brown,
   },
+  imageStyle: {
+    backgroundColor: color.palette.deepPurple,
+    borderRadius: 15,
+    margin: "10px",
+    objectFit: "contain",
+    // width: 20,
+  },
+
   textStyle: {
+    fontSize: 18,
     textAlign: "center",
-    width: "calc(90vw - 180px)",
   },
 })
 
@@ -105,12 +104,26 @@ export const EventsScreen = observer(function OffersScreen() {
 
   const events = [
     {
-      name: "event1",
+      eventName: "event1",
+      eventDesc: "The first event",
       imageLink:
         "https://imgix.theurbanlist.com/content/article/East_dessert.jpg?auto=format,compress&w=1200&h=630&fit=crop",
     },
     {
-      name: "event2",
+      eventName: "event2",
+      eventDesc: "The second event",
+      imageLink:
+        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
+    },
+    {
+      eventName: "event3",
+      eventDesc: "The third event",
+      imageLink:
+        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
+    },
+    {
+      eventName: "event4",
+      eventDesc: "The fourth event",
       imageLink:
         "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
     },
@@ -122,32 +135,44 @@ export const EventsScreen = observer(function OffersScreen() {
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
         <Text style={styles.textStyle} preset="header" text="Upcoming Events:" />
         <Box style={CONTAINER}>
-          {events.flatMap((event, index) => {
-            return (
-              <Box key={index}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("event", event)
-                  }}
-                >
-                  <HStack justifyContent="space-between" alignItems="center">
-                    <Image
-                      resizeMode={"contain"}
-                      size={40}
-                      height="100px"
-                      alt={event.name}
-                      source={{
-                        uri: event.imageLink,
-                      }}
-                    />
-                    <VStack alignItems="center">
-                      <Text style={styles.textStyle}>{event.name}</Text>
+          <FlatList
+            data={events}
+            numColumns={2}
+            keyExtractor={(item) => item.uuid}
+            renderItem={({ item, index }) => {
+              const { eventName, eventDesc, imageLink } = item
+              const prop = {
+                name: `${eventName}`,
+                imgUrl: imageLink,
+              }
+              return (
+                <Box key={index} style={styles.cardStyle}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("event", item)
+                    }}
+                  >
+                    <VStack justifyContent="space-between" alignItems="center">
+                      <VStack alignItems="center">
+                        <Text style={styles.textStyle} preset="bold">
+                          {eventName}
+                        </Text>
+                      </VStack>
+                      <Image
+                        resizeMode={"contain"}
+                        size={"lg"}
+                        borderRadius={100}
+                        alt={eventName}
+                        source={{
+                          uri: imageLink,
+                        }}
+                      />
                     </VStack>
-                  </HStack>
-                </TouchableOpacity>
-              </Box>
-            )
-          })}
+                  </TouchableOpacity>
+                </Box>
+              )
+            }}
+          />
         </Box>
       </NativeBaseProvider>
     </Screen>

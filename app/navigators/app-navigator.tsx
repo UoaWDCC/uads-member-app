@@ -27,6 +27,7 @@ import {
   ChangePasswordScreen,
   ComingSoonScreen,
   EventsScreen,
+  EventScreen,
 } from "../screens"
 const uadsLogo = require("../resources/logo.png")
 const handshakeIcon = require("../resources/handshake-simple-solid.svg")
@@ -173,7 +174,7 @@ const AppEventScreen = () => {
       <Event.Screen name="events" component={EventsScreen} />
       <Event.Screen
         name="event"
-        component={OfferScreen}
+        component={EventScreen}
         options={{
           headerShown: true,
           title: "",
