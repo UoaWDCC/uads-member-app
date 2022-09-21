@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "180px",
     margin: 10,
-    paddingHorizontal: "10px",
-    paddingVertical: "10px",
+    paddingHorizontal: "5px",
+    paddingVertical: "5px",
     width: "100px",
   },
   header: {
@@ -47,8 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.palette.deepPurple,
     borderRadius: 15,
     margin: "10px",
-    objectFit: "contain",
-    // width: 20,
   },
 
   textStyle: {
@@ -104,10 +102,10 @@ export const EventsScreen = observer(function OffersScreen() {
 
   const events = [
     {
-      eventName: "event1",
+      eventName: "event1 this is a really long event name",
       eventDesc: "The first event",
       imageLink:
-        "https://imgix.theurbanlist.com/content/article/East_dessert.jpg?auto=format,compress&w=1200&h=630&fit=crop",
+        "https://previews.agefotostock.com/previewimage/medibigoff/f26397611c09f4de9dd7797b6fcb5965/bep-bew196841a.jpg",
     },
     {
       eventName: "event2",
@@ -158,13 +156,16 @@ export const EventsScreen = observer(function OffersScreen() {
                           {eventName}
                         </Text>
                       </VStack>
-                      <Image
-                        resizeMode={"contain"}
-                        size={"lg"}
-                        borderRadius={100}
+                      <img
                         alt={eventName}
-                        source={{
-                          uri: imageLink,
+                        src={imageLink}
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        style={{
+                          marginTop: "5px",
+                          marginBottom: "5px",
+                          height: "120px",
+                          maxWidth: "80px",
+                          borderRadius: "10px",
                         }}
                       />
                     </VStack>
