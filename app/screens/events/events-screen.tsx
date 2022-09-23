@@ -1,15 +1,14 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useRef, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Input, Box, FlatList, VStack, HStack, Image } from "native-base"
+import { NativeBaseProvider, Box, FlatList } from "native-base"
 import firebase from "firebase"
-import Icon from "react-native-vector-icons/FontAwesome"
 import axios from "axios"
 import { BASE_URL } from "@env"
-import { autorun } from "mobx"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -36,6 +35,15 @@ const styles = StyleSheet.create({
     paddingVertical: "5px",
     width: "100px",
   },
+  cardTextStyle: {
+    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: "auto",
+    fontSize: 18,
+    textAlign: "center",
+    width: "100%",
+  },
   header: {
     fontFamily: "Sen-Regular",
     fontSize: 40,
@@ -43,12 +51,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     textDecorationColor: color.palette.brown,
   },
-  imageStyle: {
-    backgroundColor: color.palette.deepPurple,
-    borderRadius: 15,
-    margin: "10px",
-  },
-
   textStyle: {
     fontSize: 18,
     textAlign: "center",
@@ -59,18 +61,6 @@ export const EventsScreen = observer(function OffersScreen() {
   const navigation = useNavigation()
   const isVisible = useIsFocused()
 
-  const searchInputRef = useRef<HTMLInputElement | null>(null)
-  const [query, setQuery] = useState("")
-  // const [discounts, setDiscounts] = useState<
-  //   {
-  //     desc: string
-  //     uuid: number
-  //     sponsor: string
-  //     value: number
-  //     imageLink: string
-  //     cooldown: number
-  //   }[]
-  // >([])
   const [firstName, setFirstName] = useState<string>("")
 
   useEffect(() => {
@@ -138,37 +128,49 @@ export const EventsScreen = observer(function OffersScreen() {
             numColumns={2}
             keyExtractor={(item) => item.uuid}
             renderItem={({ item, index }) => {
-              const { eventName, eventDesc, imageLink } = item
-              const prop = {
-                name: `${eventName}`,
-                imgUrl: imageLink,
-              }
+              const { eventName, imageLink } = item
               return (
                 <Box key={index} style={styles.cardStyle}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("event", item)
                     }}
+                    style={{ height: "100%", width: "100%" }}
                   >
-                    <VStack justifyContent="space-between" alignItems="center">
-                      <VStack alignItems="center">
-                        <Text style={styles.textStyle} preset="bold">
-                          {eventName}
-                        </Text>
-                      </VStack>
-                      <img
-                        alt={eventName}
-                        src={imageLink}
-                        // eslint-disable-next-line react-native/no-inline-styles
+                    <div
+                      style={{
+                        display: "flex",
+                        flexFlow: "column",
+                        height: "100%",
+                        width: "calc(100% - 10px)",
+                        marginRight: "5px",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
+                        {eventName}
+                      </Text>
+                      <div
                         style={{
+                          flex: "1 1 auto",
                           marginTop: "5px",
                           marginBottom: "5px",
-                          height: "120px",
-                          maxWidth: "80px",
-                          borderRadius: "10px",
+                          width: "100%",
                         }}
-                      />
-                    </VStack>
+                      >
+                        <img
+                          alt={eventName}
+                          src={imageLink}
+                          // eslint-disable-next-line react-native/no-inline-styles
+                          style={{
+                            borderRadius: "10px",
+                            width: "100%",
+                            height: "130px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                    </div>
                   </TouchableOpacity>
                 </Box>
               )
