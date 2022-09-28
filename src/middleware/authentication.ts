@@ -6,14 +6,16 @@ export async function isAuthenticated(
   res: Response,
   next: Function
 ) {
+  console.log(JSON.stringify(req.headers))
   const token = req.headers['auth-token'];
+  console.log(`Recived token: ${token}`)
 
   try {
     // res.locals = {...res.locals, uid: "12345"}
     const decodedToken: admin.auth.DecodedIdToken = await admin
       .auth()
       .verifyIdToken(token);
-    console.log('decodedToken', JSON.stringify(decodedToken));
+    console.log('decodedToken: ', JSON.stringify(decodedToken));
     res.locals = {
       ...res.locals,
       uid: decodedToken.uid,
