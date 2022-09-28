@@ -129,8 +129,6 @@ class DiscountController extends BaseController {
       return;
     }
 
-    discountRepo.connectCollection('redemption')
-    await discountRepo.isConnected()
     const success = await discountRepo.redeemDiscount(userId, discountId);
 
     res.status(200).send({ success: true });

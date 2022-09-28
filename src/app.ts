@@ -39,13 +39,6 @@ admin.initializeApp({
   databaseURL: 'https://WDCC-UADS.firebaseio.com',
 });
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  next();
-});
-
 // Error handler
 app.use((err, req, res, next) => {
   // Set locals, only providing error in development
