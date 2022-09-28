@@ -34,20 +34,20 @@ export const SponsorIcon = observer(function SponsorIcon(props: any) {
   return (
     <NativeBaseProvider>
       <Box style={CONTAINER}>
-        <Img imgUrl={imgUrl} />
+        <Img imgUrl={imgUrl} name={name} />
         <Text style={TEXT} text={name} />
       </Box>
     </NativeBaseProvider>
   )
 })
 
-const Img = ({ imgUrl }) => {
+const Img = ({ imgUrl, name }) => {
   return (
     <Image
       source={{
         uri: imgUrl,
       }}
-      alt="Alternate Text"
+      alt={name}
       size="lg"
       borderRadius={100}
     />
