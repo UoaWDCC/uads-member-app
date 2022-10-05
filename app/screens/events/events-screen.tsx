@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useRef, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
 import { Screen, Text } from "../../components"
@@ -62,16 +62,18 @@ export const EventsScreen = observer(function OffersScreen() {
   const isVisible = useIsFocused()
 
   const [firstName, setFirstName] = useState<string>("")
-  const [events, setEvents] = useState<{
-    uuid: string;
-    name: string;
-    desc: string;
-    dateTime: string;
-    location: string
-    imagePath: string;
-    sponsor?: string[];
-    urlSignUp?: string;
-  }[]>([])
+  const [events, setEvents] = useState<
+    {
+      uuid: string
+      name: string
+      desc: string
+      dateTime: string
+      location: string
+      imagePath: string
+      sponsor?: string[]
+      urlSignUp?: string
+    }[]
+  >([])
 
   useEffect(() => {
     firebase
@@ -92,7 +94,7 @@ export const EventsScreen = observer(function OffersScreen() {
           .catch((e) => {
             console.error(e)
           })
-          axios
+        axios
           .get(BASE_URL + `/event`, {
             headers: {
               "auth-token": idToken,
@@ -117,14 +119,18 @@ export const EventsScreen = observer(function OffersScreen() {
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
-        <Text style={styles.textStyle} preset="header" text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"} />
+        <Text
+          style={styles.textStyle}
+          preset="header"
+          text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
+        />
         <Box style={CONTAINER}>
           <FlatList
             data={events}
             numColumns={2}
             keyExtractor={(item) => item.uuid}
             renderItem={({ item, index }) => {
-              const { eventName, imageLink } = item
+              const { name, imagePath } = item
               return (
                 <Box key={index} style={styles.cardStyle}>
                   <TouchableOpacity
@@ -144,7 +150,7 @@ export const EventsScreen = observer(function OffersScreen() {
                       }}
                     >
                       <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
-                        {eventName}
+                        {name}
                       </Text>
                       <div
                         style={{
@@ -155,8 +161,8 @@ export const EventsScreen = observer(function OffersScreen() {
                         }}
                       >
                         <img
-                          alt={eventName}
-                          src={imageLink}
+                          alt={name}
+                          src={imagePath}
                           // eslint-disable-next-line react-native/no-inline-styles
                           style={{
                             borderRadius: "10px",
