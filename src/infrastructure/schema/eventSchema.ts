@@ -6,6 +6,7 @@ import { IEvent } from '../../domain/Entities';
 export const EventSchema = new Schema<IEvent>({
   uuid: { type: String, default: uuid },
   name: { type: String, required: true },
+  desc: { type: String, required: true },
   date: { type: Date, required: true },
   location: {
     type: {

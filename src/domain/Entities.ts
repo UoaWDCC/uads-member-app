@@ -56,6 +56,7 @@ interface ISponsor {
 interface IEvent {
   uuid: string;
   name: string;
+  desc: string;
   date: Date;
   location: {
     building: Number;
