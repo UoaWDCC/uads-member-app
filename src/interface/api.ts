@@ -106,17 +106,15 @@ export interface components {
       /** The name of the event */
       name: string;
       /** The starting Date of the event */
-      date: Date;
+      dateTime: string;
+      /** The location of the event */
+      location: string;
       /** The path/url to an event image */
       imagePath?: string;
-      /** The maximum number of attendees, (-1 for no cap) */
-      attendanceCap: number;
       /** The sponsor(s) of the event */
       sponsors?: string[];
       /** An external url for the event */
-      url?: string;
-      /** The UUID of club(s) hosting the event */
-      club: string[];
+      urlSignUp?: string;
     };
     /** Discounts */
     Discount: {

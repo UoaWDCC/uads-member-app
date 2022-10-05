@@ -589,43 +589,37 @@ components:
       required:
         - uuid
         - name
-        - date
-        - attendanceCap
-        - club
+        - dateTime
+        - location
+        - imagePath
       type: object
       properties:
         uuid:
-          format: uuid
           description: The UUID of the event
-          pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
           type: string
         name:
           description: The name of the event
           type: string
-        date:
-          format: date
+        desc:
+          description: A description for the event
+          type: string
+        dateTime:
           description: The starting Date of the event
           type: string
         imagePath:
           description: The path/url to an event image
           type: string
-        attendanceCap:
-          description: The maximum number of attendees, (-1 for no cap)
-          minimum: -1
-          type: integer
+        location:
+          description: The location of the event
+          type: string
         sponsors:
           description: The sponsor(s) of the event
           type: array
           items:
             type: string
-        url:
-          description: An external url for the event
+        urlSignUp:
+          description: An external url to sign up for the event
           type: string
-        club:
-          description: The UUID of club(s) hosting the event
-          type: array
-          items:
-            type: string
     Discount:
       description: Discounts
       required:
