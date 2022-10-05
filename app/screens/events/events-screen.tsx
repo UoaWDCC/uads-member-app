@@ -62,6 +62,16 @@ export const EventsScreen = observer(function OffersScreen() {
   const isVisible = useIsFocused()
 
   const [firstName, setFirstName] = useState<string>("")
+  const [events, setEvents] = useState<{
+    uuid: string;
+    name: string;
+    desc: string;
+    dateTime: string;
+    location: string
+    imagePath: string;
+    sponsor?: string[];
+    urlSignUp?: string;
+  }[]>([])
 
   useEffect(() => {
     firebase
@@ -82,6 +92,19 @@ export const EventsScreen = observer(function OffersScreen() {
           .catch((e) => {
             console.error(e)
           })
+          axios
+          .get(BASE_URL + `/event`, {
+            headers: {
+              "auth-token": idToken,
+            },
+          })
+          .then(({ data }) => {
+            console.log(data)
+            setEvents(data)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
       })
   }, [isVisible])
 
@@ -90,38 +113,11 @@ export const EventsScreen = observer(function OffersScreen() {
     return userUpi
   }
 
-  const events = [
-    {
-      eventName: "event1 this is a really long event name",
-      eventDesc: "The first event",
-      imageLink:
-        "https://previews.agefotostock.com/previewimage/medibigoff/f26397611c09f4de9dd7797b6fcb5965/bep-bew196841a.jpg",
-    },
-    {
-      eventName: "event2",
-      eventDesc: "The second event",
-      imageLink:
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
-    },
-    {
-      eventName: "event3",
-      eventDesc: "The third event",
-      imageLink:
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
-    },
-    {
-      eventName: "event4",
-      eventDesc: "The fourth event",
-      imageLink:
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
-    },
-  ]
-
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
-        <Text style={styles.textStyle} preset="header" text="Upcoming Events:" />
+        <Text style={styles.textStyle} preset="header" text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"} />
         <Box style={CONTAINER}>
           <FlatList
             data={events}

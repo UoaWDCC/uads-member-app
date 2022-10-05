@@ -36,14 +36,25 @@ export const EventScreen = observer(function SponsorScreen(props: any) {
   // Pull in navigation via hook
   const navigation = useNavigation()
 
-  const { eventName, eventDesc, imageLink } = props.route.params
+  const { uuid,
+    name,
+    desc,
+    dateTime,
+    location,
+    imagePath,
+    sponsor,
+    urlSignUp
+  } = props.route.params
 
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Img imgUrl={imageLink} />
-        <Text preset="header" text={eventName} style={PRIMARY_TEXT} />
-        <Text preset="secondary" text={eventDesc} style={SECONDARY_TEXT} />
+        <Img imgUrl={imagePath} />
+        <Text preset="header" text={name} style={PRIMARY_TEXT} />
+        <Text preset="secondary" text={desc} style={SECONDARY_TEXT} />
+        <Text preset="secondary" text={"Time: " + dateTime} style={SECONDARY_TEXT} />
+        <Text preset="secondary" text={"Location: " + location} style={SECONDARY_TEXT} />
+        {urlSignUp ? <Text preset="secondary" text={"Sign up link: " + urlSignUp} style={SECONDARY_TEXT} /> : null}
       </NativeBaseProvider>
     </Screen>
   )
