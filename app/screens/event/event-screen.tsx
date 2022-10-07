@@ -68,6 +68,7 @@ export const EventScreen = observer(function SponsorScreen(props: any) {
             <Text preset="secondary" text={urlSignUp} style={LINK_TEXT} onPress={goToUrl} />
           </div>
         ) : null}
+        <br />
       </NativeBaseProvider>
     </Screen>
   )
