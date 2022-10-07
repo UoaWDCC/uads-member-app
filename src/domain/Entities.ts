@@ -56,16 +56,12 @@ interface ISponsor {
 interface IEvent {
   uuid: string;
   name: string;
-  date: Date;
-  location: {
-    building: Number;
-    room: Number;
-    description: string;
-  };
-  imagePath?: string;
-  attendanceCap?: Number;
-  sponsor: string[];
-  url?: string;
+  desc: string;
+  dateTime: string;
+  location: string
+  imagePath: string;
+  sponsor?: string[];
+  urlSignUp?: string;
 }
 
 interface IClub {
