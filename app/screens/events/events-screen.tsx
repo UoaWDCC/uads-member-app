@@ -1,14 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useRef, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
-import { Screen, Text } from "../../components"
+import { Screen, Text, AutoImage as Image } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Box, FlatList } from "native-base"
+import { NativeBaseProvider, Box, FlatList, Stack, HStack } from "native-base"
 import firebase from "firebase"
 import axios from "axios"
 import { BASE_URL } from "@env"
+import { SocialIcon } from "react-social-icons"
+
+const uadsLogo = require("../../resources/logo.png")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     flex: 1,
     height: "180px",
-    margin: 10,
+    margin: 5,
     paddingHorizontal: "5px",
     paddingVertical: "5px",
     width: "100px",
@@ -48,12 +51,29 @@ const styles = StyleSheet.create({
     fontFamily: "Sen-Regular",
     fontSize: 40,
     margin: 10,
-    marginLeft: 20,
+    textAlign: "center",
     textDecorationColor: color.palette.brown,
+  },
+  logoStyle: {
+    alignSelf: "center",
+    height: 150,
+    width: 200,
+  },
+  socialStyle: {
+    marginBottom: 10,
+    marginHorizontal: 10,
+  },
+  socialTextStyle: {
+    fontSize: 14,
+    marginLeft: 15,
+    marginTop: 12,
+    textAlign: "center",
+    textAlignVertical: "bottom",
   },
   textStyle: {
     fontSize: 18,
     textAlign: "center",
+    textAlignVertical: "center",
   },
 })
 
@@ -62,6 +82,18 @@ export const EventsScreen = observer(function OffersScreen() {
   const isVisible = useIsFocused()
 
   const [firstName, setFirstName] = useState<string>("")
+  const [events, setEvents] = useState<
+    {
+      uuid: string
+      name: string
+      desc: string
+      dateTime: string
+      location: string
+      imagePath: string
+      sponsor?: string[]
+      urlSignUp?: string
+    }[]
+  >([])
 
   useEffect(() => {
     firebase
@@ -82,6 +114,19 @@ export const EventsScreen = observer(function OffersScreen() {
           .catch((e) => {
             console.error(e)
           })
+        axios
+          .get(BASE_URL + `/event`, {
+            headers: {
+              "auth-token": idToken,
+            },
+          })
+          .then(({ data }) => {
+            console.log(data)
+            setEvents(data)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
       })
   }, [isVisible])
 
@@ -90,92 +135,110 @@ export const EventsScreen = observer(function OffersScreen() {
     return userUpi
   }
 
-  const events = [
-    {
-      eventName: "event1 this is a really long event name",
-      eventDesc: "The first event",
-      imageLink:
-        "https://previews.agefotostock.com/previewimage/medibigoff/f26397611c09f4de9dd7797b6fcb5965/bep-bew196841a.jpg",
-    },
-    {
-      eventName: "event2",
-      eventDesc: "The second event",
-      imageLink:
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
-    },
-    {
-      eventName: "event3",
-      eventDesc: "The third event",
-      imageLink:
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
-    },
-    {
-      eventName: "event4",
-      eventDesc: "The fourth event",
-      imageLink:
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dessert-main-image-molten-cake-0fbd4f2.jpg",
-    },
-  ]
-
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
-        <Text style={styles.textStyle} preset="header" text="Upcoming Events:" />
+        <Text
+          style={styles.textStyle}
+          preset="header"
+          text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
+        />
         <Box style={CONTAINER}>
-          <FlatList
-            data={events}
-            numColumns={2}
-            keyExtractor={(item) => item.uuid}
-            renderItem={({ item, index }) => {
-              const { eventName, imageLink } = item
-              return (
-                <Box key={index} style={styles.cardStyle}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("event", item)
-                    }}
-                    style={{ height: "100%", width: "100%" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        flexFlow: "column",
-                        height: "100%",
-                        width: "calc(100% - 10px)",
-                        marginRight: "5px",
-                        marginLeft: "5px",
-                      }}
-                    >
-                      <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
-                        {eventName}
-                      </Text>
-                      <div
-                        style={{
-                          flex: "1 1 auto",
-                          marginTop: "5px",
-                          marginBottom: "5px",
-                          width: "100%",
+          <Stack>
+            {events.length === 0 ? (
+              <Image source={uadsLogo} style={styles.logoStyle} />
+            ) : (
+              <FlatList
+                style={{ overflow: "visible" }}
+                data={events}
+                numColumns={2}
+                keyExtractor={(item) => item.uuid}
+                renderItem={({ item, index }) => {
+                  const { name, imagePath } = item
+                  return (
+                    <Box key={index} style={styles.cardStyle}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate("event", item)
                         }}
+                        style={{ height: "100%", width: "100%" }}
                       >
-                        <img
-                          alt={eventName}
-                          src={imageLink}
-                          // eslint-disable-next-line react-native/no-inline-styles
+                        <div
                           style={{
-                            borderRadius: "10px",
-                            width: "100%",
-                            height: "130px",
-                            objectFit: "cover",
+                            display: "flex",
+                            flexFlow: "column",
+                            height: "100%",
+                            width: "calc(100% - 10px)",
+                            marginRight: "5px",
+                            marginLeft: "5px",
                           }}
-                        />
-                      </div>
-                    </div>
-                  </TouchableOpacity>
-                </Box>
-              )
-            }}
-          />
+                        >
+                          <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
+                            {name}
+                          </Text>
+                          <div
+                            style={{
+                              flex: "1 1 auto",
+                              marginTop: "5px",
+                              marginBottom: "5px",
+                              width: "100%",
+                            }}
+                          >
+                            <img
+                              alt={name}
+                              src={imagePath}
+                              // eslint-disable-next-line react-native/no-inline-styles
+                              style={{
+                                borderRadius: "10px",
+                                width: "100%",
+                                height: "130px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </TouchableOpacity>
+                    </Box>
+                  )
+                }}
+              />
+            )}
+            <Stack style={{ marginVertical: 20 }}>
+              <HStack style={styles.socialStyle}>
+                <SocialIcon
+                  url="https://www.instagram.com/uoadessertsociety/"
+                  style={{ height: 40, width: 40 }}
+                />
+                <Text style={styles.socialTextStyle} preset="secondary" text="@uoadessertsociety" />
+              </HStack>
+              <HStack style={styles.socialStyle}>
+                <SocialIcon
+                  url="https://www.tiktok.com/@uoadessertsociety"
+                  style={{ height: 40, width: 40 }}
+                />
+                <Text style={styles.socialTextStyle} preset="secondary" text="@uoadessertsociety" />
+              </HStack>
+              <HStack style={styles.socialStyle}>
+                <SocialIcon
+                  url="https://www.facebook.com/uoadessertsociety"
+                  style={{ height: 40, width: 40 }}
+                />
+                <Text style={styles.socialTextStyle} preset="secondary" text="@uoadessertsociety" />
+              </HStack>
+              <HStack style={styles.socialStyle}>
+                <SocialIcon
+                  url="https://discord.com/invite/UaeCB7xA"
+                  style={{ height: 40, width: 40 }}
+                />
+                <Text
+                  style={styles.socialTextStyle}
+                  preset="secondary"
+                  text="University of Auckland Dessert Society"
+                />
+              </HStack>
+            </Stack>
+          </Stack>
         </Box>
       </NativeBaseProvider>
     </Screen>
