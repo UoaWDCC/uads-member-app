@@ -1,0 +1,39 @@
+name: Deploy DEV
+
+on:
+  [workflow_dispatch]
+
+jobs:
+  DeployBackend:
+    runs-on: ubuntu-latest
+    environment: DEV
+    defaults:
+      run:
+        working-directory: .
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+    
+    # Takes a secret (in base64 format) from github secrets, decodes it, and outputs to a file in private keys
+    - name: Create private_keys and directory
+      run: mkdir private_keys && echo ${{ secrets.APP_GA_CREDENTIALS }} | base64 --decode > private_keys/wdcc-uads-dev-9d43138b5371.json
+      
+      name: Create env file
+      run: echo ${{ secrets.BACKEND_ENVFILE }} | base64 --decode > gae_env.yaml
+      
+      - run: yarn
+
+      - uses: 'google-github-actions/auth@v0'
+        with:
+          
+          # Credentials stored inside WDCC organisation secrets
+          credentials_json: '${{ secrets.UADS_GCP_DEPLOYMENT_SA_CREDENTIALS }}'
+
+      - id: 'app-engine-deploy'
+        uses: 'google-github-actions/deploy-appengine@v0'
+        with:
+          project_id: wdcc-uads-dev
+          working_directory: .
