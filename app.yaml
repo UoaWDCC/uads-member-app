@@ -1,0 +1,7 @@
+runtime: nodejs18
+
+# By default, GAE uses npm
+entrypoint: "PORT=8080 yarn start"
+
+includes:
+  - gae_env.yaml
