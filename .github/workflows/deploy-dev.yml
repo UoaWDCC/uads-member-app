@@ -32,6 +32,9 @@ jobs:
           # Credentials stored inside WDCC organisation secrets
           credentials_json: '${{ secrets.UADS_GCP_DEPLOYMENT_SA_CREDENTIALS }}'
 
+      - name: Run build script
+        run: yarn build
+
       - id: 'app-engine-deploy'
         uses: 'google-github-actions/deploy-appengine@v0'
         with:
