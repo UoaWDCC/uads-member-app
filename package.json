@@ -10,7 +10,6 @@
     "clean": "rimraf dist",
     "prebuild": "yarn run clean",
     "build": "babel src -d dist --extensions .ts,.js",
-    "prestart": "yarn run build",
     "start": "babel-node dist/bin/www.js",
     "types": "ts-node ./script/types.ts",
     "yaml": "ts-node-dev downloadAPI.ts",
