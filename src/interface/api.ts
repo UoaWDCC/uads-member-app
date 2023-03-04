@@ -78,6 +78,9 @@ export interface paths {
       };
     };
   };
+  '/users/{upi}/isEligible': {
+    get: operations['GET_USER_ELIGIBILITY'];
+  };
 }
 
 export interface components {
@@ -244,6 +247,9 @@ export interface components {
     };
     Success: {
       success?: boolean;
+    };
+    Eligibility: {
+      eligible: boolean;
     };
   };
 }
@@ -659,6 +665,21 @@ export interface operations {
       200: unknown;
       /** An error has occurred. */
       404: unknown;
+    };
+  };
+  GET_USER_ELIGIBILITY: {
+    parameters: {
+      path: {
+        upi: string;
+      };
+    };
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          'application/json': components['schemas']['Eligibility'];
+        };
+      };
     };
   };
 }

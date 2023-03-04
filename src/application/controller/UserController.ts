@@ -1,8 +1,97 @@
 import { BaseController } from './BaseController';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { MongoAdapter } from '../../infrastructure/MongoAdapter';
 import { UserRepository } from '../../infrastructure/repository/UserRepository';
-import { operations } from '../../interface/api';
+
+const fs = require('fs').promises;
+const path = require('path');
+const process = require('process');
+const {authenticate} = require('@google-cloud/local-auth');
+const {google} = require('googleapis');
+
+// If modifying these scopes, delete token.json.
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+// The file token.json stores the user's access and refresh tokens, and is
+// created automatically when the authorization flow completes for the first
+// time.
+const TOKEN_PATH = path.join(process.cwd(), 'token.json');
+const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
+const SPREADSHEET_ID = "1VINiGshMiwPwxeS_U7JTii-mmnLvd-woOhB3y723hLY";
+
+  /**
+   * Reads previously authorized credentials from the save file.
+   *
+   * @return {Promise<OAuth2Client|null>}
+   */
+  async function loadSavedCredentialsIfExist() {
+    try {
+      const content = await fs.readFile(TOKEN_PATH);
+      const credentials = JSON.parse(content);
+      return google.auth.fromJSON(credentials);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  /**
+   * Serializes credentials to a file comptible with GoogleAUth.fromJSON.
+   *
+   * @param {OAuth2Client} client
+   * @return {Promise<void>}
+   */
+  async function saveCredentials(client) {
+    const content = await fs.readFile(CREDENTIALS_PATH);
+    const keys = JSON.parse(content);
+    const key = keys.installed || keys.web;
+    const payload = JSON.stringify({
+      type: 'authorized_user',
+      client_id: key.client_id,
+      client_secret: key.client_secret,
+      refresh_token: client.credentials.refresh_token,
+    });
+    await fs.writeFile(TOKEN_PATH, payload);
+  }
+
+  /**
+   * Load or request or authorization to call APIs.
+   *
+   */
+  async function authorize() {
+    let client = await loadSavedCredentialsIfExist();
+    if (client) {
+      return client;
+    }
+    client = await authenticate({
+      scopes: SCOPES,
+      keyfilePath: CREDENTIALS_PATH,
+    });
+    if (client.credentials) {
+      await saveCredentials(client);
+    }
+    return client;
+  }
+
+  /**
+   * Gets cell values from a Spreadsheet.
+   * @param {string} spreadsheetId The spreadsheet ID.
+   * @param {string} range The sheet range.
+   * @return {obj} spreadsheet information
+   */
+  async function getValues(auth) {
+
+    const sheets = google.sheets({version: 'v4', auth});
+
+    try {
+      const result = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: 'Sheet1!A:A',
+      });
+      return result;
+    } catch (err) {
+      // TODO (developer) - Handle exception
+      throw err;
+    }
+  }
 
 class UserController extends BaseController {
   async getUsers(req: Request, res: Response) {
@@ -146,6 +235,34 @@ class UserController extends BaseController {
     } else {
       res.status(200).json();
     }
+  }
+
+  async getUserEligibility(req: Request, res: Response) {
+    const upi = req.params.upi.toString().toLocaleLowerCase()
+    let returnVal = {
+      eligible: false
+    }
+    await authorize().then(getValues).then(
+      (result) => {
+        const rows = result.data.values;
+        if (!rows || rows.length === 0) {
+          console.log('No data found.');
+          return;
+        }
+        rows.forEach((row) => {
+          if (upi === row[0].toString().toLocaleLowerCase()) {
+            console.log("found it!")
+            returnVal.eligible = true
+          }
+        });
+      }
+    ).catch(console.error);
+      if (returnVal != null) {
+        res.status(200).json(returnVal);
+      } else {
+        res.status(404).json();
+      }
+    
   }
 }
 

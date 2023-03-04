@@ -548,6 +548,26 @@ paths:
           type: string
         in: path
         required: true
+  /users/{upi}/isEligible:
+    summary: Route for checking if new users are eligible for app
+    get:
+      tags:
+        - User
+      parameters:
+        - name: upi
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Eligibility'
+          description: Success
+      operationId: GET_USER_ELIGIBILITY
+      summary: Getting users eligibility by upi
 components:
   schemas:
     Club:
@@ -873,6 +893,15 @@ components:
           type: boolean
       example:
         success: true
+    Eligibility:
+      description: ''
+      required:
+        - eligible
+      type: object
+      properties:
+        eligible:
+          description: ''
+          type: boolean
   securitySchemes:
     firebase-key:
       type: apiKey
