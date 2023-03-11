@@ -1,7 +1,0 @@
-{
-    "root": "web-build/",
-    "clean_urls": false,
-    "routes": {
-      "/**": "index.html"
-    }
-}
