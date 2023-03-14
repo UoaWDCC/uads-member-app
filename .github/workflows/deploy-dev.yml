@@ -33,7 +33,7 @@ jobs:
         with:
         
           # Build path (path is excluded due to parent: false flag)
-          path: 'web-build'
+          path: 'packages/client/web-build'
           parent: false
           
           # Bucket to add contents into
@@ -74,4 +74,4 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v0'
         with:
           project_id: wdcc-uads-dev
-          working_directory: .
+          working_directory: packages/server
