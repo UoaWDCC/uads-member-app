@@ -2,7 +2,7 @@ import * as React from "react"
 import { TextStyle, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { color, typography } from "../../theme"
-import { Text } from ".."
+import { Text } from "../"
 import { screenWidth } from "../../utils/screenDimensions"
 import { NativeBaseProvider, Image, Box } from "native-base"
 
