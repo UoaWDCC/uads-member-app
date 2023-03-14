@@ -9,7 +9,7 @@ jobs:
     environment: DEV
     defaults:
       run:
-        working-directory: packages/client
+        working-directory: client
     
     steps:
       - uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
         with:
         
           # Build path (path is excluded due to parent: false flag)
-          path: 'packages/client/web-build'
+          path: 'client/web-build'
           parent: false
           
           # Bucket to add contents into
@@ -44,7 +44,7 @@ jobs:
     environment: DEV
     defaults:
       run:
-        working-directory: packages/server
+        working-directory: server
     
     steps:
       - uses: actions/checkout@v3
@@ -74,4 +74,4 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v0'
         with:
           project_id: wdcc-uads-dev
-          working_directory: packages/server
+          working_directory: server
