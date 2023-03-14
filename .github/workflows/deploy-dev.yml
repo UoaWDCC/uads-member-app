@@ -51,11 +51,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14
-        
-      # Takes a secret (in base64 format) from github secrets, decodes it, and outputs to a file in private keys
-      - name: Create private_keys and directory
-        run: mkdir private_keys && echo ${{ secrets.APP_GA_CREDENTIALS }} | base64 --decode > private_keys/wdcc-uads-dev-9d43138b5371.json
-      
+
       - name: Create env file
         run: echo ${{ secrets.BACKEND_ENVFILE }} | base64 --decode > gae_env.yaml
       
