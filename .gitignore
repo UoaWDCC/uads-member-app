@@ -2,14 +2,13 @@ dist/
 .vscode/
 
 # dependencies
-*/node_modules
-/node_modules
+node_modules
+node_modules
 
 # builds
-*/build
-*/build-latest
-/build
-/build-latest
+build
+build-latest
+build-web
 
 # environment
 .env
