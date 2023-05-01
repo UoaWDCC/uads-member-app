@@ -18,24 +18,24 @@ Established in 2021.
 4. Install yarn <br>
 	> [Installation | Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)<br>
 5. Clone the repo<br>
-6. Open terminal inside the client folder and run ‘yarn install’ to install dependencies <br>
-7. Go inside client folder and create a file called ‘.env’ with the following content<br>
+6. Open a terminal, enter the client folder using ```cd client``` then run ```yarn install``` to install dependencies <br>
+7. Create a file called ‘.env’ with the following content inside the client folder<br>
 	> *BASE_URL=http://localhost:9002*<br>
 	> *API_KEY=AIzaSyCrlN9M3inv_lDEqBoa3AodLxhpvYd_iwI*<br>
-8. Go to the server folder and open terminal and run ‘yarn install’ to install necessary packages<br>
+8. Open a new terminal, enter the server folder using ```cd server``` then run ```yarn install``` to install necessary packages<br>
 9. In MongoDB, Security → Database Access, click + Add New Database User<br>
 	> Choose ReadAndWriteAdmin in Built-in role <br>
 	> Fill the other information and click Add User <br>
 	> You will need to create a username and password <br>
-
-10. Go inside server folder and create a file called ‘.env’ with the following content<br>
+10. Create a file called ‘.env’ with the following content inside the server folder<br>
 (Replace **UserName** and **Password** with the actual username and password of the mongodb database user you have created in step 9)<br>
 > *MONGODB_URI = mongodb+srv://{UserName}:{Password}@uads-cluster.sw67y.mongodb.net/ > retryWrites=true&w=majority*<br>
 > *PORT = 9002*<br>
 > *NODE_ENV = development*<br>
-11. Run ‘npm install mongodb’<br>
-12. Run ‘yarn run dev’ to start on default port 9002<br>
-13. Go back to client folder terminal and run ‘yarn start’ then follow expo instructions<br>
+11. Run ```npm install mongodb```<br>
+12. Run ```yarn run dev``` to start on default port 9002<br>
+13. Return to the client terminal and run ```yarn start```<br>
+14. Follow the expo instructions. Press ```w``` to start the webpack server<br> 
 
 
 ### Mac:<br>
