@@ -26,9 +26,10 @@ Established in 2021.
 9. In MongoDB, Security → Database Access, click + Add New Database User<br>
 	> Choose ReadAndWriteAdmin in Built-in role <br>
 	> Fill the other information and click Add User <br>
+	> You will need to create a username and password <br>
 
 10. Go inside server folder and create a file called ‘.env’ with the following content<br>
-(Replace UserName and Password with the actual username and password of the mongodb database user you have created in step 9)<br>
+(Replace **UserName** and **Password** with the actual username and password of the mongodb database user you have created in step 9)<br>
 > *MONGODB_URI = mongodb+srv://{UserName}:{Password}@uads-cluster.sw67y.mongodb.net/ > retryWrites=true&w=majority*<br>
 > *PORT = 9002*<br>
 > *NODE_ENV = development*<br>
@@ -57,8 +58,9 @@ Established in 2021.
 8. In MongoDB, Security → Database Access, click + Add New Database User<br>
 	> Choose ReadAndWriteAdmin in Built-in role <br>
 	> Fill the other information and click Add User <br>
+	> You will need to create a username and password <br>
 9. Go inside server folder and create a file called ‘.env’ with the following content<br>
-	> (Replace UserName and Password with the actual username and password of the mongodb database user you have created in step 9)<br>
+(Replace **UserName** and **Password** with the actual username and password of the mongodb database user you have created in step 8)<br>
 	> *MONGODB_URI = mongodb+srv://{UserName}:{Password}@uads-cluster.sw67y.mongodb.net/ retryWrites=true&w=majority*<br>
 	> *PORT = 9002*<br>
 	> *NODE_ENV = development*<br>
