@@ -8,7 +8,7 @@ Established in 2021.
 
 ## How users can get started with the project 
 
-### WINDOWS:<br>
+### Windows:<br>
 
 1. Remove all versions of node from device if it exists<br>
 2. Utilise Node Version Manager and install npm and node <br>
@@ -21,7 +21,7 @@ Established in 2021.
 6. Open a terminal, enter the client folder using ```cd client``` then run ```yarn install``` to install dependencies <br>
 7. Create a file called ‘.env’ with the following content inside the client folder<br>
 	> *BASE_URL=http://localhost:9002*<br>
-	> *API_KEY=AIzaSyCrlN9M3inv_lDEqBoa3AodLxhpvYd_iwI*<br>
+	> *API_KEY='Ask WDCC/UADS for access'<br>
 8. Open a new terminal, enter the server folder using ```cd server``` then run ```yarn install``` to install necessary packages<br>
 9. In MongoDB, Security → Database Access, click + Add New Database User<br>
 	> Choose ReadAndWriteAdmin in Built-in role <br>
@@ -40,21 +40,19 @@ Established in 2021.
 
 ### Mac:<br>
 
-1. Utilise Node Version Manager and install npm and node<br>
-2. Install yarn <br>
-	> Text Instruction: [Node Version Manager – nvm Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)<br>
-	> Video Instruction: [Installation | Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)<br>
-3. Check yarn version by ‘yarn --v’<br>
-	>If the version is not 1.22.4, run ‘yarn set version 1.22.4’ yarn set version<br> 
+1. Remove all versions of node from device if it exists<br>
+2. Utilise Node Version Manager and install npm and node<br>
+	> [Node Version Manager – nvm Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)<br>
+3. Install yarn and check version by ```yarn --v```<br>
+	> [Installation | Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)<br>
+	>If the version is not 1.22.4, run ```yarn set version 1.22.4``` yarn set version<br> 
 	Some other earlier versions not tested by the team may also work<br>
 4. Clone the repo<br>
-5. Open terminal under the client folder  ‘cd client’<br>
-	> Run ‘yarn’ or ‘yarn install’ to install dependencies (This step will take a while)<br>
+5. Open terminal, enter the client folder using ```cd client```, and run ```yarn``` or ```yarn install``` to install dependencies (This step will take a while)<br>
 6. Go inside client folder and create a file called ‘.env’ with the following content<br>
 	> *BASE_URL=http://localhost:9002*<br>
-	> *API_KEY=AIzaSyCrlN9M3inv_lDEqBoa3AodLxhpvYd_iwI*<br>
-7. Open terminal under the server folder ‘cd server’<br>
-	> Run ‘yarn’ or ‘yarn install’ to install dependencies  (This step will take a while)<br>
+	> *API_KEY='Ask WDCC/UADS for access'<br>
+7. Open terminal under the server folder using ```cd server```nd run ```yarn``` or ```yarn install``` to install dependencies (This step will take a while)<br>
 8. In MongoDB, Security → Database Access, click + Add New Database User<br>
 	> Choose ReadAndWriteAdmin in Built-in role <br>
 	> Fill the other information and click Add User <br>
@@ -64,17 +62,13 @@ Established in 2021.
 	> *MONGODB_URI = mongodb+srv://{UserName}:{Password}@uads-cluster.sw67y.mongodb.net/ retryWrites=true&w=majority*<br>
 	> *PORT = 9002*<br>
 	> *NODE_ENV = development*<br>
-10. Run ‘npm install mongodb’<br>
-11. Run ‘yarn run dev’ to start on default port 9002<br>
-12. Go back to client folder terminal <br>
-	> Run ‘yarn start’ <br>
-	> Follow expo instructions to open the web page (click w) <br>
+10. Run ```npm install mongodb```<br>
+11. Run ```yarn run dev``` to start on default port 9002<br>
+12. Go back to client folder terminal and run ```yarn start``` <br>
+13. Follow expo instructions. Press ```w``` to open the web page <br>
 
 ### Node versions that have been tested working:<br>
-(above or equal to v12 and below or equal to v16)<br>
-16.14.2<br>
-16.16.0<br>
-16.20.0<br>
+Above or equal to v12 and below or equal to v16, including ```16.14.2```, ```16.16.0```, ```16.20.0```<br>
 
 ### Troubleshooting:<br>
 1. QR Code generated in terminal in client does not work<br>
