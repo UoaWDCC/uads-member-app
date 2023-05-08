@@ -72,7 +72,7 @@ export const AboutScreen = observer(function AboutScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box alignItems="center" justifyContent="center">
+        <Box alignItems="left" justifyContent="center">
           <Text
             preset="header"
             text="University of Auckland"
@@ -88,6 +88,10 @@ export const AboutScreen = observer(function AboutScreen() {
             text="Society"
             style={styles.headerStyle}
           ></Text>
+         </Box>
+
+         <Box alignItems="left" justifyContent="center">
+
           <Text
             preset="header"
             text="What We Do"
