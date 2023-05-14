@@ -1,13 +1,14 @@
-import React from "react"
-import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Dimensions } from "react-native"
-import { Screen, Text, AutoImage as Image } from "../../components"
 import "firebase/auth"
-import { color } from "../../theme"
+import { observer } from "mobx-react-lite"
 import { Box, NativeBaseProvider } from "native-base"
-import { palette } from "../../theme/palette"
+import React from "react"
+import { Dimensions, ImageBackgroundComponent, StyleSheet, ViewStyle } from "react-native"
+import { Screen, Text } from "../../components"
+import { color } from "../../theme"
+import { backgroundColor } from "styled-system"
 
 const uadsLogo = require("../../resources/logo.png")
+const cupcake1 = require("../../resources/cupcake.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
 
   subHeaderStyle: {
-    fontFamily: "Bitter",
+    fontFamily: "Bitter-Bold",
     fontStyle: "italic",
     fontSize: 24,
     margin: 10,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   },
 
   headerStyle: {
-    fontFamily: "Bitter",
+    fontFamily: "Bitter-Bold",
     fontStyle: "italic",
     fontSize: 72,
     margin: 10,
@@ -66,13 +67,19 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textDecorationColor: color.palette.brown,
   },
+
+  topbox: {
+    backgroundImage: `url(${cupcake1})`,
+    width: 390,
+    height: 356,
+  }
 })
 
 export const AboutScreen = observer(function AboutScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box alignItems="left" justifyContent="center">
+        <Box alignItems="left" justifyContent="center" style={styles.topbox}>
           <Text
             preset="header"
             text="University of Auckland"
@@ -88,9 +95,9 @@ export const AboutScreen = observer(function AboutScreen() {
             text="Society"
             style={styles.headerStyle}
           ></Text>
-         </Box>
+        </Box>
 
-         <Box alignItems="left" justifyContent="center">
+        <Box alignItems="left" justifyContent="center">
 
           <Text
             preset="header"
@@ -98,13 +105,13 @@ export const AboutScreen = observer(function AboutScreen() {
             style={styles.textBoxHeading1Style}
           ></Text>
           <Text
-            text="The Dessert Society aims to bring people together through the joy of dessert.
-
-            With many different types of events, from bake-offs to cultural food events, we create an environment that anyone can join and have their sweet tooth fulfilled.
-            
-            As a member, you gain access to discounts and deals at our sponsored dessert hotspots."
             style={styles.bodyTextStyle}
-          ></Text>
+          >The Dessert Society aims to bring people together through the joy of dessert. {'\n'}{'\n'}
+
+          With many different types of events, from bake-offs to cultural food events, we create an environment that anyone can join and have their sweet tooth fulfilled. {'\n'}{'\n'}
+          
+          As a member, you gain access to discounts and deals at our sponsored dessert hotspots.
+          </Text>
         </Box>
       </NativeBaseProvider>
     </Screen>
