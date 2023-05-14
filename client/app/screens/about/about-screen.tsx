@@ -32,9 +32,8 @@ const styles = StyleSheet.create({
     fontFamily: "Bitter-Bold",
     fontStyle: "italic",
     fontSize: 24,
-    margin: 10,
     marginLeft: 20,
-    textAlign: "center",
+    textAlign: "left",
     textDecorationColor: "rgba(231, 201, 191, 0)",
   },
 
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
     fontFamily: "Bitter-Bold",
     fontStyle: "italic",
     fontSize: 72,
-    margin: 10,
+    margin: -5,
     marginLeft: 20,
     textAlign: "left",
     textDecorationColor: color.palette.brown,
@@ -72,6 +71,7 @@ const styles = StyleSheet.create({
     backgroundImage: `url(${cupcake1})`,
     width: 390,
     height: 356,
+    paddingTop: 130,
     backgroundRepeat:"no-repeat",
     backgroundSize: '508px 425px',
     backgroundPosition: '-10px -52px'
