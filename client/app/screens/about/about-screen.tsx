@@ -5,7 +5,7 @@ import React from "react"
 import { Dimensions, ImageBackgroundComponent, StyleSheet, ViewStyle } from "react-native"
 import { Screen, Text } from "../../components"
 import { color } from "../../theme"
-import { backgroundColor } from "styled-system"
+import { backgroundColor, backgroundPosition, position } from "styled-system"
 
 const uadsLogo = require("../../resources/logo.png")
 const cupcake1 = require("../../resources/cupcake.png")
@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
     backgroundImage: `url(${cupcake1})`,
     width: 390,
     height: 356,
+    backgroundRepeat:"no-repeat",
+    backgroundSize: '508px 425px',
+    backgroundPosition: '-10px -52px'
   }
 })
 
