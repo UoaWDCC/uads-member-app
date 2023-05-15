@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert, Dimensions } from "react-native"
+import { ViewStyle, StyleSheet, Alert, Dimensions, TouchableWithoutFeedback } from "react-native"
 import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -17,7 +17,8 @@ const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.background,
+  // backgroundColor: color.background,
+  backgroundColor: "#eac3bc",
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
@@ -29,18 +30,28 @@ const styles = StyleSheet.create({
     width: sWidth * 0.8,
   },
 
-  signinButtonStyle: {
+  headerBoxStyle: {
     alignSelf: "center",
     flex: 1,
-    marginTop: 10,
-    padding: 15,
-    width: 275,
+    paddingBottom: 50,
+    paddingTop: 150,
+    // backgroundColor: "black",
+  },
+
+  headerTextStyle: {
+    fontFamily: "Bitter",
+    fontStyle: "italic",
+    fontWeight: "700",
+    fontSize: 24,
+    lineHeight: 29,
+    textAlign: "center",
+    color: "#804949",
   },
 
   logoStyle: {
     alignSelf: "center",
-    height: sWidth,
-    width: sWidth,
+    width: sWidth * 0.65,
+    resizeMode: "contain",
   },
 
   signUpStyle: {
@@ -49,11 +60,55 @@ const styles = StyleSheet.create({
     top: "69%",
   },
 
-  textStyle: {
+  forgotPasswordStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: 14,
+    lineHeight: 21,
+    textAlign: "right",
+    color: "#C44F6C",
+  },
+
+  signinButtonStyle: {
+    alignSelf: "center",
     flex: 1,
     marginTop: 10,
+    padding: 10,
+    width: sWidth * 0.8,
+    height: sWidth * 0.13,
+    backgroundColor: "#804949",
+    borderRadius: 10,
+  },
+
+  loginTextStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: 24,
+    lineHeight: 36,
     textAlign: "center",
-    textDecorationLine: "underline",
+    color: "#EAC3BC",
+  },
+
+  bottomBoxStyle: {
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    backgroundColor: "#C44F6C",
+    width: sWidth,
+    height: sHeight * 0.1,
+    bottom: 0,
+  },
+
+  bottomTextStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontSize: 20,
+    lineHeight: 30,
+    textAlign: "center",
+    color: "#EAC3BC",
   },
 })
 
@@ -89,13 +144,12 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Box alignItems="center" justifyContent="center">
-          <Image source={uadsLogo} style={styles.logoStyle} />
+          <Stack alignItems="center" justifyContent="center" style={styles.headerBoxStyle}>
+            <Text style={styles.headerTextStyle}>Welcome To</Text>
+            <Image source={uadsLogo} style={styles.logoStyle} />
+          </Stack>
           <Stack space={2}>
-            {/* <UpiInputField/>
-          <PasswordInputField/> */}
             <Input
-              // getRef={input => {
-              // eslint-disable-next-line react-native/no-inline-styles
               style={styles.inputStyle}
               borderRadius="40px"
               placeholder="UPI..."
@@ -127,22 +181,25 @@ export const LoginScreen = observer(function LoginScreen() {
               onChangeText={(password) => setPassword(password)}
             />
             <Text
-              text="Forgot your Password? Click here!"
-              style={styles.textStyle}
+              text="Forgot Password?"
+              style={styles.forgotPasswordStyle}
               onPress={() => navigation.navigate("forgotPassword")}
-            ></Text>
-            <Text
-              text="Don't have an account? Sign up!"
-              style={styles.textStyle}
-              onPress={() => navigation.navigate("register")}
             ></Text>
             <MainButton
               style={styles.signinButtonStyle}
-              text="SIGN IN"
+              text={<Text style={styles.loginTextStyle}>LOG IN</Text>}
               onPress={() => userLogin()}
             />
           </Stack>
         </Box>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("register")}>
+          <Box flexDirection="row" style={styles.bottomBoxStyle}>
+            <Text style={[styles.bottomTextStyle, { fontWeight: "400" }]}>
+              Don't have an account?{" "}
+            </Text>
+            <Text style={[styles.bottomTextStyle, { fontWeight: "700" }]}>Sign up!</Text>
+          </Box>
+        </TouchableWithoutFeedback>
       </NativeBaseProvider>
     </Screen>
   )
