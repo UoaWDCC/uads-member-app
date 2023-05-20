@@ -1,6 +1,13 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert, Dimensions, TouchableWithoutFeedback } from "react-native"
+import {
+  ViewStyle,
+  StyleSheet,
+  Alert,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Linking,
+} from "react-native"
 import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -12,6 +19,9 @@ import { Box, Input, NativeBaseProvider, Stack } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 
 const uadsLogo = require("../../resources/logo.png")
+const arrow = require("../../resources/arrow.png")
+const hiddenEye = require("../../resources/hiddenEye.png")
+const visibleEye = require("../../resources/visibleEye.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -26,16 +36,10 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-  inputStyle: {
-    width: sWidth * 0.8,
-  },
-
   headerBoxStyle: {
     alignSelf: "center",
     flex: 1,
-    paddingBottom: 50,
-    paddingTop: 150,
-    // backgroundColor: "black",
+    paddingBottom: 20,
   },
 
   headerTextStyle: {
@@ -54,10 +58,38 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 
-  signUpStyle: {
-    flex: 1,
-    position: "absolute",
-    top: "69%",
+  inputHeaderStyle: {
+    fontFamily: "Poppins",
+    fontWeight: "400",
+    fontSize: 14,
+    lineHeight: 21,
+    color: "#804949",
+  },
+
+  inputBoxStyle: {
+    alignSelf: "center",
+    width: sWidth * 0.8,
+    paddingLeft: 4,
+    borderBottomWidth: 3,
+    borderBottomColor: "#804949",
+  },
+
+  inputTextStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "400",
+    color: "#804949",
+    fontSize: 24,
+    lineHeight: 36,
+    borderWidth: 0,
+    paddingLeft: 0,
+  },
+
+  eyeStyle: {
+    alignSelf: "center",
+    width: sWidth * 0.08,
+    height: sWidth * 0.08,
+    resizeMode: "contain",
   },
 
   forgotPasswordStyle: {
@@ -70,10 +102,10 @@ const styles = StyleSheet.create({
     color: "#C44F6C",
   },
 
-  signinButtonStyle: {
+  loginButtonStyle: {
     alignSelf: "center",
     flex: 1,
-    marginTop: 10,
+    marginTop: 30,
     padding: 10,
     width: sWidth * 0.8,
     height: sWidth * 0.13,
@@ -110,6 +142,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#EAC3BC",
   },
+
+  arrowStyle: {
+    marginLeft: 8,
+  },
 })
 
 export const LoginScreen = observer(function LoginScreen() {
@@ -117,7 +153,7 @@ export const LoginScreen = observer(function LoginScreen() {
   // const { someStore, anotherStore } = useStores()
   const [upi, setUpi] = useState("")
   const [password, setPassword] = useState("")
-  const [show] = React.useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const { logIn } = React.useContext(AuthContext)
 
@@ -140,64 +176,75 @@ export const LoginScreen = observer(function LoginScreen() {
   // Pull in navigation via hook
   const navigation = useNavigation()
 
+  const eyeIcon = showPassword ? visibleEye : hiddenEye
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box alignItems="center" justifyContent="center">
+        <Box
+          alignItems="center"
+          justifyContent="center"
+          style={{ paddingTop: 100, paddingBottom: 50 }}
+        >
           <Stack alignItems="center" justifyContent="center" style={styles.headerBoxStyle}>
             <Text style={styles.headerTextStyle}>Welcome To</Text>
             <Image source={uadsLogo} style={styles.logoStyle} />
           </Stack>
           <Stack space={2}>
-            <Input
-              style={styles.inputStyle}
-              borderRadius="40px"
-              placeholder="UPI..."
-              _light={{
-                placeholderTextColor: color.text,
-                backgroundColor: color.palette.goldenGlow,
-                borderColor: color.palette.goldenGlow,
-              }}
-              _dark={{
-                placeholderTextColor: color.text,
-              }}
-              onChangeText={(upi) => setUpi(upi)}
-            />
+            <Box style={styles.inputBoxStyle}>
+              <Text style={styles.inputHeaderStyle}>UPI</Text>
+              <Input
+                style={styles.inputTextStyle}
+                placeholder="qwe123"
+                placeholderTextColor="#804949"
+                onChangeText={(upi) => setUpi(upi)}
+              />
+            </Box>
+            <Box style={styles.inputBoxStyle}>
+              <Text style={styles.inputHeaderStyle}>Password</Text>
+              <Box flexDirection="row" justifyContent="space-between">
+                <Input
+                  style={styles.inputTextStyle}
+                  placeholder="password"
+                  placeholderTextColor="#804949"
+                  onChangeText={(password) => setPassword(password)}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
+                  <Image source={eyeIcon} style={styles.eyeStyle} />
+                </TouchableWithoutFeedback>
+              </Box>
+            </Box>
 
-            <Input
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={styles.inputStyle}
-              borderRadius="40px"
-              type={show ? "text" : "password"}
-              placeholder="Password..."
-              _light={{
-                placeholderTextColor: color.text,
-                backgroundColor: color.palette.goldenGlow,
-                borderColor: color.palette.goldenGlow,
-              }}
-              _dark={{
-                placeholderTextColor: color.palette.goldenGlow,
-              }}
-              onChangeText={(password) => setPassword(password)}
-            />
             <Text
               text="Forgot Password?"
               style={styles.forgotPasswordStyle}
               onPress={() => navigation.navigate("forgotPassword")}
             ></Text>
             <MainButton
-              style={styles.signinButtonStyle}
+              style={styles.loginButtonStyle}
               text={<Text style={styles.loginTextStyle}>LOG IN</Text>}
               onPress={() => userLogin()}
             />
           </Stack>
         </Box>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("register")}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Linking.openURL(
+              "https://docs.google.com/forms/d/1KJkc74k-FuXlqtMw4q2xrHqqaUnGdYi85FdIGu7a5NA/viewform?edit_requested=true",
+            ).catch((err) => console.error("An error occurred", err))
+          }}
+        >
           <Box flexDirection="row" style={styles.bottomBoxStyle}>
             <Text style={[styles.bottomTextStyle, { fontWeight: "400" }]}>
               Don't have an account?{" "}
             </Text>
             <Text style={[styles.bottomTextStyle, { fontWeight: "700" }]}>Sign up!</Text>
+            <Image source={arrow} style={styles.arrowStyle} />
           </Box>
         </TouchableWithoutFeedback>
       </NativeBaseProvider>
