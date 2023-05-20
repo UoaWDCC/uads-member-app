@@ -1,13 +1,18 @@
 import "firebase/auth"
 import { observer } from "mobx-react-lite"
-import { Box, NativeBaseProvider } from "native-base"
+import { Box, NativeBaseProvider, } from "native-base"
 import React from "react"
 import { Dimensions, ImageBackgroundComponent, StyleSheet, ViewStyle } from "react-native"
-import { Screen, Text } from "../../components"
+import { Screen, Text, AutoImage as Image } from "../../components"
 import { color } from "../../theme"
 import { backgroundColor, backgroundPosition, position } from "styled-system"
 
-const uadsLogo = require("../../resources/logo.png")
+const facebookLogo = require("../../resources/facebookLogo.png")
+const instaLogo = require("../../resources/instagramLogo.png")
+const discordLogo = require("../../resources/discordLogo.png")
+const tiktokLogo = require("../../resources/tiktokLogo.png")
+const mailLogo = require("../../resources/mailLogo.png")
+
 const cupcake1 = require("../../resources/cupcake.png")
 
 const sWidth = Dimensions.get("window").width
@@ -75,6 +80,26 @@ const styles = StyleSheet.create({
     backgroundRepeat:"no-repeat",
     backgroundSize: '508px 425px',
     backgroundPosition: '-10px -52px'
+  },
+
+  middlebox:{
+    width: 390,
+    height: 356,
+  },
+
+  bottombox:{
+    height:"100%",
+    backgroundColor: "rgba(185, 101, 116, 1)"
+  },
+
+  socialMediaBox: {
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"center",    
+    alignContent:"center",
+    alignItems:"center",
+    marginTop:"23px",
+    columnGap: "12px"
   }
 })
 
@@ -100,7 +125,7 @@ export const AboutScreen = observer(function AboutScreen() {
           ></Text>
         </Box>
 
-        <Box alignItems="left" justifyContent="center">
+        <Box alignItems="left" justifyContent="center" style={styles.middlebox}>
 
           <Text
             preset="header"
@@ -115,6 +140,15 @@ export const AboutScreen = observer(function AboutScreen() {
           
           As a member, you gain access to discounts and deals at our sponsored dessert hotspots.
           </Text>
+        </Box>
+        <Box style={styles.bottombox}>
+          <Box style={styles.socialMediaBox}>
+            <Image source={facebookLogo}/>
+            <Image source={instaLogo}/>
+            <Image source={discordLogo}/>
+            <Image source={tiktokLogo}/>
+            <Image source={mailLogo}/>
+          </Box>
         </Box>
       </NativeBaseProvider>
     </Screen>
