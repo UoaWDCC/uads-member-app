@@ -13,7 +13,7 @@ const discordLogo = require("../../resources/discordLogo.png")
 const tiktokLogo = require("../../resources/tiktokLogo.png")
 const mailLogo = require("../../resources/mailLogo.png")
 
-const cupcake1 = require("../../resources/cupcake.png")
+const cupcake = require("../../resources/cupcake.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
 
   topbox: {
-    backgroundImage: `url(${cupcake1})`,
+    backgroundImage: `url(${cupcake})`,
     width: 390,
     height: 356,
     paddingTop: 130,
@@ -88,17 +88,17 @@ const styles = StyleSheet.create({
   },
 
   bottombox:{
-    height:"100%",
+    height: 83,
     backgroundColor: "rgba(185, 101, 116, 1)"
   },
 
   socialMediaBox: {
+    height: "100%",
     display:"flex",
     flexDirection:"row",
     justifyContent:"center",    
     alignContent:"center",
     alignItems:"center",
-    marginTop:"23px",
     columnGap: "12px"
   }
 })
@@ -143,11 +143,21 @@ export const AboutScreen = observer(function AboutScreen() {
         </Box>
         <Box style={styles.bottombox}>
           <Box style={styles.socialMediaBox}>
-            <Image source={facebookLogo}/>
-            <Image source={instaLogo}/>
-            <Image source={discordLogo}/>
-            <Image source={tiktokLogo}/>
-            <Image source={mailLogo}/>
+            <a href="https://www.facebook.com/uoadessertsociety?mibextid=LQQJ4d">
+              <Image source={facebookLogo}/>
+            </a>
+            <a href="https://instagram.com/uoadessertsociety?igshid=NTc4MTIwNjQ2YQ==">
+              <Image source={instaLogo}/>
+            </a>
+            <a href="https://discord.gg/SrcgRFEH">
+              <Image source={discordLogo}/>
+            </a>
+            <a href="https://www.tiktok.com/@uoadessertsociety?_t=8cPhTjyUPyb&_r=1">
+              <Image source={tiktokLogo}/>
+            </a>
+            <a href="mailto:uoadessertsociety@gmail.com">
+              <Image source={mailLogo}/>
+            </a>
           </Box>
         </Box>
       </NativeBaseProvider>
