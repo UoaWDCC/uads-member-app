@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, TextStyle, TouchableOpacity } from "react-native"
 import { Screen, SponsorIcon } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
 import { color, typography } from "../../theme"
-import { NativeBaseProvider, Box, FlatList } from "native-base"
+import { NativeBaseProvider, Box, FlatList, Input, HStack } from "native-base"
 import firebase from "firebase"
 import axios from "axios"
+import Icon from "react-native-vector-icons/FontAwesome"
+
 import { BASE_URL } from "@env"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
 
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const [query, setQuery] = useState("")
   useEffect(() => {
     firebase
       .auth()
@@ -39,6 +43,28 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Text style={TEXT} text={"Sponsors:"} />
+        <HStack space={2} alignItems="center">
+          <Input
+            ref={searchInputRef}
+            onChangeText={(text) => setQuery(text)}
+            // eslint-disable-next-line react-native/no-inline-styles
+            // style={{ width: "calc(90vw - 30px)", height: 38 }}
+            borderRadius="40px"
+            marginLeft="10px"
+            float="left"
+            placeholder="Search"
+            _light={{
+              placeholderTextColor: color.text,
+              backgroundColor: color.palette.white,
+              borderColor: color.palette.goldenGlow,
+            }}
+            _dark={{
+              placeholderTextColor: color.text,
+            }}
+          />
+          <Icon name="search" size={20} color="#333" width="fit-content" />
+        </HStack>
+
         <Box style={CONTAINER}>
           <FlatList
             data={sponsors}
