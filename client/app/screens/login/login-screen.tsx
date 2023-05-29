@@ -27,8 +27,7 @@ const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
 
 const ROOT: ViewStyle = {
-  // backgroundColor: color.background,
-  backgroundColor: "#eac3bc",
+  backgroundColor: color.background,
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 29,
     textAlign: "center",
-    color: "#804949",
+    color: color.text,
   },
 
   logoStyle: {
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 14,
     lineHeight: 21,
-    color: "#804949",
+    color: color.text,
   },
 
   inputBoxStyle: {
@@ -71,14 +70,14 @@ const styles = StyleSheet.create({
     width: sWidth * 0.8,
     paddingLeft: 4,
     borderBottomWidth: 3,
-    borderBottomColor: "#804949",
+    borderBottomColor: color.line,
   },
 
   inputTextStyle: {
     fontFamily: "Poppins",
     fontStyle: "normal",
     fontWeight: "400",
-    color: "#804949",
+    color: color.text,
     fontSize: 24,
     lineHeight: 36,
     borderWidth: 0,
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     textAlign: "right",
-    color: "#C44F6C",
+    color: color.primary,
   },
 
   loginButtonStyle: {
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: sWidth * 0.8,
     height: sWidth * 0.13,
-    backgroundColor: "#804949",
+    backgroundColor: color.line,
     borderRadius: 10,
   },
 
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 36,
     textAlign: "center",
-    color: "#EAC3BC",
+    color: color.background,
   },
 
   bottomBoxStyle: {
@@ -128,10 +127,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    backgroundColor: "#C44F6C",
+    backgroundColor: color.primary,
     width: sWidth,
     height: sHeight * 0.1,
     bottom: 0,
+    alignContent: "flex-end",
   },
 
   bottomTextStyle: {
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 30,
     textAlign: "center",
-    color: "#EAC3BC",
+    color: color.background,
   },
 
   arrowStyle: {
@@ -200,7 +200,7 @@ export const LoginScreen = observer(function LoginScreen() {
               <Input
                 style={styles.inputTextStyle}
                 placeholder="qwe123"
-                placeholderTextColor="#804949"
+                placeholderTextColor={color.text}
                 onChangeText={(upi) => setUpi(upi)}
               />
             </Box>
@@ -210,7 +210,7 @@ export const LoginScreen = observer(function LoginScreen() {
                 <Input
                   style={styles.inputTextStyle}
                   placeholder="password"
-                  placeholderTextColor="#804949"
+                  placeholderTextColor={color.text}
                   onChangeText={(password) => setPassword(password)}
                   secureTextEntry={!showPassword}
                 />
