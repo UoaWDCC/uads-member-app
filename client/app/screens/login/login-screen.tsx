@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
 
   eyeStyle: {
     alignSelf: "center",
-    width: sWidth * 0.08,
-    height: sWidth * 0.08,
+    width: 30,
+    height: 30,
     resizeMode: "contain",
   },
 
