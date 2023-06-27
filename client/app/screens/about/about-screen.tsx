@@ -2,7 +2,7 @@ import "firebase/auth"
 import { observer } from "mobx-react-lite"
 import { Box, NativeBaseProvider, } from "native-base"
 import React from "react"
-import { Dimensions, ImageBackgroundComponent, StyleSheet, ViewStyle } from "react-native"
+import { Dimensions, ImageBackgroundComponent, Linking, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { color } from "../../theme"
 import { backgroundColor, backgroundPosition, position } from "styled-system"
@@ -104,6 +104,32 @@ const styles = StyleSheet.create({
 })
 
 export const AboutScreen = observer(function AboutScreen() {
+
+  const handleFacebookPress = () => {
+    const externalLink = 'https://www.facebook.com/uoadessertsociety?mibextid=LQQJ4d';
+    Linking.openURL(externalLink);
+  };
+
+  const handleInstaPress = () => {
+    const externalLink = 'https://instagram.com/uoadessertsociety?igshid=NTc4MTIwNjQ2YQ==';
+    Linking.openURL(externalLink);
+  };
+
+  const handleDiscordPress = () => {
+    const externalLink = 'https://discord.gg/SrcgRFEH';
+    Linking.openURL(externalLink);
+  };
+
+  const handleTikTokPress = () => {
+    const externalLink = 'https://www.tiktok.com/@uoadessertsociety?_t=8cPhTjyUPyb&_r=1';
+    Linking.openURL(externalLink);
+  };
+
+  const handleMailPress = () => {
+    const externalLink = 'mailto:uoadessertsociety@gmail.com';
+    Linking.openURL(externalLink);
+  };
+
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
@@ -143,21 +169,25 @@ export const AboutScreen = observer(function AboutScreen() {
         </Box>
         <Box style={styles.bottombox}>
           <Box style={styles.socialMediaBox}>
-            <a href="https://www.facebook.com/uoadessertsociety?mibextid=LQQJ4d">
+            <TouchableOpacity onPress={handleFacebookPress}>
               <Image source={facebookLogo}/>
-            </a>
-            <a href="https://instagram.com/uoadessertsociety?igshid=NTc4MTIwNjQ2YQ==">
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={handleInstaPress}>
               <Image source={instaLogo}/>
-            </a>
-            <a href="https://discord.gg/SrcgRFEH">
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleDiscordPress}>
               <Image source={discordLogo}/>
-            </a>
-            <a href="https://www.tiktok.com/@uoadessertsociety?_t=8cPhTjyUPyb&_r=1">
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleTikTokPress}>
               <Image source={tiktokLogo}/>
-            </a>
-            <a href="mailto:uoadessertsociety@gmail.com">
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={handleMailPress}>
               <Image source={mailLogo}/>
-            </a>
+            </TouchableOpacity>
           </Box>
         </Box>
       </NativeBaseProvider>
