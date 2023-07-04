@@ -21,15 +21,29 @@ const ROOT: ViewStyle = {
 const styles = StyleSheet.create({
   changePassword: {
     alignItems: "center",
+    color: color.palette.palePeach,
     fontFamily: "Sen-Regular",
     fontSize: 18,
     fontWeight: "bold",
+    justifyContent: "center"
+  },
+
+  changePasswordButton: {
+    alignItems: "center",
+    backgroundColor: color.palette.darkRed,
+    borderRadius: 10,
+    flexDirection: "row",
+    flex: 1,
+    fontFamily: "Sen-Regular",
     justifyContent: "center",
+    marginBottom: 15,
+    minHeight: 60,
+    width: 208,
   },
 
   displayBox: {
     alignItems: "center",
-    backgroundColor: color.palette.goldenGlow,
+    backgroundColor: color.palette.brown,
     borderRadius: 10,
     flexDirection: "row",
     flex: 1,
@@ -56,8 +70,8 @@ const styles = StyleSheet.create({
   },
 
   notifsButton: {
-    backgroundColor: color.palette.tangelo,
-    borderColor: color.palette.white,
+    backgroundColor: color.palette.brown,
+    borderColor: color.palette.palePeach,
     borderRadius: 15,
     borderWidth: 3,
     justifyContent: "center",
@@ -71,26 +85,27 @@ const styles = StyleSheet.create({
   },
 
   notifsText: {
-    color: color.palette.brown,
+    color: color.palette.palePeach,
     fontFamily: "Sen-Regular",
     fontWeight: "bold",
   },
 
   signOutButton: {
     alignItems: "center",
-    backgroundColor: color.palette.orange,
+    backgroundColor: color.palette.fuschia,
     marginTop: 20,
     width: 160,
   },
 
   signOutText: {
-    color: color.palette.black,
+    color: color.palette.palePeach,
     fontFamily: "Sen-Regular",
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
 
   textLabel: {
+    color: color.palette.palePeach,
     fontFamily: "Sen-Regular",
     fontSize: 16,
     fontWeight: "bold",
@@ -250,7 +265,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                 {
                   opacity: pressed ? 0.2 : 1
                 },
-                styles.displayBox
+                styles.changePasswordButton
               ]}
               onPress={() => navigation.navigate("change-password")}
             >
