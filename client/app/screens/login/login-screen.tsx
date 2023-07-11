@@ -225,10 +225,7 @@ export const LoginScreen = observer(function LoginScreen() {
                   onChangeText={(password) => setPassword(password)}
                   secureTextEntry={!showPassword}
                 />
-                <View
-                  // onPress={togglePasswordVisibility}
-                  style={{ position: "absolute", right: 0 }}
-                >
+                <View style={{ position: "absolute", right: 0 }}>
                   <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
                     <Image source={eyeIcon} style={styles.eyeStyle} />
                   </TouchableWithoutFeedback>
