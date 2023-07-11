@@ -1,5 +1,4 @@
 import "firebase/auth"
-
 import {
   Alert,
   Dimensions,
@@ -13,11 +12,8 @@ import {
 import { Box, NativeBaseProvider, Stack, View } from "native-base"
 import { AutoImage as Image, MainButton, Screen, Text } from "../../components"
 import React, { useState } from "react"
-
 import { AuthContext } from "../../../context/AuthContext"
 import { color } from "../../theme"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
 import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
@@ -26,7 +22,6 @@ const uadsLogo = require("../../resources/logo.png")
 const arrow = require("../../resources/arrow.png")
 const hiddenEye = require("../../resources/hiddenEye.png")
 const visibleEye = require("../../resources/visibleEye.png")
-
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
 
@@ -90,7 +85,6 @@ const styles = StyleSheet.create({
   },
 
   eyeStyle: {
-    // alignSelf: "center",
     width: 30,
     height: 30,
     resizeMode: "contain",
@@ -155,11 +149,9 @@ const styles = StyleSheet.create({
 
 export const LoginScreen = observer(function LoginScreen() {
   // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
   const [upi, setUpi] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-
   const { logIn } = React.useContext(AuthContext)
 
   function userLogin() {
@@ -201,16 +193,16 @@ export const LoginScreen = observer(function LoginScreen() {
           </Stack>
           <Stack space={2}>
             <Box style={styles.inputBoxStyle}>
-              <Text style={styles.inputHeaderStyle}>UPI</Text>
+              {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}
               <TextInput
                 style={styles.inputTextStyle}
-                placeholder="qwe123"
+                placeholder="UPI"
                 placeholderTextColor={color.text}
                 onChangeText={(upi) => setUpi(upi)}
               />
             </Box>
             <Box style={styles.inputBoxStyle}>
-              <Text style={styles.inputHeaderStyle}>Password</Text>
+              {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}
               <Box
                 flexDirection="row"
                 style={{
@@ -240,7 +232,7 @@ export const LoginScreen = observer(function LoginScreen() {
             ></Text>
             <MainButton
               style={styles.loginButtonStyle}
-              text={<Text style={styles.loginTextStyle}>LOG IN</Text>}
+              text={<Text style={styles.loginTextStyle}>Log in</Text>}
               onPress={() => userLogin()}
             />
           </Stack>
