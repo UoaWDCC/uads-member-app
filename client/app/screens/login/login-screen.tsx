@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     borderWidth: 0,
     paddingLeft: 0,
-    outlineWidth: 0,
+    outlineStyle: "none",
   },
 
   eyeStyle: {
