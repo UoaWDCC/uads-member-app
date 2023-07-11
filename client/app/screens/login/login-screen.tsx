@@ -1,21 +1,25 @@
-import React, { useState } from "react"
-import { observer } from "mobx-react-lite"
+import "firebase/auth"
+
 import {
-  ViewStyle,
-  StyleSheet,
   Alert,
   Dimensions,
-  TouchableWithoutFeedback,
   Linking,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  ViewStyle,
 } from "react-native"
-import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
+import { Box, NativeBaseProvider, Stack, View } from "native-base"
+import { AutoImage as Image, MainButton, Screen, Text } from "../../components"
+import React, { useState } from "react"
+
+import { AuthContext } from "../../../context/AuthContext"
+import { color } from "../../theme"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import firebase from "../../../firebaseSetup"
-import "firebase/auth"
-import { AuthContext } from "../../../context/AuthContext"
-import { color } from "../../theme"
-import { Box, Input, NativeBaseProvider, Stack } from "native-base"
+import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
 
 const uadsLogo = require("../../resources/logo.png")
@@ -82,10 +86,11 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     borderWidth: 0,
     paddingLeft: 0,
+    outlineWidth: 0,
   },
 
   eyeStyle: {
-    alignSelf: "center",
+    // alignSelf: "center",
     width: 30,
     height: 30,
     resizeMode: "contain",
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
     width: sWidth,
     height: sHeight * 0.1,
     bottom: 0,
-    alignContent: "flex-end",
+    flexDirection: "row",
   },
 
   bottomTextStyle: {
@@ -197,7 +202,7 @@ export const LoginScreen = observer(function LoginScreen() {
           <Stack space={2}>
             <Box style={styles.inputBoxStyle}>
               <Text style={styles.inputHeaderStyle}>UPI</Text>
-              <Input
+              <TextInput
                 style={styles.inputTextStyle}
                 placeholder="qwe123"
                 placeholderTextColor={color.text}
@@ -206,17 +211,28 @@ export const LoginScreen = observer(function LoginScreen() {
             </Box>
             <Box style={styles.inputBoxStyle}>
               <Text style={styles.inputHeaderStyle}>Password</Text>
-              <Box flexDirection="row" justifyContent="space-between">
-                <Input
+              <Box
+                flexDirection="row"
+                style={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <TextInput
                   style={styles.inputTextStyle}
                   placeholder="password"
                   placeholderTextColor={color.text}
                   onChangeText={(password) => setPassword(password)}
                   secureTextEntry={!showPassword}
                 />
-                <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
-                  <Image source={eyeIcon} style={styles.eyeStyle} />
-                </TouchableWithoutFeedback>
+                <View
+                  // onPress={togglePasswordVisibility}
+                  style={{ position: "absolute", right: 0 }}
+                >
+                  <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
+                    <Image source={eyeIcon} style={styles.eyeStyle} />
+                  </TouchableWithoutFeedback>
+                </View>
               </Box>
             </Box>
 
@@ -232,21 +248,21 @@ export const LoginScreen = observer(function LoginScreen() {
             />
           </Stack>
         </Box>
-        <TouchableWithoutFeedback
+
+        <Pressable
           onPress={() => {
             Linking.openURL(
               "https://docs.google.com/forms/d/1KJkc74k-FuXlqtMw4q2xrHqqaUnGdYi85FdIGu7a5NA/viewform?edit_requested=true",
             ).catch((err) => console.error("An error occurred", err))
           }}
+          style={styles.bottomBoxStyle}
         >
-          <Box flexDirection="row" style={styles.bottomBoxStyle}>
-            <Text style={[styles.bottomTextStyle, { fontWeight: "400" }]}>
-              Don't have an account?{" "}
-            </Text>
-            <Text style={[styles.bottomTextStyle, { fontWeight: "700" }]}>Sign up!</Text>
-            <Image source={arrow} style={styles.arrowStyle} />
-          </Box>
-        </TouchableWithoutFeedback>
+          <Text style={[styles.bottomTextStyle, { fontWeight: "400" }]}>
+            Don't have an account?{" "}
+          </Text>
+          <Text style={[styles.bottomTextStyle, { fontWeight: "700" }]}>Sign up!</Text>
+          <Image source={arrow} style={styles.arrowStyle} />
+        </Pressable>
       </NativeBaseProvider>
     </Screen>
   )
