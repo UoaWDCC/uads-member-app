@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     paddingLeft: 0,
     outlineStyle: "none",
+    width: sWidth * 0.8, //Add width to match autofill input field on Mozilla Firefox browser
   },
 
   eyeStyle: {
@@ -191,7 +192,7 @@ export const LoginScreen = observer(function LoginScreen() {
             <Text style={styles.headerTextStyle}>Welcome To</Text>
             <Image source={uadsLogo} style={styles.logoStyle} />
           </Stack>
-          <Stack space={2}>
+          <Stack space={4}>
             <Box style={styles.inputBoxStyle}>
               {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}
               <TextInput
@@ -201,12 +202,13 @@ export const LoginScreen = observer(function LoginScreen() {
                 onChangeText={(upi) => setUpi(upi)}
               />
             </Box>
-            <Box style={styles.inputBoxStyle}>
+            <Box mt={8} style={styles.inputBoxStyle}>
               {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}
               <Box
                 flexDirection="row"
                 style={{
                   justifyContent: "space-between",
+                  width: sWidth * 0.8,
                   alignItems: "center",
                 }}
               >
