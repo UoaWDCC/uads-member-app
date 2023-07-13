@@ -194,7 +194,8 @@ export const LoginScreen = observer(function LoginScreen() {
           </Stack>
           <Stack space={4}>
             <Box style={styles.inputBoxStyle}>
-              {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}
+              {/*Conditionally render UPI heading when user is typing*/}
+              {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}{" "}
               <TextInput
                 style={styles.inputTextStyle}
                 placeholder="UPI"
@@ -203,7 +204,8 @@ export const LoginScreen = observer(function LoginScreen() {
               />
             </Box>
             <Box mt={8} style={styles.inputBoxStyle}>
-              {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}
+              {/*Conditionally render Password heading when user is typing*/}
+              {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}{" "}
               <Box
                 flexDirection="row"
                 style={{
