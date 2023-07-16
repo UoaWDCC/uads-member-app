@@ -18,7 +18,7 @@ import firebase from "../../../firebaseSetup"
 import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
 
-const uadsLogo = require("../../resources/logo.png")
+const uadsLogo = require("../../resources/transparent_logo.png")
 const arrow = require("../../resources/arrow.png")
 const hiddenEye = require("../../resources/hiddenEye.png")
 const visibleEye = require("../../resources/visibleEye.png")
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
   logoStyle: {
     alignSelf: "center",
-    width: sWidth * 0.65,
+    width: sWidth * 0.55,
     resizeMode: "contain",
   },
 
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: color.text,
+    whiteSpace: "normal",
   },
 
   inputBoxStyle: {
@@ -186,13 +187,13 @@ export const LoginScreen = observer(function LoginScreen() {
         <Box
           alignItems="center"
           justifyContent="center"
-          style={{ paddingTop: 100, paddingBottom: 50 }}
+          style={{ paddingTop: 150, paddingBottom: 50 }}
         >
           <Stack alignItems="center" justifyContent="center" style={styles.headerBoxStyle}>
             <Text style={styles.headerTextStyle}>Welcome To</Text>
             <Image source={uadsLogo} style={styles.logoStyle} />
           </Stack>
-          <Stack space={4}>
+          <Stack space={0}>
             <Box style={styles.inputBoxStyle}>
               {/*Conditionally render UPI heading when user is typing*/}
               {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}{" "}
@@ -203,7 +204,7 @@ export const LoginScreen = observer(function LoginScreen() {
                 onChangeText={(upi) => setUpi(upi)}
               />
             </Box>
-            <Box mt={8} style={styles.inputBoxStyle}>
+            <Box mt={4} style={styles.inputBoxStyle}>
               {/*Conditionally render Password heading when user is typing*/}
               {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}{" "}
               <Box
@@ -216,7 +217,7 @@ export const LoginScreen = observer(function LoginScreen() {
               >
                 <TextInput
                   style={styles.inputTextStyle}
-                  placeholder="password"
+                  placeholder="Password"
                   placeholderTextColor={color.text}
                   onChangeText={(password) => setPassword(password)}
                   secureTextEntry={!showPassword}
