@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, View } from "react-native"
+import {ViewStyle, StyleSheet, View, Dimensions} from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: color.palette.palePeach,
     fontFamily: "Sen-Regular",
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
     justifyContent: "center"
   },
@@ -35,10 +35,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     fontFamily: "Sen-Regular",
+    height: 53,
     justifyContent: "center",
     marginBottom: 15,
-    minHeight: 60,
-    width: 208,
+    paddingVertical: 15,
+    width: 283,
   },
 
   displayBox: {
@@ -50,15 +51,15 @@ const styles = StyleSheet.create({
     fontFamily: "Sen-Regular",
     justifyContent: "center",
     marginBottom: 15,
-    minHeight: 60,
+    height: 60,
     width: 208,
   },
 
   header: {
-    fontSize: 40,
+    color: color.palette.darkRed,
     fontFamily: "Sen-Regular",
+    fontSize: 72,
     marginBottom: 50,
-    textDecorationColor: color.palette.brown,
   },
 
   input: {
@@ -93,15 +94,18 @@ const styles = StyleSheet.create({
   signOutButton: {
     alignItems: "center",
     backgroundColor: color.palette.fuschia,
-    marginTop: 20,
-    width: 160,
+    borderRadius: 0,
+    bottom: 0,
+    paddingBottom: 24,
+    paddingTop: 20,
+    width: Dimensions.get('window').width,
   },
 
   signOutText: {
     color: color.palette.palePeach,
     fontFamily: "Sen-Regular",
+    fontSize: 24,
     fontWeight: "bold",
-    textDecorationLine: "underline",
   },
 
   textLabel: {
@@ -214,7 +218,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
       <NativeBaseProvider>
         <Box flex={1} alignItems="center" justifyContent="center">
           <Stack space={5}>
-            <Text style={styles.header} preset="header" text="Settings:" />
+            <Text style={styles.header} preset="header" text="Settings" />
 
             <View style={styles.displayBox}>
               <View style={{ flex: 1, justifyContent: "center" }}>
@@ -259,21 +263,23 @@ export const SettingsScreen = observer(function SettingsScreen() {
                 </Text>
               </View>
             </View>
-
+          </Stack>
+          <Box style={{ margin: "auto", height: 60}}>
             <Button
-              style={({pressed}) => [
-                {
-                  opacity: pressed ? 0.2 : 1
-                },
-                styles.changePasswordButton
-              ]}
-              onPress={() => navigation.navigate("change-password")}
+                style={({pressed}) => [
+                  {
+                    opacity: pressed ? 0.2 : 1
+                  },
+                  styles.changePasswordButton
+                ]}
+                onPress={() => navigation.navigate("change-password")}
             >
               <Text style={styles.changePassword}>Change Password</Text>
             </Button>
-          </Stack>
+          </Box>
+        </Box>
 
-          <Button
+        <Button
             style={({pressed}) => [
               {
                 opacity: pressed ? 0.2 : 1
@@ -284,10 +290,9 @@ export const SettingsScreen = observer(function SettingsScreen() {
               firebase.auth().signOut()
               logOut()
             }}
-          >
-            <Text style={styles.signOutText}>Sign Out</Text>
-          </Button>
-        </Box>
+        >
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </Button>
       </NativeBaseProvider>
     </Screen>
   )
