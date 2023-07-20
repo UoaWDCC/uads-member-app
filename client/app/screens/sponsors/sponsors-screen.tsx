@@ -126,7 +126,6 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               width: sWidth * 0.2,
               height: sHeight * 0.04,
               resizeMode: "contain",
-              // backgroundColor: "black",
             }}
           />
           <Image
@@ -135,7 +134,6 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               width: sWidth * 0.3,
               height: sHeight * 0.06,
               resizeMode: "contain",
-              // backgroundColor: "black",
             }}
           />
         </Box>
