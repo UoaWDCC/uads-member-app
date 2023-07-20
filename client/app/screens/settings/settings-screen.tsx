@@ -41,10 +41,43 @@ const styles = StyleSheet.create({
     width: 208,
   },
 
+  editSettings: {
+    alignItems: "center",
+    color: color.palette.palePeach,
+    fontFamily: "Sen-Regular",
+    fontSize: 18,
+    fontWeight: "bold",
+    justifyContent: "center"
+  },
+
+  editSettingsButton: {
+    alignItems: "center",
+    backgroundColor: color.palette.fuschia,
+    borderRadius: 10,
+    flexDirection: "row",
+    flex: 1,
+    fontFamily: "Sen-Regular",
+    justifyContent: "center",
+    marginBottom: 15,
+    minHeight: 60,
+    width: 208,
+  },
+
   displayBox: {
     alignItems: "center",
     backgroundColor: color.palette.brown,
-    borderRadius: 10,
+    flexDirection: "row",
+    flex: 1,
+    fontFamily: "Sen-Regular",
+    justifyContent: "center",
+    marginBottom: 15,
+    minHeight: 60,
+    width: 208,
+  },
+
+  displayBoxEdit: {
+    alignItems: "center",
+    backgroundColor: color.palette.dustyPink,
     flexDirection: "row",
     flex: 1,
     fontFamily: "Sen-Regular",
@@ -117,6 +150,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
   const [name, setName] = useState("")
   const [notifs, setNotifs] = useState("")
   const [upi, setUpi] = useState("")
+  const [isEdit, setIsEdit] = useState(false)
   const { logOut } = React.useContext(AuthContext)
 
   useEffect(() => {
@@ -207,14 +241,29 @@ export const SettingsScreen = observer(function SettingsScreen() {
       })
   }
 
+  const handleEdit = () => {
+    setIsEdit(!isEdit)
+  }
+
   const navigation = useNavigation()
 
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Box flex={1} alignItems="center" justifyContent="center">
-          <Stack space={5}>
+          <Stack space={6 }>
             <Text style={styles.header} preset="header" text="Settings:" />
+
+            <View style={styles.displayBox}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textLabel}>UPI: </Text>
+              </View>
+              <View style={{ flex: 2.5 }}>
+                <Text style={{ fontWeight: "normal", fontFamily: "Sen-Regular", fontSize: 16 }}>
+                  {name === "" || notifs === "" ? "" : upi}
+                </Text>
+              </View>
+            </View>
 
             <View style={styles.displayBox}>
               <View style={{ flex: 1, justifyContent: "center" }}>
@@ -232,7 +281,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
               </View>
             </View>
 
-            <View style={styles.displayBox}>
+            <View style={isEdit ? styles.displayBoxEdit : styles.displayBox}>
               <View style={{ flex: 2, justifyContent: "center" }}>
                 <Text style={styles.textLabel}>Notifications:</Text>
               </View>
@@ -249,16 +298,19 @@ export const SettingsScreen = observer(function SettingsScreen() {
               </View>
             </View>
 
-            <View style={styles.displayBox}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.textLabel}>UPI: </Text>
-              </View>
-              <View style={{ flex: 2.5 }}>
-                <Text style={{ fontWeight: "normal", fontFamily: "Sen-Regular", fontSize: 16 }}>
-                  {name === "" || notifs === "" ? "" : upi}
-                </Text>
-              </View>
-            </View>
+            
+
+            <Button
+              style={({pressed}) => [
+                {
+                  opacity: pressed ? 0.2 : 1
+                },
+                styles.editSettingsButton
+              ]}
+              onPress={handleEdit}
+            >
+              <Text style={styles.editSettings}>Edit</Text>
+            </Button>
 
             <Button
               style={({pressed}) => [
