@@ -195,13 +195,13 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
 })
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.background,
+  backgroundColor: color.palette.palePeach,
   flex: 1,
 }
 
 const CONTAINER: ViewStyle = {
   flex: 1,
-  backgroundColor: color.background,
+  backgroundColor: color.palette.palePeach,
   marginTop: 10,
   borderTopRightRadius: 40,
   borderTopLeftRadius: 40,
