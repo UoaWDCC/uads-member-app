@@ -1,18 +1,33 @@
 import { Box, FlatList, NativeBaseProvider } from "native-base"
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  TextInput,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
 import React, { useEffect, useState } from "react"
 import { Screen, SponsorIcon } from "../../components"
-import { TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { color, typography } from "../../theme"
 
 import { BASE_URL } from "@env"
+import Icon from "react-native-vector-icons/FontAwesome"
+import { Text } from "../../components"
 import axios from "axios"
 import firebase from "firebase"
 import { observer } from "mobx-react-lite"
+import { useNavigation } from "@react-navigation/native"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
 
+  const sWidth = Dimensions.get("window").width
+  const sHeight = Dimensions.get("window").height
+
+  // Fetch sponsors on mount
   useEffect(() => {
     firebase
       .auth()
@@ -96,7 +111,78 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Text style={TEXT} text={"Sponsors:"} />
+        <Box
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "row",
+            paddingTop: 20,
+            paddingHorizontal: 10,
+          }}
+        >
+          <Image
+            source={require("../../resources/menu-icon.png")}
+            style={{
+              width: sWidth * 0.2,
+              height: sHeight * 0.04,
+              resizeMode: "contain",
+              // backgroundColor: "black",
+            }}
+          />
+          <Image
+            source={require("../../resources/logo.png")}
+            style={{
+              width: sWidth * 0.3,
+              height: sHeight * 0.06,
+              resizeMode: "contain",
+              // backgroundColor: "black",
+            }}
+          />
+        </Box>
+        <Box style={{ justifyContent: "space-between", alignItems: "center" }}>
+          <Image
+            source={require("../../resources/sponsors-header.png")}
+            style={{
+              width: sWidth * 0.85,
+              height: sHeight * 0.2,
+              resizeMode: "contain",
+            }}
+          />
+          <Box>
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor={color.palette.darkRed}
+              onChangeText={(search) => setSearchText(search)}
+              style={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                backgroundColor: color.palette.twentyFiveFuschia,
+                width: sWidth * 0.85,
+                height: sHeight * 0.05,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                borderBottomWidth: 3,
+                borderBottomColor: color.palette.darkRed,
+                paddingLeft: 10,
+              }}
+            />
+
+            <Icon
+              name="search"
+              size={20}
+              color={color.palette.darkRed}
+              width="fit-content"
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                top: "50%",
+                right: 5,
+                transform: [{ translateY: "-50%" }],
+              }}
+            />
+          </Box>
+        </Box>
+
         <Box style={CONTAINER}>
           <FlatList
             data={sponsors}
