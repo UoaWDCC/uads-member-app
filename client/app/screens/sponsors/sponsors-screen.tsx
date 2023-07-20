@@ -2,6 +2,7 @@ import { Box, FlatList, NativeBaseProvider } from "native-base"
 import {
   Dimensions,
   Image,
+  Pressable,
   StyleSheet,
   TextInput,
   TextStyle,
@@ -21,8 +22,22 @@ import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
+  const [openedSponsors, setOpenedSponsors] = useState([])
+
+  const handleToggleSponsor = (sponsorId: string) => {
+    // Check if the sponsorId is already in the openedSponsors array
+    const isOpened = openedSponsors.includes(sponsorId)
+
+    // If the sponsorId is not in the openedSponsors array, add it
+    if (!isOpened) {
+      setOpenedSponsors([...openedSponsors, sponsorId])
+    } else {
+      // If the sponsorId is in the openedSponsors array, remove it
+      setOpenedSponsors(openedSponsors.filter((id) => id !== sponsorId))
+    }
+  }
 
   const sWidth = Dimensions.get("window").width
   const sHeight = Dimensions.get("window").height
@@ -52,55 +67,64 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
 
   const renderSponsor = ({ item }) => {
     return (
-      <Box style={SPONSORICON}>
-        <Box
-          style={{
-            width: "100%",
-            padding: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            source={{ uri: item.imageLink }}
-            style={{
-              width: sWidth * 0.85,
-              height: sHeight * 0.04871794871,
-              resizeMode: "stretch",
-            }}
-          />
+      <Box style={{ flexDirection: "column", margin: 1, justifyContent: "center" }}>
+        {openedSponsors.includes(item._id) ? (
+          // Sponsor is opened
+          <Box></Box>
+        ) : (
+          // Sponsor is closed
           <Box
             style={{
-              position: "absolute",
-              top: "50%",
-            }}
-          >
-            <Text
-              style={{
-                paddingLeft: 10,
-              }}
-            >
-              {item.sponsorName}
-            </Text>
-          </Box>
-          <Box
-            style={{
-              backgroundColor: color.palette.palePeach,
-              position: "absolute",
-              zIndex: 1,
-              top: "50%",
-              right: 40,
-              height: 20,
-              width: 20,
-              borderRadius: "50%",
+              width: "100%",
+              padding: "1rem",
               justifyContent: "center",
               alignItems: "center",
-              transform: [{ translateY: "-50%" }],
             }}
           >
-            <Text style={{ fontWeight: "bold", paddingBottom: 1 }}>+</Text>
+            <Image
+              source={{ uri: item.imageLink }}
+              style={{
+                width: sWidth * 0.85,
+                height: sHeight * 0.04871794871,
+                resizeMode: "stretch",
+              }}
+            />
+            <Box
+              style={{
+                position: "absolute",
+                left: 0,
+              }}
+            >
+              <Text
+                style={{
+                  paddingLeft: 30,
+                }}
+              >
+                {item.sponsorName}
+              </Text>
+            </Box>
+            <Pressable
+              style={{
+                backgroundColor: color.palette.palePeach,
+                position: "absolute",
+                zIndex: 1,
+                top: "50%",
+                right: 40,
+                height: 20,
+                width: 20,
+                borderRadius: "50%",
+                justifyContent: "center",
+                alignItems: "center",
+                transform: [{ translateY: "-50%" }],
+              }}
+              onPress={() => {
+                handleToggleSponsor(item._id)
+              }}
+            >
+              <Text style={{ fontWeight: "bold", paddingBottom: 1 }}>+</Text>
+            </Pressable>
           </Box>
-        </Box>
+        )}
       </Box>
     )
   }
@@ -205,10 +229,4 @@ const CONTAINER: ViewStyle = {
   marginTop: 10,
   borderTopRightRadius: 40,
   borderTopLeftRadius: 40,
-}
-
-const SPONSORICON: ViewStyle = {
-  flexDirection: "column",
-  margin: 1,
-  justifyContent: "center",
 }
