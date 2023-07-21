@@ -39,8 +39,14 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
     }
   }
 
-  const sWidth = Dimensions.get("window").width
-  const sHeight = Dimensions.get("window").height
+  const [sWidth, setSWidth] = useState(0)
+  const [sHeight, setSHeight] = useState(0)
+
+  // Calculate screen dimensions on mount
+  useEffect(() => {
+    setSWidth(Dimensions.get("window").width)
+    setSHeight(Dimensions.get("window").height)
+  }, [])
 
   // Fetch sponsors on mount
   useEffect(() => {
