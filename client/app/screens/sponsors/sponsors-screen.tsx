@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Screen, SponsorIcon } from "../../components"
 import { color, typography } from "../../theme"
 
@@ -132,6 +132,14 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   // Search box
   const [searchText, setSearchText] = useState("")
 
+  const filteredSponsors = useMemo(
+    () =>
+      sponsors.filter((sponsor) =>
+        sponsor.sponsorName.toLowerCase().includes(searchText.toLowerCase()),
+      ),
+    [sponsors, searchText],
+  )
+
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
@@ -207,7 +215,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
 
         <Box style={CONTAINER}>
           <FlatList
-            data={sponsors}
+            data={filteredSponsors}
             numColumns={1}
             keyExtractor={(item, index) => item.uuid}
             renderItem={renderSponsor}
