@@ -84,7 +84,6 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
 
           // Box for Individual Sponsor 
           <Box style={{
-            justifyContent: "center",
             alignItems: "center",
             height: sHeight * 0.07,
             width: sWidth * 0.85,
@@ -97,12 +96,17 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
             <Box
               style={{
                 zIndex: 0,
+                width: sWidth * 0.85,
+                height: sHeight * 0.07,
+                overflow: "hidden",
               }}>  
               <Image
                 source={{ uri: item.imageLink }}
                 style={{
-                  width: sWidth * 0.85,
-                  height: sHeight * 0.07,
+                  position: "absolute",
+                  top: "-5rem",
+                  width: "100%",
+                  height: "22rem",
                   resizeMode: "stretch",
                 }}
               />
@@ -116,6 +120,8 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 position: "absolute",
+                top: "50%",
+                transform: [{translateY: "-50%"}],
                 paddingHorizontal: 10,
                 zIndex: 1,
               }}>
