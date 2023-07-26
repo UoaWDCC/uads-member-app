@@ -1,5 +1,6 @@
 import { Box, FlatList, NativeBaseProvider } from "native-base"
 import {
+  Button,
   Dimensions,
   Image,
   Pressable,
@@ -20,6 +21,7 @@ import axios from "axios"
 import firebase from "firebase"
 import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
+import { flex } from "styled-system"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   // const navigation = useNavigation()
@@ -73,62 +75,95 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
 
   const renderSponsor = ({ item }) => {
     return (
-      <Box style={{ flexDirection: "column", margin: 1, justifyContent: "center" }}>
+      <Box style={{ flexDirection: "column", justifyContent: "center" }}>
         {openedSponsors.includes(item._id) ? (
           // Sponsor is opened
           <Box></Box>
         ) : (
           // Sponsor is closed
-          <Box
-            style={{
-              width: "100%",
-              padding: "1rem",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={{ uri: item.imageLink }}
-              style={{
-                width: sWidth * 0.85,
-                height: sHeight * 0.04871794871,
-                resizeMode: "stretch",
-              }}
-            />
+
+          // Box for Individual Sponsor 
+          <Box style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: sHeight * 0.07,
+            width: sWidth * 0.85,
+            marginBottom: "1rem",
+            left: "50%",
+            transform: [{translateX: "-50%"}],
+          }}>
+
+            {/* Background Image Box */}
             <Box
               style={{
-                position: "absolute",
-                left: 0,
-              }}
-            >
-              <Text
+                zIndex: 0,
+              }}>  
+              <Image
+                source={{ uri: item.imageLink }}
                 style={{
-                  paddingLeft: 30,
+                  width: sWidth * 0.85,
+                  height: sHeight * 0.07,
+                  resizeMode: "stretch",
                 }}
-              >
-                {item.sponsorName}
-              </Text>
+              />
             </Box>
-            <Pressable
+            
+            {/* Horizontal Box for Name and Button */}
+            <Box
               style={{
-                backgroundColor: color.palette.palePeach,
+                width: sWidth * 0.85,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
                 position: "absolute",
+                paddingHorizontal: 10,
                 zIndex: 1,
-                top: "50%",
-                right: 40,
-                height: 20,
-                width: 20,
-                borderRadius: "50%",
+              }}>
+
+              <Text
+                  style={{
+                    fontSize: 20,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    color: color.palette.palePeach,
+                  }}>
+                  {item.sponsorName}
+              </Text>
+              
+              {/* Button Box */}
+              <Box style={{
                 justifyContent: "center",
                 alignItems: "center",
-                transform: [{ translateY: "-50%" }],
-              }}
-              onPress={() => {
-                handleToggleSponsor(item._id)
-              }}
-            >
-              <Text style={{ fontWeight: "bold", paddingBottom: 1 }}>+</Text>
-            </Pressable>
+              }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: color.palette.palePeach,
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => {
+                    handleToggleSponsor(item._id)
+                  }}>                    
+                  <Icon
+                    name="plus"
+                    size={10}
+                    color={color.palette.darkRed}
+                    width="fit-content"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: [{translateY: "-50%"}, {translateX: "-50%"}],
+                    }}
+                    />
+                </TouchableOpacity>
+              </Box>
+
+            </Box>
+
           </Box>
         )}
       </Box>
