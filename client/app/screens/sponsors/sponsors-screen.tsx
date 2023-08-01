@@ -27,6 +27,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   // const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
   const [openedSponsors, setOpenedSponsors] = useState([])
+  const [isButtonToggled, setIsButtonToggled] = useState(false)
 
   const handleToggleSponsor = (sponsorId: string) => {
     // Check if the sponsorId is already in the openedSponsors array
@@ -76,9 +77,100 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   const renderSponsor = ({ item }) => {
     return (
       <Box style={{ flexDirection: "column", justifyContent: "center" }}>
-        {openedSponsors.includes(item._id) ? (
+        {isButtonToggled ? (
+
           // Sponsor is opened
-          <Box></Box>
+
+          <Box style={{
+            alignItems: "center",
+            height: "20rem",
+            width: sWidth * 0.85,
+            marginBottom: "1rem",
+            left: "50%",
+            transform: [{translateX: "-50%"}],
+            backgroundColor: color.palette.brown,
+          }}>
+
+            {/* Background Image Box */}
+            <Box
+              style={{
+                zIndex: 0,
+                width: sWidth * 0.85,
+                height: sHeight * 0.2,
+                overflow: "hidden",
+              }}>  
+              <Image
+                source={{ uri: item.imageLink }}
+                style={{
+                  position: "absolute",
+                  top: "-5rem",
+                  width: "100%",
+                  height: "22rem",
+                  resizeMode: "stretch",
+                }}
+              />
+            </Box>
+            
+            {/* Horizontal Box for Name and Button */}
+            <Box
+              style={{
+                width: sWidth * 0.85,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                position: "absolute",
+                top: 9,
+                paddingHorizontal: 10,
+                zIndex: 1,
+              }}>
+
+              <Text
+                  style={{
+                    fontSize: 20,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    color: color.palette.palePeach,
+                  }}>
+                  {item.sponsorName}
+              </Text>
+              
+              {/* Button Box */}
+              <Box style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: color.palette.palePeach,
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => {
+                    setIsButtonToggled(!isButtonToggled)
+                    console.log(isButtonToggled)
+                    console.log(item.uuid)
+                  }}>                    
+                  <Icon
+                    name="minus"
+                    size={10}
+                    color={color.palette.darkRed}
+                    width="fit-content"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: [{translateY: "-50%"}, {translateX: "-50%"}],
+                    }}
+                    />
+                </TouchableOpacity>
+              </Box>
+
+            </Box>
+
+          </Box>
         ) : (
           // Sponsor is closed
 
@@ -151,7 +243,9 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                     alignItems: "center",
                   }}
                   onPress={() => {
-                    handleToggleSponsor(item._id)
+                    setIsButtonToggled(!isButtonToggled)
+                    console.log(isButtonToggled)
+                    console.log(item.uuid)
                   }}>                    
                   <Icon
                     name="plus"
