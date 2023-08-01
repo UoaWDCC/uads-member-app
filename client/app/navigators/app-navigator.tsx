@@ -29,7 +29,7 @@ import {
   EventsScreen,
   EventScreen,
 } from "../screens"
-const uadsLogo = require("../resources/logo.png")
+const uadsLogo = require("../resources/icon.png")
 const handshakeIcon = require("../resources/handshake-simple-solid.svg")
 const infoIcon = require("../resources/circle-info-solid.svg")
 const offersIcon = require("../resources/tags-solid.svg")

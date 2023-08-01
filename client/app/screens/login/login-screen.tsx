@@ -20,7 +20,7 @@ import firebase from "../../../firebaseSetup"
 import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
 
-const uadsLogo = require("../../resources/logo.png")
+const uadsLogo = require("../../resources/transparent_logo.png")
 const arrow = require("../../resources/arrow.png")
 const hiddenEye = require("../../resources/hiddenEye.png")
 const visibleEye = require("../../resources/visibleEye.png")
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
   logoStyle: {
     alignSelf: "center",
-    width: sWidth * 0.65,
+    width: sWidth * 0.55,
     resizeMode: "contain",
   },
 
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: color.text,
+    whiteSpace: "normal",
   },
 
   inputBoxStyle: {
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     paddingLeft: 0,
     outlineStyle: "none",
+    width: sWidth * 0.8, //Add width to match autofill input field on Mozilla Firefox browser
   },
 
   eyeStyle: {
@@ -187,15 +189,16 @@ export const LoginScreen = observer(function LoginScreen() {
         <Box
           alignItems="center"
           justifyContent="center"
-          style={{ paddingTop: 100, paddingBottom: 50 }}
+          style={{ paddingTop: 150, paddingBottom: 50 }}
         >
           <Stack alignItems="center" justifyContent="center" style={styles.headerBoxStyle}>
             <Text style={styles.headerTextStyle}>Welcome To</Text>
             <Image source={uadsLogo} style={styles.logoStyle} />
           </Stack>
-          <Stack space={2}>
+          <Stack space={0}>
             <Box style={styles.inputBoxStyle}>
-              {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}
+              {/*Conditionally render UPI heading when user is typing*/}
+              {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}{" "}
               <TextInput
                 style={styles.inputTextStyle}
                 placeholder="UPI"
@@ -203,18 +206,20 @@ export const LoginScreen = observer(function LoginScreen() {
                 onChangeText={(upi) => setUpi(upi)}
               />
             </Box>
-            <Box style={styles.inputBoxStyle}>
-              {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}
+            <Box mt={4} style={styles.inputBoxStyle}>
+              {/*Conditionally render Password heading when user is typing*/}
+              {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}{" "}
               <Box
                 flexDirection="row"
                 style={{
                   justifyContent: "space-between",
+                  width: sWidth * 0.8,
                   alignItems: "center",
                 }}
               >
                 <TextInput
                   style={styles.inputTextStyle}
-                  placeholder="password"
+                  placeholder="Password"
                   placeholderTextColor={color.text}
                   onChangeText={(password) => setPassword(password)}
                   secureTextEntry={!showPassword}
