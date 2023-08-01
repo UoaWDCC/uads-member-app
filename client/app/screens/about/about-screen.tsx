@@ -1,6 +1,6 @@
 import "firebase/auth"
 import { observer } from "mobx-react-lite"
-import { Box, NativeBaseProvider, } from "native-base"
+import { Box, NativeBaseProvider } from "native-base"
 import React from "react"
 import { Dimensions, Linking, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
@@ -51,29 +51,23 @@ const styles = StyleSheet.create({
   bodyTextStyle: {
     fontFamily: "Poppins",
     fontStyle: "normal",
-    fontSize: sHeight * 0.025,
+    fontSize: sHeight * 0.022,
     fontWeight: "400",
     color: color.palette.darkRed,
   },
 
-  topbox: {
-    width: sWidth,
-    height: sHeight * 0.6,
-    paddingTop: "10rem",
-    paddingLeft: "1.5rem",
-    textAlign: "left",
-    backgroundColor: color.palette.brown,
-  },
-
   textBox: {
     zIndex: 1,
+    paddingLeft: "1.5rem",
   },
 
   imageBox: {
+    width: "max-content",
     position: "absolute",
     top: -70,
     opacity: 0.5,
     zIndex: 0,
+    overflow: "hidden",
   },
 
   imageStyle: {
@@ -81,64 +75,67 @@ const styles = StyleSheet.create({
     height: "27rem",
   },
 
-  middlebox:{
-    width: sWidth,
-    height: sHeight * 0.6,
-    padding: "1.5rem",
+  topbox: {
+    width: sWidth >= 600 ? sWidth * 0.3 : sWidth,
+    height: sHeight * 0.45,
+    paddingTop: "20%",
+    textAlign: "left",
+    backgroundColor: color.palette.brown,
+  },
+
+  middlebox: {
+    width: sWidth >= 600 ? sWidth * 0.3 : sWidth,
+    height: sHeight * 0.45,
+    padding: "1rem",
     textAlign: "left",
     backgroundColor: color.palette.sand,
   },
 
   socialMediaBox: {
-    width: sWidth,
-    height: sHeight * 0.15,
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"center",    
-    alignItems:"center",
+    width: sWidth >= 600 ? sWidth * 0.3 : sWidth,
+    height: sHeight * 0.1,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     columnGap: "0.5rem",
     backgroundColor: color.palette.dustyPink,
   },
 })
 
 export const AboutScreen = observer(function AboutScreen() {
-
   const handleFacebookPress = () => {
-    const externalLink = 'https://www.facebook.com/uoadessertsociety?mibextid=LQQJ4d';
-    Linking.openURL(externalLink);
-  };
+    const externalLink = "https://www.facebook.com/uoadessertsociety?mibextid=LQQJ4d"
+    Linking.openURL(externalLink)
+  }
 
   const handleInstaPress = () => {
-    const externalLink = 'https://instagram.com/uoadessertsociety?igshid=NTc4MTIwNjQ2YQ==';
-    Linking.openURL(externalLink);
-  };
+    const externalLink = "https://instagram.com/uoadessertsociety?igshid=NTc4MTIwNjQ2YQ=="
+    Linking.openURL(externalLink)
+  }
 
   const handleDiscordPress = () => {
-    const externalLink = 'https://discord.gg/SrcgRFEH';
-    Linking.openURL(externalLink);
-  };
+    const externalLink = "https://discord.gg/SrcgRFEH"
+    Linking.openURL(externalLink)
+  }
 
   const handleTikTokPress = () => {
-    const externalLink = 'https://www.tiktok.com/@uoadessertsociety?_t=8cPhTjyUPyb&_r=1';
-    Linking.openURL(externalLink);
-  };
+    const externalLink = "https://www.tiktok.com/@uoadessertsociety?_t=8cPhTjyUPyb&_r=1"
+    Linking.openURL(externalLink)
+  }
 
   const handleMailPress = () => {
-    const externalLink = 'mailto:uoadessertsociety@gmail.com';
-    Linking.openURL(externalLink);
-  };
+    const externalLink = "mailto:uoadessertsociety@gmail.com"
+    Linking.openURL(externalLink)
+  }
 
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         <Box style={styles.topbox}>
           <Box style={styles.textBox}>
-            <Text style={styles.subHeaderStyle}>
-              University of Auckland
-            </Text>
-            <Text style={styles.headerStyle}>
-              Dessert{'\n'}Society
-            </Text>
+            <Text style={styles.subHeaderStyle}>University of Auckland</Text>
+            <Text style={styles.headerStyle}>Dessert{"\n"}Society</Text>
           </Box>
 
           <Box style={styles.imageBox}>
@@ -147,40 +144,40 @@ export const AboutScreen = observer(function AboutScreen() {
         </Box>
 
         <Box style={styles.middlebox}>
-          <Text style={styles.headerTextStyle}>
-            What We Do 
-          </Text>
+          <Text style={styles.headerTextStyle}>What We Do</Text>
           <Text style={styles.bodyTextStyle}>
-          The Dessert Society aims to bring people together through the joy of dessert.
-          {'\n'}{'\n'}
-          With many different types of events, from bake-offs to cultural food events, we create an environment that anyone can join and have their sweet tooth fulfilled.
-          {'\n'}{'\n'}
-          As a member, you gain access to discounts and deals at our sponsored dessert hotspots.
+            The Dessert Society aims to bring people together through the joy of dessert.
+            {"\n"}
+            {"\n"}
+            With many different types of events, from bake-offs to cultural food events, we create
+            an environment that anyone can join and have their sweet tooth fulfilled.
+            {"\n"}
+            {"\n"}
+            As a member, you gain access to discounts and deals at our sponsored dessert hotspots.
           </Text>
         </Box>
 
         <Box style={styles.socialMediaBox}>
           <TouchableOpacity onPress={handleFacebookPress}>
-            <Image source={facebookLogo}/>
+            <Image source={facebookLogo} />
           </TouchableOpacity>
-          
+
           <TouchableOpacity onPress={handleInstaPress}>
-            <Image source={instaLogo}/>
+            <Image source={instaLogo} />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handleDiscordPress}>
-            <Image source={discordLogo}/>
+            <Image source={discordLogo} />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handleTikTokPress}>
-            <Image source={tiktokLogo}/>
+            <Image source={tiktokLogo} />
           </TouchableOpacity>
-          
+
           <TouchableOpacity onPress={handleMailPress}>
-            <Image source={mailLogo}/>
+            <Image source={mailLogo} />
           </TouchableOpacity>
         </Box>
-      
       </NativeBaseProvider>
     </Screen>
   )
