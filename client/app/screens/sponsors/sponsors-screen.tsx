@@ -21,13 +21,12 @@ import axios from "axios"
 import firebase from "firebase"
 import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
-import { flex } from "styled-system"
+import { flex, left } from "styled-system"
 
 export const SponsorsScreen = observer(function SponsorsScreen() {
   // const navigation = useNavigation()
   const [sponsors, setSponsors] = useState([])
   const [openedSponsors, setOpenedSponsors] = useState([])
-  const [isButtonToggled, setIsButtonToggled] = useState(false)
 
   const handleToggleSponsor = (sponsorId: string) => {
     // Check if the sponsorId is already in the openedSponsors array
@@ -77,18 +76,19 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
   const renderSponsor = ({ item }) => {
     return (
       <Box style={{ flexDirection: "column", justifyContent: "center" }}>
-        {isButtonToggled ? (
+        {openedSponsors.includes(item._id) ? (
 
           // Sponsor is opened
 
-          <Box style={{
-            alignItems: "center",
-            height: "20rem",
+          <Box style={{   
+            height: "auto",
             width: sWidth * 0.85,
             marginBottom: "1rem",
             left: "50%",
             transform: [{translateX: "-50%"}],
             backgroundColor: color.palette.brown,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
           }}>
 
             {/* Background Image Box */}
@@ -149,9 +149,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                     alignItems: "center",
                   }}
                   onPress={() => {
-                    setIsButtonToggled(!isButtonToggled)
-                    console.log(isButtonToggled)
-                    console.log(item.uuid)
+                    handleToggleSponsor(item._id)
                   }}>                    
                   <Icon
                     name="minus"
@@ -168,6 +166,74 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                 </TouchableOpacity>
               </Box>
 
+            </Box>
+
+            <Box
+              style={{
+                position: "absolute",
+                top: 60,
+                paddingHorizontal: 10,
+                zIndex: 1,
+              }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: "Poppins",
+                  fontWeight: "700",
+                  fontStyle: "italic",
+                  color: color.palette.sand,
+                }}>
+                {item.address.city} 
+                {"\n"} 
+                {item.address.streetName} 
+                {"\n"} 
+                {item.address.streetNo}
+              </Text>
+      
+            </Box>
+            
+            {/* Sponsor Description Box */}
+            <Box 
+              style={{  
+                padding: 10,
+            }}>
+              <Text 
+                style={{
+                  fontSize: 16,
+                  fontFamily: "Poppins",
+                  fontWeight: "500",
+                  lineHeight: 20,
+                  color: color.palette.palePeach,
+                }}>
+                  {item.sponsorDesc}
+              </Text>
+            </Box>
+
+            <Box 
+              style={{
+                // backgroundColor: "blue",
+                alignItems: "flex-end",
+                paddingHorizontal: 10,
+                paddingBottom: 10,
+              }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: color.palette.dustyPink,
+                  width: 100,
+                  height: 30,
+                  borderRadius: 5,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <Text 
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    lineHeight: 12,
+                    color: color.palette.sand,
+                  }}>Redeem</Text>
+              </TouchableOpacity>
             </Box>
 
           </Box>
@@ -243,9 +309,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                     alignItems: "center",
                   }}
                   onPress={() => {
-                    setIsButtonToggled(!isButtonToggled)
-                    console.log(isButtonToggled)
-                    console.log(item.uuid)
+                    handleToggleSponsor(item._id)
                   }}>                    
                   <Icon
                     name="plus"
