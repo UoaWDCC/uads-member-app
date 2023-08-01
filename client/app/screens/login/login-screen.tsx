@@ -1,4 +1,5 @@
 import "firebase/auth"
+
 import {
   Alert,
   Dimensions,
@@ -12,6 +13,7 @@ import {
 import { Box, NativeBaseProvider, Stack, View } from "native-base"
 import { AutoImage as Image, MainButton, Screen, Text } from "../../components"
 import React, { useState } from "react"
+
 import { AuthContext } from "../../../context/AuthContext"
 import { color } from "../../theme"
 import firebase from "../../../firebaseSetup"
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
 
   inputBoxStyle: {
     alignSelf: "center",
-    width: sWidth * 0.8,
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8,
     paddingLeft: 4,
     borderBottomWidth: 3,
     borderBottomColor: color.line,
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
     padding: 10,
-    width: sWidth * 0.8,
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8,
     height: sWidth * 0.13,
     backgroundColor: color.line,
     borderRadius: 10,
@@ -127,8 +129,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     backgroundColor: color.primary,
-    width: sWidth,
     height: sHeight * 0.1,
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth,
     bottom: 0,
     flexDirection: "row",
   },
