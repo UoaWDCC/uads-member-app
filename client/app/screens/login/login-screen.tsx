@@ -7,7 +7,6 @@ import {
   Pressable,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
   ViewStyle,
 } from "react-native"
 import { Box, NativeBaseProvider, Stack, View } from "native-base"
@@ -189,7 +188,7 @@ export const LoginScreen = observer(function LoginScreen() {
         <Box
           alignItems="center"
           justifyContent="center"
-          style={{ paddingTop: 150, paddingBottom: 50 }}
+          style={{ paddingTop: sWidth >= 600 ? sHeight * 0.22 : 100, paddingBottom: 50 }}
         >
           <Stack alignItems="center" justifyContent="center" style={styles.headerBoxStyle}>
             <Text style={styles.headerTextStyle}>Welcome To</Text>
@@ -209,12 +208,12 @@ export const LoginScreen = observer(function LoginScreen() {
             <Box mt={4} style={styles.inputBoxStyle}>
               {/*Conditionally render Password heading when user is typing*/}
               {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}{" "}
-              <Box
-                flexDirection="row"
+              <View
                 style={{
                   justifyContent: "space-between",
                   width: sWidth * 0.8,
                   alignItems: "center",
+                  flexDirection: "row",
                 }}
               >
                 <TextInput
@@ -224,12 +223,18 @@ export const LoginScreen = observer(function LoginScreen() {
                   onChangeText={(password) => setPassword(password)}
                   secureTextEntry={!showPassword}
                 />
-                <View style={{ position: "absolute", right: 0 }}>
-                  <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
+                <View
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    backgroundColor: "white",
+                  }}
+                >
+                  <Pressable onPress={togglePasswordVisibility}>
                     <Image source={eyeIcon} style={styles.eyeStyle} />
-                  </TouchableWithoutFeedback>
+                  </Pressable>
                 </View>
-              </Box>
+              </View>
             </Box>
 
             <Text
