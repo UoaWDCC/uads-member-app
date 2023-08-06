@@ -8,5 +8,4 @@ export const palette = {
   fuschia: "#c44f6c",
   brown: "#804949",
   darkRed: "#801e15",
-  
 }

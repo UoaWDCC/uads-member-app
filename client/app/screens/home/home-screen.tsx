@@ -6,7 +6,7 @@ import "firebase/auth"
 import { color } from "../../theme"
 import { Box, NativeBaseProvider } from "native-base"
 
-const uadsLogo = require("../../resources/logo.png")
+const uadsLogo = require("../../resources/icon.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
