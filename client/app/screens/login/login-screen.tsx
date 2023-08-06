@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     paddingLeft: 0,
     outlineStyle: "none",
-    width: sWidth * 0.8, //Add width to match autofill input field on Mozilla Firefox browser
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8, //Add width to match autofill input field on Mozilla Firefox browser
   },
 
   eyeStyle: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: color.primary,
     height: sHeight * 0.1,
-    width: sWidth >= 600 ? sWidth * 0.4 : sWidth,
+    width: sWidth,
     bottom: 0,
     flexDirection: "row",
   },
@@ -211,7 +211,7 @@ export const LoginScreen = observer(function LoginScreen() {
               <View
                 style={{
                   justifyContent: "space-between",
-                  width: sWidth * 0.8,
+                  width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8,
                   alignItems: "center",
                   flexDirection: "row",
                 }}
@@ -227,7 +227,6 @@ export const LoginScreen = observer(function LoginScreen() {
                   style={{
                     position: "absolute",
                     right: 0,
-                    backgroundColor: "white",
                   }}
                 >
                   <Pressable onPress={togglePasswordVisibility}>
