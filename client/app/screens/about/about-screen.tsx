@@ -62,17 +62,21 @@ const styles = StyleSheet.create({
   },
 
   imageBox: {
-    width: "max-content",
     position: "absolute",
-    top: -70,
+    maxWidth: sWidth >= 600 ? sWidth * 0.3 : sWidth * 1.2,
+
+    top: 0,
     opacity: 0.5,
-    zIndex: 0,
+    zIndex: -1,
     overflow: "hidden",
   },
 
   imageStyle: {
-    width: "32rem",
-    height: "27rem",
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 1.2,
+    height: sHeight * 0.45,
+    // top: -70,
+    // left: 20,
+    overflow: "hidden",
   },
 
   topbox: {
