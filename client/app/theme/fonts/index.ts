@@ -8,6 +8,10 @@ export const initFonts = async () => {
   await Font.loadAsync({
     Sen: require("./Sen-Regular.ttf"),
     "Sen-Regular": require("./Sen-Regular.ttf"),
+    "Poppins-Regular": require("./Poppins-Regular.ttf"),
+    "Poppins-Medium": require("./Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("./Poppins-SemiBold.ttf"),
+    "Poppins-Bold": require("./Poppins-Bold.ttf"),
   })
   //   Montserrat: require("./Montserrat-Regular.ttf"),
   //   "Montserrat-Regular": require("./Montserrat-Regular.ttf"),

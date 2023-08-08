@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import {ViewStyle, StyleSheet, View, Dimensions} from "react-native"
+import {ViewStyle, StyleSheet, View, Dimensions, Image} from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -22,9 +22,8 @@ const styles = StyleSheet.create({
   changePassword: {
     alignItems: "center",
     color: color.palette.palePeach,
-    fontFamily: "Sen-Regular",
+    fontFamily: "Poppins-Medium",
     fontSize: 24,
-    fontWeight: "bold",
     justifyContent: "center"
   },
 
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
     flex: 1,
-    fontFamily: "Sen-Regular",
     height: 53,
     justifyContent: "center",
     marginBottom: 15,
@@ -45,9 +43,8 @@ const styles = StyleSheet.create({
   editSettings: {
     alignItems: "center",
     color: color.palette.palePeach,
-    fontFamily: "Sen-Regular",
-    fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Medium",
+    fontSize: 24,
     justifyContent: "center"
   },
 
@@ -57,7 +54,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
     flex: 1,
-    fontFamily: "Sen-Regular",
     justifyContent: "center",
     marginBottom: 15,
     minHeight: 60,
@@ -69,7 +65,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.palette.brown,
     flexDirection: "row",
     flex: 1,
-    fontFamily: "Sen-Regular",
     justifyContent: "center",
     marginBottom: 15,
     minHeight: 60,
@@ -81,23 +76,24 @@ const styles = StyleSheet.create({
     backgroundColor: color.palette.dustyPink,
     flexDirection: "row",
     flex: 1,
-    fontFamily: "Sen-Regular",
+    fontFamily: "Poppins",
     justifyContent: "center",
     marginBottom: 15,
     height: 60,
     width: 208,
   },
 
-  header: {
-    color: color.palette.darkRed,
-    fontFamily: "Sen-Regular",
-    fontSize: 72,
-    marginBottom: 50,
-  },
+  // header: { NOT USED
+  //   color: color.palette.darkRed,
+  //   fontFamily: "Poppins",
+  //   fontSize: 72,
+  //   marginBottom: 50,
+  // },
 
   input: {
     borderColor: color.transparent,
-    fontFamily: "Sen-Regular",
+    color: color.palette.palePeach,
+    fontFamily: "Poppins",
     fontSize: 16,
     fontWeight: "normal",
     paddingLeft: 0,
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
 
   notifsText: {
     color: color.palette.palePeach,
-    fontFamily: "Sen-Regular",
+    fontFamily: "Poppins-Medium",
     fontWeight: "bold",
   },
 
@@ -136,18 +132,22 @@ const styles = StyleSheet.create({
 
   signOutText: {
     color: color.palette.palePeach,
-    fontFamily: "Sen-Regular",
+    fontFamily: "Poppins-Bold",
     fontSize: 24,
-    fontWeight: "bold",
   },
 
   textLabel: {
     color: color.palette.palePeach,
-    fontFamily: "Sen-Regular",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 16,
-    fontWeight: "bold",
     marginLeft: 15,
   },
+
+  upiLabel: {
+    color: color.palette.darkRed,
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 20,
+  }
 })
 
 export const SettingsScreen = observer(function SettingsScreen() {
@@ -254,20 +254,63 @@ export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+        <Box
+            style={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+              paddingTop: 35,
+              paddingHorizontal: 10,
+            }}
+        >
+          <Image
+              source={require("../../resources/menu-icon.svg")}
+              style={{
+                width: Dimensions.get('window').width * 0.2,
+                height: Dimensions.get('window').width * 0.1,
+                resizeMode: "contain",
+              }}
+          />
+          <Image
+              source={require("../../resources/uads-logo.png")}
+              style={{
+                width: Dimensions.get('window').width * 0.27,
+                height: Dimensions.get('window').height * 0.035,
+                resizeMode: "contain",
+              }}
+          />
+        </Box>
+        <Box style={{ justifyContent:"space-between", alignItems:"center"}}>
+          <Image
+              source={require("../../resources/settings-header.svg")}
+              style={{
+                width: Dimensions.get('window').width * 0.9,
+                height: Dimensions.get('window').height * 0.12,
+                resizeMode: "contain",
+              }}
+          />
+        </Box>
+        <Box style={{ alignSelf:"center", width:Dimensions.get('window').width * 0.9}}>
+          <Text style={styles.upiLabel}>UPI: </Text>
+
+          <Text style={styles.upiLabel}>
+            {name === "" || notifs === "" ? "" : upi}
+          </Text>
+
+        </Box>
         <Box flex={1} alignItems="center" justifyContent="center">
           <Stack space={6}>
-            <Text style={styles.header} preset="header" text="Settings:" />
 
-            <View style={styles.displayBox}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.textLabel}>UPI: </Text>
-              </View>
-              <View style={{ flex: 2.5 }}>
-                <Text style={{ fontWeight: "normal", fontFamily: "Sen-Regular", fontSize: 16 }}>
-                  {name === "" || notifs === "" ? "" : upi}
-                </Text>
-              </View>
-            </View>
+            {/*<View style={styles.displayBox}>*/}
+            {/*  <View style={{ flex: 1 }}>*/}
+            {/*    <Text style={styles.textLabel}>UPI: </Text>*/}
+            {/*  </View>*/}
+            {/*  <View style={{ flex: 2.5 }}>*/}
+            {/*    <Text style={{ fontWeight: "normal", fontFamily: "Sen-Regular", fontSize: 16 }}>*/}
+            {/*      {name === "" || notifs === "" ? "" : upi}*/}
+            {/*    </Text>*/}
+            {/*  </View>*/}
+            {/*</View>*/}
 
             <View style={styles.displayBox}>
               <View style={{ flex: 1, justifyContent: "center" }}>
