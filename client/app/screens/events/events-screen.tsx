@@ -11,7 +11,7 @@ import axios from "axios"
 import { BASE_URL } from "@env"
 import { SocialIcon } from "react-social-icons"
 
-const uadsLogo = require("../../resources/logo.png")
+const uadsLogo = require("../../resources/icon.png")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,

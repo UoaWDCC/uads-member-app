@@ -13,6 +13,7 @@ const instaLogo = require("../../resources/instagramLogo.png")
 const discordLogo = require("../../resources/discordLogo.png")
 const tiktokLogo = require("../../resources/tiktokLogo.png")
 const mailLogo = require("../../resources/mailLogo.png")
+const uadsLogo = require("../../resources/icon.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
