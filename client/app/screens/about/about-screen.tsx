@@ -75,8 +75,6 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 1.2,
     height: sHeight * 0.45,
-    // top: -70,
-    // left: 20,
     overflow: "hidden",
   },
 
