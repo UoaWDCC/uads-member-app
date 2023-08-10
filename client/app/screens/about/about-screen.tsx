@@ -118,7 +118,7 @@ export const AboutScreen = observer(function AboutScreen() {
   }
 
   const handleDiscordPress = () => {
-    const externalLink = "https://discord.gg/SrcgRFEH"
+    const externalLink = "https://discord.gg/dFuwHuU8FT"
     Linking.openURL(externalLink)
   }
 
