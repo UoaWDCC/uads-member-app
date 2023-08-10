@@ -9,6 +9,7 @@ import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
+import { flexDirection } from "styled-system"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -19,6 +20,11 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
+
+  settingsBox: {
+    backgroundColor: color.palette.brown
+  },
+
   changePassword: {
     alignItems: "center",
     color: color.palette.palePeach,
@@ -49,15 +55,16 @@ const styles = StyleSheet.create({
   },
 
   editSettingsButton: {
-    alignItems: "center",
+    alignItems: "flex-end",
     backgroundColor: color.palette.fuschia,
-    borderRadius: 10,
     flexDirection: "row",
     flex: 1,
-    justifyContent: "center",
-    marginBottom: 15,
-    minHeight: 60,
-    width: 208,
+    justifyContent: "flex-end",
+    heigh: 42,
+  },
+
+  nameBox: {
+    flexDirection: "column"
   },
 
   displayBox: {
@@ -136,22 +143,36 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
 
-  textLabel: {
+  textField: {
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
     color: color.palette.palePeach,
-    fontFamily: "Poppins-SemiBold",
-    fontSize: 16,
-    marginLeft: 15,
+  },
+
+  textInput: {
+    fontSize: 24,
+    fontFamily: "Poppins-Regular",
+    color: color.palette.palePeach,
+    borderColor: color.transparent,
+    paddingLeft: 0,
   },
 
   upiLabel: {
     color: color.palette.darkRed,
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
-  }
+  },
+
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center', 
+  },
 })
 
 export const SettingsScreen = observer(function SettingsScreen() {
   const [name, setName] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [notifs, setNotifs] = useState("")
   const [upi, setUpi] = useState("")
   const [isEdit, setIsEdit] = useState(false)
@@ -172,6 +193,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
           .then((res) => {
             const { firstName, lastName, notificationsON } = res.data
             const name = firstName === undefined || lastName === undefined? "" : `${firstName} ${lastName}`
+            setFirstName(firstName || "");
+            setLastName(lastName || "");
             setName(name)
             setNotifs(notificationsON ? "ON" : "OFF")
           })
@@ -186,10 +209,41 @@ export const SettingsScreen = observer(function SettingsScreen() {
     return userUpi;
   }
 
-  async function changeName(newName: string) {
-    const names: string[] = newName.split(" ")
-    const firstName = names[0]
-    const lastName = names[1]
+  // async function changeName(newName: string) {
+  //   const names: string[] = newName.split(" ")
+  //   const firstName = names[0]
+  //   const lastName = names[1]
+
+  //   firebase
+  //     .auth()
+  //     .currentUser.getIdToken(true)
+  //     .then(async function (idToken) {
+  //       await usersApi
+  //         .put(
+  //           `/users/${upi}`,
+  //           {},
+  //           {
+  //             params: {
+  //               firstname: firstName,
+  //               lastname: lastName,
+  //             },
+  //             headers: {
+  //               "auth-token": idToken,
+  //             },
+  //           },
+  //         )
+  //         .then(() => {
+  //           console.log("name changed!")
+  //         })
+  //         .catch((e) => {
+  //           console.error(e)
+  //         })
+  //     })
+  // }
+
+  async function changeName() {
+    const fName = firstName
+    const lName = lastName
 
     firebase
       .auth()
@@ -201,8 +255,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
             {},
             {
               params: {
-                firstname: firstName,
-                lastname: lastName,
+                firstname: fName,
+                lastname: lName,
               },
               headers: {
                 "auth-token": idToken,
@@ -291,15 +345,16 @@ export const SettingsScreen = observer(function SettingsScreen() {
           />
         </Box>
         <Box style={{ alignSelf:"center", width:Dimensions.get('window').width * 0.9}}>
-          <Text style={styles.upiLabel}>UPI: </Text>
+          <Text style={styles.upiLabel}>UPI: {name === "" || notifs === "" ? "" : upi}</Text>
 
-          <Text style={styles.upiLabel}>
+          {/* <Text style={styles.upiLabel}>
             {name === "" || notifs === "" ? "" : upi}
-          </Text>
+          </Text> */}
 
         </Box>
-        <Box flex={1} alignItems="center" justifyContent="center">
-          <Stack space={6}>
+
+        <Box style={styles.settingsBox} alignItems="center" justifyContent="center">
+          
 
             {/*<View style={styles.displayBox}>*/}
             {/*  <View style={{ flex: 1 }}>*/}
@@ -312,25 +367,60 @@ export const SettingsScreen = observer(function SettingsScreen() {
             {/*  </View>*/}
             {/*</View>*/}
 
-            <View style={styles.displayBox}>
-              <View style={{ flex: 1, justifyContent: "center" }}>
-                <Text style={styles.textLabel}>Name:</Text>
-              </View>
-              <View style={{ flex: 2, justifyContent: "center" }}>
-                <Input
-                  style={styles.input}
-                  onChangeText={(text) => {
-                    setName(text)
-                    changeName(text)
-                  }}
-                  value={name === "" || notifs === "" ? "" : name}
-                />
-              </View>
-            </View>
+          <Box style={styles.nameBox}>
 
-            <View style={isEdit ? styles.displayBoxEdit : styles.displayBox}>
+            {isEdit ? (
+              <View>
+                  <Text style={styles.textField}>First name:</Text>
+                  <Input
+                   variant="underlined"
+                   style={styles.textInput}
+                   onChangeText={(text) => {
+                     setFirstName(text)
+                   }}
+                   value={name === "" || notifs === "" ? "" : firstName}
+                  />
+                  <Text style={styles.textField}>Last name:</Text>
+                    <Input
+                    variant="underlined"
+                    style={styles.textInput}
+                    onChangeText={(text) => {
+                      setLastName(text)
+                    }}
+                    value={name === "" || notifs === "" ? "" : lastName}
+                  />
+              </View>
+                 ) : (
+                  <View>
+                    <Text style={styles.textField}>First name:</Text>
+                    <Text style={styles.textInput}>{firstName}</Text>
+                    <Text style={styles.textField}>Last name:</Text>
+                    <Text style={styles.textInput}>{lastName}</Text>
+                  </View>
+                 )}
+          
+          </Box>
+    
+
+            {/*<View style={styles.firstNameBox}>
+               <View style={{ flex: 1, alignContent: "flex-start" }}>
+                 <Text style={styles.textLabel}>First name:</Text>
+               </View>
+               <View style={{ flex: 2, alignContent: "flex-start" }}>
+                 <Input
+                   style={styles.input}
+                   onChangeText={(text) => {
+                     setName(text)
+                     changeName(text)
+                   }}
+                   value={name === "" || notifs === "" ? "" : name}
+                 />
+               </View>
+             </View> */}
+
+            {/* <View style={isEdit ? styles.displayBoxEdit : styles.displayBox}>
               <View style={{ flex: 2, justifyContent: "center" }}>
-                <Text style={styles.textLabel}>Notifications:</Text>
+                <Text style={styles.textField}>Notifications:</Text>
               </View>
               <View style={{ flex: 1, justifyContent: "center" }}>
                 <Button
@@ -343,11 +433,48 @@ export const SettingsScreen = observer(function SettingsScreen() {
                   <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
                 </Button>
               </View>
+            </View> */}
+
+            <View>
+              <Text style={styles.textField}>Notifications:</Text>
+              <Button
+                  style={styles.notifsButton}
+                  onPress={() => {
+                    setNotifs(notifs === "ON" ? "OFF" : "ON")
+                    changeNotifs()
+                  }}
+                >
+                  <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
+                </Button>
             </View>
 
             
+            {isEdit ? (
+              <Button
+              style={({pressed}) => [
+                {
+                  opacity: pressed ? 0.2 : 1
+                },
+                styles.editSettingsButton
+              ]}
+              onPress={() => {
+                handleEdit; }}
+            >
+              <View style={styles.buttonContent}>
+                <Text style={styles.editSettings}>Save</Text>
+                <Image
+                  source={require("../../resources/save-icon.svg")}
+                  style={{
+                    width: 25,
+                    height: 25,
+                    resizeMode: "contain",
+                  }}
+                />
+              </View>
 
-            <Button
+            </Button>
+            ) : (
+              <Button
               style={({pressed}) => [
                 {
                   opacity: pressed ? 0.2 : 1
@@ -356,9 +483,26 @@ export const SettingsScreen = observer(function SettingsScreen() {
               ]}
               onPress={handleEdit}
             >
-              <Text style={styles.editSettings}>Edit</Text>
-            </Button>
+              <View style={styles.buttonContent}>
+                <Text style={styles.editSettings}>Edit</Text>
+                <Image
+                  source={require("../../resources/edit-icon.svg")}
+                  style={{
+                    width: 25,
+                    height: 25,
+                    resizeMode: "contain",
+                  }}
+                />
+              </View>
 
+            </Button>
+            )}
+            
+
+          </Box>
+
+        <View style={{alignItems: "center", flexDirection: "row"}}>
+        <Box>
             <Button
                 style={({pressed}) => [
                   {
@@ -370,8 +514,10 @@ export const SettingsScreen = observer(function SettingsScreen() {
             >
               <Text style={styles.changePassword}>Change Password</Text>
             </Button>
-          </Stack>
-        </Box>
+          
+          </Box>
+        </View>
+          
         
 
         <Button
