@@ -301,6 +301,9 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
   const handleEdit = () => {
     setIsEdit(!isEdit)
+    if (!isEdit) {
+      changeName
+    }
   }
 
   const navigation = useNavigation()
@@ -457,8 +460,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                 },
                 styles.editSettingsButton
               ]}
-              onPress={() => {
-                handleEdit; }}
+              onPress={handleEdit}
             >
               <View style={styles.buttonContent}>
                 <Text style={styles.editSettings}>Save</Text>
