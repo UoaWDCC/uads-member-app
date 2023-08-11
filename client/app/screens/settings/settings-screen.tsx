@@ -10,6 +10,7 @@ import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
 import { flexDirection } from "styled-system"
+import {palette} from "../../theme/palette";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -20,10 +21,6 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-
-  settingsBox: {
-    backgroundColor: color.palette.brown
-  },
 
   changePassword: {
     alignItems: "center",
@@ -56,15 +53,23 @@ const styles = StyleSheet.create({
 
   editSettingsButton: {
     alignItems: "flex-end",
+    alignSelf: "flex-end",
     backgroundColor: color.palette.fuschia,
     flexDirection: "row",
     flex: 1,
     justifyContent: "flex-end",
-    heigh: 42,
+    // height: 42,
+    // paddingHorizontal: 15,
+    // paddingVertical: 5,
+    paddingBottom: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 5,
   },
 
   nameBox: {
-    flexDirection: "column"
+    flexDirection: "column",
+    width: "100%",
   },
 
   displayBox: {
@@ -107,24 +112,38 @@ const styles = StyleSheet.create({
   },
 
   notifsButton: {
-    backgroundColor: color.palette.brown,
-    borderColor: color.palette.palePeach,
-    borderRadius: 15,
-    borderWidth: 3,
+    backgroundColor: color.palette.palePeach,
+    // borderColor: color.palette.brown,
+    borderRadius: 10,
+    // borderWidth: 3,
     justifyContent: "center",
     marginRight: 15,
-    maxHeight: 37,
-    minHeight: 37,
-    minWidth: 50,
-    shadowOffset: { width: 4, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    marginTop: 5,
+    maxWidth: 60,
+    minWidth: 60,
+    paddingBottom: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 5,
+
+    // maxHeight: 37,
+    // minHeight: 37,
+    // minWidth: 50,
   },
 
   notifsText: {
-    color: color.palette.palePeach,
+    color: color.palette.brown,
     fontFamily: "Poppins-Medium",
-    fontWeight: "bold",
+    fontSize: 24,
+  },
+
+  settingsBox: {
+    alignItems:"flex-start",
+    backgroundColor: color.palette.brown,
+    display: "flex",
+    justifyContent: "flex-start",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
 
   signOutButton: {
@@ -132,8 +151,10 @@ const styles = StyleSheet.create({
     backgroundColor: color.palette.fuschia,
     borderRadius: 0,
     bottom: 0,
+    left: 0,
     paddingBottom: 24,
     paddingTop: 20,
+    // position: "absolute",
     width: Dimensions.get('window').width,
   },
 
@@ -144,28 +165,45 @@ const styles = StyleSheet.create({
   },
 
   textField: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
     color: color.palette.palePeach,
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 14,
   },
 
   textInput: {
-    fontSize: 24,
-    fontFamily: "Poppins-Regular",
+    borderBottomColor: color.transparent,
+    borderBottomWidth: 3,
     color: color.palette.palePeach,
-    borderColor: color.transparent,
+    fontFamily: "Poppins-Regular",
+    fontSize: 24,
+    marginBottom: 7,
+    paddingBottom: 3,
     paddingLeft: 0,
+    paddingTop: 0,
+  },
+
+  textInputEdit: {
+    borderBottomColor: palette.palePeach,
+    borderBottomWidth: 3,
+    color: color.palette.palePeach,
+    fontFamily: "Poppins-Regular",
+    fontSize: 24,
+    marginBottom: 7,
+    paddingBottom: 3,
+    paddingLeft: 0,
+    paddingTop: 0,
   },
 
   upiLabel: {
     color: color.palette.darkRed,
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
+    paddingVertical: 10,
   },
 
   buttonContent: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center', 
   },
 })
 
@@ -302,7 +340,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
   const handleEdit = () => {
     setIsEdit(!isEdit)
     if (!isEdit) {
-      changeName
+      changeName();
     }
   }
 
@@ -324,7 +362,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
               source={require("../../resources/menu-icon.svg")}
               style={{
                 width: Dimensions.get('window').width * 0.2,
-                height: Dimensions.get('window').width * 0.1,
+                height: Dimensions.get('window').height * 0.05,
                 resizeMode: "contain",
               }}
           />
@@ -343,6 +381,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
               style={{
                 width: Dimensions.get('window').width * 0.9,
                 height: Dimensions.get('window').height * 0.12,
+                paddingVertical: 50,
                 resizeMode: "contain",
               }}
           />
@@ -356,7 +395,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
         </Box>
 
-        <Box style={styles.settingsBox} alignItems="center" justifyContent="center">
+        <Box style={styles.settingsBox}>
           
 
             {/*<View style={styles.displayBox}>*/}
@@ -377,7 +416,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                   <Text style={styles.textField}>First name:</Text>
                   <Input
                    variant="underlined"
-                   style={styles.textInput}
+                   style={styles.textInputEdit}
                    onChangeText={(text) => {
                      setFirstName(text)
                    }}
@@ -386,7 +425,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                   <Text style={styles.textField}>Last name:</Text>
                     <Input
                     variant="underlined"
-                    style={styles.textInput}
+                    style={styles.textInputEdit}
                     onChangeText={(text) => {
                       setLastName(text)
                     }}
@@ -454,14 +493,14 @@ export const SettingsScreen = observer(function SettingsScreen() {
             
             {isEdit ? (
               <Button
-              style={({pressed}) => [
-                {
-                  opacity: pressed ? 0.2 : 1
-                },
-                styles.editSettingsButton
-              ]}
-              onPress={handleEdit}
-            >
+                style={({pressed}) => [
+                  {
+                    opacity: pressed ? 0.2 : 1
+                  },
+                  styles.editSettingsButton
+                ]}
+                onPress={handleEdit}
+              >
               <View style={styles.buttonContent}>
                 <Text style={styles.editSettings}>Save</Text>
                 <Image
@@ -469,6 +508,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                   style={{
                     width: 25,
                     height: 25,
+                    marginLeft: 10,
                     resizeMode: "contain",
                   }}
                 />
@@ -481,7 +521,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                 {
                   opacity: pressed ? 0.2 : 1
                 },
-                styles.editSettingsButton
+                styles.editSettingsButton,
               ]}
               onPress={handleEdit}
             >
@@ -492,6 +532,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
                   style={{
                     width: 25,
                     height: 25,
+                    marginLeft: 10,
                     resizeMode: "contain",
                   }}
                 />
@@ -518,9 +559,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
             </Button>
           
           </Box>
+
         </View>
-          
-        
 
         <Button
             style={({pressed}) => [
@@ -536,7 +576,10 @@ export const SettingsScreen = observer(function SettingsScreen() {
         >
           <Text style={styles.signOutText}>Sign Out</Text>
         </Button>
+
       </NativeBaseProvider>
+
+
     </Screen>
   )
 })
