@@ -1,15 +1,24 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, Dimensions } from "react-native"
-import { Screen, Text, AutoImage as Image } from "../../components"
+
+import { Screen, Text, AutoImage as Image, Button, Icon } from "../../components"
 import "firebase/auth"
 import { color } from "../../theme"
+
+import { DrawerNavigationProp } from "@react-navigation/drawer"
+import { TabNavigatorParamList } from "./types" // Import your type definition
+
 import { Box, NativeBaseProvider } from "native-base"
+import { TouchableOpacity } from "react-native-gesture-handler"
+import { backgroundColor } from "styled-system"
 
 const uadsLogo = require("../../resources/icon.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
+
+const offersIcon = require("../../resources/tags-solid.svg")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -45,10 +54,28 @@ const styles = StyleSheet.create({
   },
 })
 
-export const AboutScreen = observer(function AboutScreen() {
+interface AboutScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "about">
+}
+
+export const AboutScreen = observer(function AboutScreen({ navigation }: AboutScreenProps) {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+        <TouchableOpacity
+          onPress={() => {
+            // Handle press
+            navigation.openDrawer()
+          }}
+          style={{
+            backgroundColor: "blue",
+            padding: 10,
+            borderRadius: 5,
+          }}
+        >
+          <Text style={{ color: "white" }}>Press me</Text>
+        </TouchableOpacity>
+
         <Box alignItems="center" justifyContent="center">
           <Image source={uadsLogo} style={styles.logoStyle} />
           <Text
