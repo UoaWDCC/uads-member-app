@@ -1,18 +1,28 @@
-import React, { useState } from "react"
-import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Alert, Dimensions } from "react-native"
-import { Screen, Text, AutoImage as Image, MainButton } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
-import firebase from "../../../firebaseSetup"
 import "firebase/auth"
+
+import {
+  Alert,
+  Dimensions,
+  Linking,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  ViewStyle,
+} from "react-native"
+import { Box, NativeBaseProvider, Stack, View } from "native-base"
+import { AutoImage as Image, MainButton, Screen, Text } from "../../components"
+import React, { useState } from "react"
+
 import { AuthContext } from "../../../context/AuthContext"
 import { color } from "../../theme"
-import { Box, Input, NativeBaseProvider, Stack } from "native-base"
+import firebase from "../../../firebaseSetup"
+import { observer } from "mobx-react-lite"
 import { useNavigation } from "@react-navigation/native"
 
-const uadsLogo = require("../../resources/logo.png")
-
+const uadsLogo = require("../../resources/transparent_logo.png")
+const arrow = require("../../resources/arrow.png")
+const hiddenEye = require("../../resources/hiddenEye.png")
+const visibleEye = require("../../resources/visibleEye.png")
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
 
@@ -25,45 +35,126 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-  inputStyle: {
-    width: sWidth * 0.8,
-  },
-
-  signinButtonStyle: {
+  headerBoxStyle: {
     alignSelf: "center",
     flex: 1,
-    marginTop: 10,
-    padding: 15,
-    width: 275,
+    paddingBottom: 20,
+  },
+
+  headerTextStyle: {
+    fontFamily: "Bitter",
+    fontStyle: "italic",
+    fontWeight: "700",
+    fontSize: 24,
+    lineHeight: 29,
+    textAlign: "center",
+    color: color.text,
   },
 
   logoStyle: {
     alignSelf: "center",
-    height: sWidth,
-    width: sWidth,
+    width: sWidth * 0.55,
+    resizeMode: "contain",
   },
 
-  signUpStyle: {
-    flex: 1,
-    position: "absolute",
-    top: "69%",
+  inputHeaderStyle: {
+    fontFamily: "Poppins",
+    fontWeight: "400",
+    fontSize: 14,
+    lineHeight: 21,
+    color: color.text,
+    whiteSpace: "normal",
   },
 
-  textStyle: {
+  inputBoxStyle: {
+    alignSelf: "center",
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8,
+    paddingLeft: 4,
+    borderBottomWidth: 3,
+    borderBottomColor: color.line,
+  },
+
+  inputTextStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "400",
+    color: color.text,
+    fontSize: 24,
+    lineHeight: 36,
+    borderWidth: 0,
+    paddingLeft: 0,
+    outlineStyle: "none",
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8, //Add width to match autofill input field on Mozilla Firefox browser
+  },
+
+  eyeStyle: {
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
+  },
+
+  forgotPasswordStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: 14,
+    lineHeight: 21,
+    textAlign: "right",
+    color: color.primary,
+  },
+
+  loginButtonStyle: {
+    alignSelf: "center",
     flex: 1,
-    marginTop: 10,
+    marginTop: 30,
+    padding: 10,
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8,
+    height: sWidth * 0.13,
+    backgroundColor: color.line,
+    borderRadius: 10,
+  },
+
+  loginTextStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: 24,
+    lineHeight: 36,
     textAlign: "center",
-    textDecorationLine: "underline",
+    color: color.background,
+  },
+
+  bottomBoxStyle: {
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    backgroundColor: color.primary,
+    height: sHeight * 0.1,
+    width: sWidth,
+    bottom: 0,
+    flexDirection: "row",
+  },
+
+  bottomTextStyle: {
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontSize: 20,
+    lineHeight: 30,
+    textAlign: "center",
+    color: color.background,
+  },
+
+  arrowStyle: {
+    marginLeft: 8,
   },
 })
 
 export const LoginScreen = observer(function LoginScreen() {
   // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
   const [upi, setUpi] = useState("")
   const [password, setPassword] = useState("")
-  const [show] = React.useState(false)
-
+  const [showPassword, setShowPassword] = useState(false)
   const { logIn } = React.useContext(AuthContext)
 
   function userLogin() {
@@ -85,64 +176,93 @@ export const LoginScreen = observer(function LoginScreen() {
   // Pull in navigation via hook
   const navigation = useNavigation()
 
+  const eyeIcon = showPassword ? visibleEye : hiddenEye
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box alignItems="center" justifyContent="center">
-          <Image source={uadsLogo} style={styles.logoStyle} />
-          <Stack space={2}>
-            {/* <UpiInputField/>
-          <PasswordInputField/> */}
-            <Input
-              // getRef={input => {
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={styles.inputStyle}
-              borderRadius="40px"
-              placeholder="UPI..."
-              _light={{
-                placeholderTextColor: color.text,
-                backgroundColor: color.palette.goldenGlow,
-                borderColor: color.palette.goldenGlow,
-              }}
-              _dark={{
-                placeholderTextColor: color.text,
-              }}
-              onChangeText={(upi) => setUpi(upi)}
-            />
+        <Box
+          alignItems="center"
+          justifyContent="center"
+          style={{ paddingTop: sWidth >= 600 ? sHeight * 0.22 : 100, paddingBottom: 50 }}
+        >
+          <Stack alignItems="center" justifyContent="center" style={styles.headerBoxStyle}>
+            <Text style={styles.headerTextStyle}>Welcome To</Text>
+            <Image source={uadsLogo} style={styles.logoStyle} />
+          </Stack>
+          <Stack space={0}>
+            <Box style={styles.inputBoxStyle}>
+              {/*Conditionally render UPI heading when user is typing*/}
+              {upi !== "" && <Text style={styles.inputHeaderStyle}>UPI</Text>}{" "}
+              <TextInput
+                style={styles.inputTextStyle}
+                placeholder="UPI"
+                placeholderTextColor={color.text}
+                onChangeText={(upi) => setUpi(upi)}
+              />
+            </Box>
+            <Box mt={4} style={styles.inputBoxStyle}>
+              {/*Conditionally render Password heading when user is typing*/}
+              {password !== "" && <Text style={styles.inputHeaderStyle}>Password</Text>}{" "}
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 0.8,
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <TextInput
+                  style={styles.inputTextStyle}
+                  placeholder="Password"
+                  placeholderTextColor={color.text}
+                  onChangeText={(password) => setPassword(password)}
+                  secureTextEntry={!showPassword}
+                />
+                <View
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                  }}
+                >
+                  <Pressable onPress={togglePasswordVisibility}>
+                    <Image source={eyeIcon} style={styles.eyeStyle} />
+                  </Pressable>
+                </View>
+              </View>
+            </Box>
 
-            <Input
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={styles.inputStyle}
-              borderRadius="40px"
-              type={show ? "text" : "password"}
-              placeholder="Password..."
-              _light={{
-                placeholderTextColor: color.text,
-                backgroundColor: color.palette.goldenGlow,
-                borderColor: color.palette.goldenGlow,
-              }}
-              _dark={{
-                placeholderTextColor: color.palette.goldenGlow,
-              }}
-              onChangeText={(password) => setPassword(password)}
-            />
             <Text
-              text="Forgot your Password? Click here!"
-              style={styles.textStyle}
+              text="Forgot Password?"
+              style={styles.forgotPasswordStyle}
               onPress={() => navigation.navigate("forgotPassword")}
             ></Text>
-            <Text
-              text="Don't have an account? Sign up!"
-              style={styles.textStyle}
-              onPress={() => navigation.navigate("register")}
-            ></Text>
             <MainButton
-              style={styles.signinButtonStyle}
-              text="SIGN IN"
+              style={styles.loginButtonStyle}
+              text={<Text style={styles.loginTextStyle}>Log in</Text>}
               onPress={() => userLogin()}
             />
           </Stack>
         </Box>
+
+        <Pressable
+          onPress={() => {
+            Linking.openURL(
+              "https://docs.google.com/forms/d/1KJkc74k-FuXlqtMw4q2xrHqqaUnGdYi85FdIGu7a5NA/viewform?edit_requested=true",
+            ).catch((err) => console.error("An error occurred", err))
+          }}
+          style={styles.bottomBoxStyle}
+        >
+          <Text style={[styles.bottomTextStyle, { fontWeight: "400" }]}>
+            Don't have an account?{" "}
+          </Text>
+          <Text style={[styles.bottomTextStyle, { fontWeight: "700" }]}>Sign up!</Text>
+          <Image source={arrow} style={styles.arrowStyle} />
+        </Pressable>
       </NativeBaseProvider>
     </Screen>
   )

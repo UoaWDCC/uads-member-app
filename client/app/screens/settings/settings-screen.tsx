@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     backgroundColor: palette.brown,
     display: "flex",
     justifyContent: "flex-start",
-    paddingHorizontal: 20,
+    paddingHorizontal: sWidth * 0.05,
     paddingVertical: 20,
   },
 
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     borderBottomColor: color.transparent,
     borderBottomWidth: 3,
     color: palette.palePeach,
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins",
     fontSize: 24,
     marginBottom: 6,
     paddingBottom: 2,
