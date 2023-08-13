@@ -61,20 +61,25 @@ interface AboutScreenProps {
 export const AboutScreen = observer(function AboutScreen({ navigation }: AboutScreenProps) {
   return (
     <Screen style={ROOT} preset="scroll">
-      <NativeBaseProvider>
-        <TouchableOpacity
-          onPress={() => {
-            // Handle press
-            navigation.openDrawer()
-          }}
-          style={{
-            backgroundColor: "blue",
-            padding: 10,
-            borderRadius: 5,
-          }}
-        >
-          <Text style={{ color: "white" }}>Press me</Text>
-        </TouchableOpacity>
+      <NativeBaseProvider> 
+      {/* press me button -> need to put to every of the four screen after styling */}
+
+
+      <TouchableOpacity 
+  onPress={() => {
+    // Handle press
+    navigation.openDrawer()
+  }}
+  style={{
+    padding: 20, // Increase padding to make the button bigger
+    position: 'absolute', // Position it at the top left corner
+    top: 0,
+    left: 0,
+  }}
+>
+  <Text style={{ color: "#C44F6C", fontWeight: '900', fontSize: 24 }}>☰</Text>
+</TouchableOpacity>
+
 
         <Box alignItems="center" justifyContent="center">
           <Image source={uadsLogo} style={styles.logoStyle} />
