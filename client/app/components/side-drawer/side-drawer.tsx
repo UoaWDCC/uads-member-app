@@ -11,7 +11,7 @@ export function DrawerContent(props) {
   ];
 
   const windowHeight = Dimensions.get("window").height;
-  const textFontSize = windowHeight * 0.03; // Adjust multiplier as needed
+  const textFontSize = windowHeight * 0.04; // Adjust multiplier as needed
 
   return (
     <DrawerContentScrollView {...props}>
@@ -42,14 +42,15 @@ const styles = StyleSheet.create({
   },
   drawerItem: {
     justifyContent: "center",
-    paddingLeft: 16, // Add some padding for text
+    alignItems: "center", // Align the text to the center horizontally
+    paddingVertical: 10,
   },
   drawerItemText: {
     fontFamily: "Bitter",
     fontStyle: "italic",
     fontWeight: "700",
     letterSpacing: 0,
-    textAlign: "left", // Adjust text alignment as needed
+    textAlign: "center", // Align the text to the center vertically
     color: "#801E15",
   },
 });
