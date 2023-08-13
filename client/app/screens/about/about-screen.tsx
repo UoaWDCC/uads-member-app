@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Dimensions } from "react-native"
+import { ViewStyle, StyleSheet, Dimensions , View} from "react-native"
 
 import { Screen, Text, AutoImage as Image, Button, Icon } from "../../components"
 import "firebase/auth"
@@ -77,7 +77,7 @@ export const AboutScreen = observer(function AboutScreen({ navigation }: AboutSc
     left: 0,
   }}
 >
-  <Text style={{ color: "#C44F6C", fontWeight: '900', fontSize: 24 }}>☰</Text>
+  <Text style={{ color: "#C44F6C", fontWeight: '900', fontSize: 50 }}>☰</Text>
 </TouchableOpacity>
 
 
