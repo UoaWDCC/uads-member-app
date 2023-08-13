@@ -1,17 +1,18 @@
-import React from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import React from "react"
+import { View, StyleSheet, Text, Dimensions } from "react-native"
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
 
 export function DrawerContent(props) {
   const drawerItemData = [
-    { label: "Events", screen: "events" },
-    { label: "Sponsors\n&Offers", screen: "offers" },
     { label: "About Us", screen: "about" },
+    { label: "Sponsors\n&Offers", screen: "offers" },
+    { label: "Events", screen: "events" },
+    { label: "Offers", screen: "offers" },
     { label: "Settings", screen: "settings" },
-  ];
+  ]
 
-  const windowHeight = Dimensions.get("window").height;
-  const textFontSize = windowHeight * 0.04; // Adjust multiplier as needed
+  const windowHeight = Dimensions.get("window").height
+  const textFontSize = windowHeight * 0.04 // Adjust multiplier as needed
 
   return (
     <DrawerContentScrollView {...props}>
@@ -20,19 +21,17 @@ export function DrawerContent(props) {
           <DrawerItem
             key={index}
             label={() => (
-              <Text style={[styles.drawerItemText, { fontSize: textFontSize }]}>
-                {item.label}
-              </Text>
+              <Text style={[styles.drawerItemText, { fontSize: textFontSize }]}>{item.label}</Text>
             )}
             onPress={() => {
-              props.navigation.navigate(item.screen);
+              props.navigation.navigate(item.screen)
             }}
             style={styles.drawerItem}
           />
         ))}
       </View>
     </DrawerContentScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -53,6 +52,6 @@ const styles = StyleSheet.create({
     textAlign: "center", // Align the text to the center vertically
     color: "#801E15",
   },
-});
+})
 
-export default DrawerContent;
+export default DrawerContent

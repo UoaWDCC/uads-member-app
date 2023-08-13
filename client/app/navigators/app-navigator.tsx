@@ -200,9 +200,14 @@ const Drawer = createDrawerNavigator<TabNavigatorParamList>()
 
 const AppDrawer = () => {
   return (
-    <Drawer.Navigator initialRouteName="about" drawerContent={props=> <DrawerContent {...props}/>}>
-      <Drawer.Screen name="offers" component={OffersScreen} />
+    <Drawer.Navigator
+      initialRouteName="about"
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
       <Drawer.Screen name="about" component={AboutScreen} />
+      <Drawer.Screen name="sponsors" component={SponsorsScreen} />
+      <Drawer.Screen name="events" component={EventsScreen} />
+      <Drawer.Screen name="offers" component={OffersScreen} />
       <Drawer.Screen name="settings" component={SettingsScreen} />
     </Drawer.Navigator>
   )
