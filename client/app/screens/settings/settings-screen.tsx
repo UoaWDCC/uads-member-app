@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import {ViewStyle, StyleSheet, View, Dimensions, Image} from "react-native"
+import {ViewStyle, StyleSheet, View, Dimensions, Image, TextInput} from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontSize: 24,
     marginBottom: 7,
+    outlineStyle: "none",
     paddingBottom: 3,
     paddingLeft: 0,
     paddingTop: 0,
@@ -410,26 +411,19 @@ export const SettingsScreen = observer(function SettingsScreen() {
             {/*</View>*/}
 
           <Box style={styles.nameBox}>
-
             {isEdit ? (
               <View>
                   <Text style={styles.textField}>First name:</Text>
-                  <Input
-                   variant="underlined"
-                   style={styles.textInputEdit}
-                   onChangeText={(text) => {
-                     setFirstName(text)
-                   }}
-                   value={name === "" || notifs === "" ? "" : firstName}
+                  <TextInput
+                    style={styles.textInputEdit}
+                    defaultValue={firstName}
+                    onChangeText={(firstNameInput) => setFirstName(firstNameInput)}
                   />
                   <Text style={styles.textField}>Last name:</Text>
-                    <Input
-                    variant="underlined"
+                  <TextInput
                     style={styles.textInputEdit}
-                    onChangeText={(text) => {
-                      setLastName(text)
-                    }}
-                    value={name === "" || notifs === "" ? "" : lastName}
+                    defaultValue={lastName}
+                    onChangeText={(lastNameInput) => setLastName(lastNameInput)}
                   />
               </View>
                  ) : (
@@ -440,47 +434,13 @@ export const SettingsScreen = observer(function SettingsScreen() {
                     <Text style={styles.textInput}>{lastName}</Text>
                   </View>
                  )}
-          
           </Box>
-    
-
-            {/*<View style={styles.firstNameBox}>
-               <View style={{ flex: 1, alignContent: "flex-start" }}>
-                 <Text style={styles.textLabel}>First name:</Text>
-               </View>
-               <View style={{ flex: 2, alignContent: "flex-start" }}>
-                 <Input
-                   style={styles.input}
-                   onChangeText={(text) => {
-                     setName(text)
-                     changeName(text)
-                   }}
-                   value={name === "" || notifs === "" ? "" : name}
-                 />
-               </View>
-             </View> */}
-
-            {/* <View style={isEdit ? styles.displayBoxEdit : styles.displayBox}>
-              <View style={{ flex: 2, justifyContent: "center" }}>
-                <Text style={styles.textField}>Notifications:</Text>
-              </View>
-              <View style={{ flex: 1, justifyContent: "center" }}>
-                <Button
-                  style={styles.notifsButton}
-                  onPress={() => {
-                    setNotifs(notifs === "ON" ? "OFF" : "ON")
-                    changeNotifs()
-                  }}
-                >
-                  <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
-                </Button>
-              </View>
-            </View> */}
 
             <View>
               <Text style={styles.textField}>Notifications:</Text>
               <Button
                   style={styles.notifsButton}
+                  disabled={!isEdit}
                   onPress={() => {
                     setNotifs(notifs === "ON" ? "OFF" : "ON")
                     changeNotifs()
