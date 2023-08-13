@@ -22,6 +22,11 @@ const ROOT: ViewStyle = {
 
 const styles = StyleSheet.create({
 
+  buttonContent: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
   changePassword: {
     alignItems: "center",
     color: color.palette.palePeach,
@@ -38,38 +43,9 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 53,
     justifyContent: "center",
-    marginBottom: 15,
+    marginVertical: 15,
     paddingVertical: 15,
     width: 283,
-  },
-
-  editSettings: {
-    alignItems: "center",
-    color: color.palette.palePeach,
-    fontFamily: "Poppins-Medium",
-    fontSize: 24,
-    justifyContent: "center"
-  },
-
-  editSettingsButton: {
-    alignItems: "flex-end",
-    alignSelf: "flex-end",
-    backgroundColor: color.palette.fuschia,
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "flex-end",
-    // height: 42,
-    // paddingHorizontal: 15,
-    // paddingVertical: 5,
-    paddingBottom: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 5,
-  },
-
-  nameBox: {
-    flexDirection: "column",
-    width: "100%",
   },
 
   displayBox: {
@@ -95,12 +71,26 @@ const styles = StyleSheet.create({
     width: 208,
   },
 
-  // header: { NOT USED
-  //   color: color.palette.darkRed,
-  //   fontFamily: "Poppins",
-  //   fontSize: 72,
-  //   marginBottom: 50,
-  // },
+  editSettings: {
+    alignItems: "center",
+    color: color.palette.palePeach,
+    fontFamily: "Poppins-Medium",
+    fontSize: 24,
+    justifyContent: "center"
+  },
+
+  editSettingsButton: {
+    alignItems: "flex-end",
+    alignSelf: "flex-end",
+    backgroundColor: color.palette.fuschia,
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-end",
+    paddingBottom: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 5,
+  },
 
   input: {
     borderColor: color.transparent,
@@ -111,24 +101,24 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
   },
 
+  nameBox: {
+    flexDirection: "column",
+    width: "100%",
+  },
+
   notifsButton: {
     backgroundColor: color.palette.palePeach,
-    // borderColor: color.palette.brown,
     borderRadius: 10,
-    // borderWidth: 3,
     justifyContent: "center",
     marginRight: 15,
     marginTop: 5,
     maxWidth: 60,
     minWidth: 60,
+    opacity: 1,
     paddingBottom: 5,
     paddingLeft: 15,
     paddingRight: 15,
     paddingTop: 5,
-
-    // maxHeight: 37,
-    // minHeight: 37,
-    // minWidth: 50,
   },
 
   notifsText: {
@@ -152,9 +142,9 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     bottom: 0,
     left: 0,
-    paddingBottom: 24,
-    paddingTop: 20,
-    // position: "absolute",
+    paddingBottom: 20,
+    paddingTop: 15,
+    position: "absolute",
     width: Dimensions.get('window').width,
   },
 
@@ -176,23 +166,15 @@ const styles = StyleSheet.create({
     color: color.palette.palePeach,
     fontFamily: "Poppins-Regular",
     fontSize: 24,
-    marginBottom: 7,
-    paddingBottom: 3,
+    marginBottom: 6,
+    paddingBottom: 2,
     paddingLeft: 0,
     paddingTop: 0,
   },
 
   textInputEdit: {
     borderBottomColor: palette.palePeach,
-    borderBottomWidth: 3,
-    color: color.palette.palePeach,
-    fontFamily: "Poppins-Regular",
-    fontSize: 24,
-    marginBottom: 7,
     outlineStyle: "none",
-    paddingBottom: 3,
-    paddingLeft: 0,
-    paddingTop: 0,
   },
 
   upiLabel: {
@@ -200,11 +182,6 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
     paddingVertical: 10,
-  },
-
-  buttonContent: {
-    alignItems: 'center',
-    flexDirection: 'row',
   },
 })
 
@@ -397,31 +374,19 @@ export const SettingsScreen = observer(function SettingsScreen() {
         </Box>
 
         <Box style={styles.settingsBox}>
-          
-
-            {/*<View style={styles.displayBox}>*/}
-            {/*  <View style={{ flex: 1 }}>*/}
-            {/*    <Text style={styles.textLabel}>UPI: </Text>*/}
-            {/*  </View>*/}
-            {/*  <View style={{ flex: 2.5 }}>*/}
-            {/*    <Text style={{ fontWeight: "normal", fontFamily: "Sen-Regular", fontSize: 16 }}>*/}
-            {/*      {name === "" || notifs === "" ? "" : upi}*/}
-            {/*    </Text>*/}
-            {/*  </View>*/}
-            {/*</View>*/}
 
           <Box style={styles.nameBox}>
             {isEdit ? (
               <View>
                   <Text style={styles.textField}>First name:</Text>
                   <TextInput
-                    style={styles.textInputEdit}
+                    style={[styles.textInput, styles.textInputEdit]}
                     defaultValue={firstName}
                     onChangeText={(firstNameInput) => setFirstName(firstNameInput)}
                   />
                   <Text style={styles.textField}>Last name:</Text>
                   <TextInput
-                    style={styles.textInputEdit}
+                    style={[styles.textInput, styles.textInputEdit]}
                     defaultValue={lastName}
                     onChangeText={(lastNameInput) => setLastName(lastNameInput)}
                   />
@@ -504,8 +469,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
           </Box>
 
-        <View style={{alignItems: "center", flexDirection: "row"}}>
-        <Box>
+        <View style={{alignItems: "center", justifyContent: "center", width: Dimensions.get('window').width}}>
+          <Box>
             <Button
                 style={({pressed}) => [
                   {
