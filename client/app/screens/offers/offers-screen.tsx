@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
-import { Screen, Text } from "../../components"
+import { Button, Screen, Text } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Input, Box, FlatList, VStack, HStack, Image } from "native-base"
@@ -9,7 +9,10 @@ import firebase from "firebase"
 import Icon from "react-native-vector-icons/FontAwesome"
 import axios from "axios"
 import { BASE_URL } from "@env"
+import { TabNavigatorParamList } from "../../navigators/app-navigator"
+import { DrawerNavigationProp } from "@react-navigation/drawer"
 
+const menuIcon = require("../../resources/menu-icon.svg")
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
@@ -56,10 +59,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "calc(90vw - 180px)",
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
+    zIndex: 10,
+  },
 })
 
-export const OffersScreen = observer(function OfferScreen() {
-  const navigation = useNavigation()
+interface OfferScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "offers">
+}
+
+export const OffersScreen = observer(function OfferScreen({ navigation }: OfferScreenProps) {
   const isVisible = useIsFocused()
 
   const searchInputRef = useRef<HTMLInputElement | null>(null)
@@ -99,6 +116,15 @@ export const OffersScreen = observer(function OfferScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+        <Button
+          onPress={() => {
+            // Handle press
+            navigation.openDrawer()
+          }}
+          style={styles.menuBtnStyle}
+        >
+          <Image source={menuIcon} style={styles.iconStyle} />
+        </Button>
         <Text style={styles.header} preset="header" text="Offers:" />
         <HStack space={2} alignItems="center">
           <Input

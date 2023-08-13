@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet, View } from "react-native"
-import { Screen, Text } from "../../components"
+import { Screen, Text, AutoImage as Image } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, Button, Stack, Input } from "native-base"
@@ -9,7 +9,10 @@ import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
+import { TabNavigatorParamList } from "../../navigators"
+import { DrawerNavigationProp } from "@react-navigation/drawer"
 
+const menuIcon = require("../../resources/menu-icon.svg")
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
@@ -96,9 +99,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 15,
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0)",
+  }
 })
 
-export const SettingsScreen = observer(function SettingsScreen() {
+interface SettingsScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "settings">
+}
+
+export const SettingsScreen = observer(function SettingsScreen({
+  navigation,
+}: SettingsScreenProps) {
   const [name, setName] = useState("")
   const [notifs, setNotifs] = useState("")
   const [upi, setUpi] = useState("")
@@ -108,8 +129,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
     firebase
       .auth()
       .currentUser.getIdToken(true)
-      .then(async idToken => {
-        setUpi(getUpi());
+      .then(async (idToken) => {
+        setUpi(getUpi())
         await usersApi
           .get(`/users/${upi}`, {
             headers: {
@@ -118,19 +139,20 @@ export const SettingsScreen = observer(function SettingsScreen() {
           })
           .then((res) => {
             const { firstName, lastName, notificationsON } = res.data
-            const name = firstName === undefined || lastName === undefined? "" : `${firstName} ${lastName}`
+            const name =
+              firstName === undefined || lastName === undefined ? "" : `${firstName} ${lastName}`
             setName(name)
             setNotifs(notificationsON ? "ON" : "OFF")
           })
           .catch((e) => {
             console.error(e)
           })
-        })
-      }, [upi])
+      })
+  }, [upi])
 
-  function getUpi(): string{
-    const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "");
-    return userUpi;
+  function getUpi(): string {
+    const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "")
+    return userUpi
   }
 
   async function changeName(newName: string) {
@@ -184,19 +206,25 @@ export const SettingsScreen = observer(function SettingsScreen() {
               },
             },
           )
-          .then(() => {
-          })
+          .then(() => {})
           .catch((e) => {
             console.error(e)
           })
       })
   }
 
-  const navigation = useNavigation()
-
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+        <Button
+          onPress={() => {
+            // Handle press
+            navigation.openDrawer()
+          }}
+          style={styles.menuBtnStyle}
+        >
+          <Image source={menuIcon} style={styles.iconStyle} />
+        </Button>
         <Box flex={1} alignItems="center" justifyContent="center">
           <Stack space={5}>
             <Text style={styles.header} preset="header" text="Settings:" />
@@ -229,7 +257,9 @@ export const SettingsScreen = observer(function SettingsScreen() {
                     changeNotifs()
                   }}
                 >
-                  <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
+                  <Text style={styles.notifsText}>
+                    {name === "" || notifs === "" ? "" : notifs}
+                  </Text>
                 </Button>
               </View>
             </View>
@@ -246,11 +276,11 @@ export const SettingsScreen = observer(function SettingsScreen() {
             </View>
 
             <Button
-              style={({pressed}) => [
+              style={({ pressed }) => [
                 {
-                  opacity: pressed ? 0.2 : 1
+                  opacity: pressed ? 0.2 : 1,
                 },
-                styles.displayBox
+                styles.displayBox,
               ]}
               onPress={() => navigation.navigate("change-password")}
             >
@@ -259,11 +289,11 @@ export const SettingsScreen = observer(function SettingsScreen() {
           </Stack>
 
           <Button
-            style={({pressed}) => [
+            style={({ pressed }) => [
               {
-                opacity: pressed ? 0.2 : 1
+                opacity: pressed ? 0.2 : 1,
               },
-              styles.signOutButton
+              styles.signOutButton,
             ]}
             onPress={() => {
               firebase.auth().signOut()

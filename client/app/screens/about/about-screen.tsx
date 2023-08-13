@@ -7,12 +7,9 @@ import "firebase/auth"
 import { color } from "../../theme"
 
 import { DrawerNavigationProp } from "@react-navigation/drawer"
-import { TabNavigatorParamList } from "./types" // Import your type definition
+import { TabNavigatorParamList } from "../../navigators" // Import your type definition
 
 import { Box, NativeBaseProvider } from "native-base"
-import { TouchableOpacity } from "react-native-gesture-handler"
-import { backgroundColor } from "styled-system"
-import { zIndex } from "styled-system"
 
 const uadsLogo = require("../../resources/icon.png")
 const menuIcon = require("../../resources/menu-icon.svg")
@@ -60,9 +57,9 @@ const styles = StyleSheet.create({
   },
   menuBtnStyle: {
     padding: 20, // Increase padding to make the button bigger
-    position: "absolute", // Position it at the top left corner
-    top: 0,
-    left: 0,
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
     zIndex: 10,
   },
 })
