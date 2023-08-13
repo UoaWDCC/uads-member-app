@@ -471,17 +471,20 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
         <View style={{alignItems: "center", justifyContent: "center", width: Dimensions.get('window').width}}>
           <Box>
-            <Button
-                style={({pressed}) => [
-                  {
-                    opacity: pressed ? 0.2 : 1
-                  },
-                  styles.changePasswordButton
-                ]}
-                onPress={() => navigation.navigate("change-password")}
-            >
-              <Text style={styles.changePassword}>Change Password</Text>
-            </Button>
+            {!isEdit && (
+              <Button
+              style={({pressed}) => [
+                {
+                  opacity: pressed ? 0.2 : 1
+                },
+                styles.changePasswordButton
+              ]}
+              onPress={() => navigation.navigate("change-password")}
+          >
+            <Text style={styles.changePassword}>Change Password</Text>
+          </Button>
+            )}
+            
           
           </Box>
 
