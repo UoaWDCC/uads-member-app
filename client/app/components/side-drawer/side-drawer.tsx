@@ -1,6 +1,6 @@
-import React from "react"
-import { View, StyleSheet, Text, Dimensions } from "react-native"
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
+import React from "react";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 
 export function DrawerContent(props) {
   const drawerItemData = [
@@ -8,57 +8,50 @@ export function DrawerContent(props) {
     { label: "Sponsors\n&Offers", screen: "offers" },
     { label: "About Us", screen: "about" },
     { label: "Settings", screen: "settings" },
-  ]
+  ];
 
-  const windowHeight = Dimensions.get("window").height
-  const containerHeight = Math.round(windowHeight / drawerItemData.length)
+  const windowHeight = Dimensions.get("window").height;
+  const textFontSize = windowHeight * 0.03; // Adjust multiplier as needed
 
   return (
-    <View style={{ flex: 1 }}>
-      <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props}>
+      <View style={styles.drawerContainer}>
         {drawerItemData.map((item, index) => (
           <DrawerItem
             key={index}
             label={() => (
-              <Text style={[styles.drawerItem, styles.drawerItemText]}>
+              <Text style={[styles.drawerItemText, { fontSize: textFontSize }]}>
                 {item.label}
               </Text>
             )}
             onPress={() => {
-              props.navigation.navigate(item.screen)
+              props.navigation.navigate(item.screen);
             }}
-            style={[
-              styles.drawerItemContainer,
-              {
-                height: containerHeight,
-              },
-              {
-                top: (windowHeight - containerHeight * drawerItemData.length) / 2 + index * containerHeight,
-              },
-            ]}
+            style={styles.drawerItem}
           />
         ))}
-      </DrawerContentScrollView>
-    </View>
-  )
+      </View>
+    </DrawerContentScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-  drawerItem: {
-    fontFamily: "Bitter",
-    fontSize: 48,
-    fontStyle: "italic",
-    fontWeight: "700",
-    lineHeight: 58,
-    letterSpacing: 0,
-    textAlign: "center",
+  drawerContainer: {
+    flex: 1,
+    marginTop: 40, // Adjust as needed
   },
-  drawerItemContainer: {
-    position: "absolute",
-    flexDirection: "row",
-    alignItems: "center",
+  drawerItem: {
+    justifyContent: "center",
+    paddingLeft: 16, // Add some padding for text
   },
   drawerItemText: {
-    color: "#801E15", // Text color
+    fontFamily: "Bitter",
+    fontStyle: "italic",
+    fontWeight: "700",
+    letterSpacing: 0,
+    textAlign: "left", // Adjust text alignment as needed
+    color: "#801E15",
   },
-})
+});
+
+export default DrawerContent;
