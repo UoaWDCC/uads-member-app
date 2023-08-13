@@ -4,13 +4,15 @@ import {ViewStyle, StyleSheet, View, Dimensions, Image, TextInput} from "react-n
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Box, Button, Stack, Input } from "native-base"
+import { NativeBaseProvider, Box, Button} from "native-base"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
-import { flexDirection } from "styled-system"
 import {palette} from "../../theme/palette";
+
+const sWidth = Dimensions.get("window").width
+const sHeight = Dimensions.get("window").height
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -107,18 +109,25 @@ const styles = StyleSheet.create({
   },
 
   notifsButton: {
-    backgroundColor: color.palette.palePeach,
+    backgroundColor: palette.palePeach,
+    borderColor: palette.palePeach,
     borderRadius: 10,
+    borderWidth: 3,
     justifyContent: "center",
     marginRight: 15,
     marginTop: 5,
-    maxWidth: 60,
-    minWidth: 60,
+    maxHeight: 45,
+    maxWidth: 65,
+    minWidth: 65,
     opacity: 1,
     paddingBottom: 5,
     paddingLeft: 15,
     paddingRight: 15,
     paddingTop: 5,
+  },
+
+  notifsButtonDeselect: {
+    backgroundColor: color.transparent,
   },
 
   notifsText: {
@@ -127,9 +136,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
 
+  notifsTextDeselect: {
+    color: palette.palePeach,
+  },
+
   settingsBox: {
     alignItems:"flex-start",
-    backgroundColor: color.palette.brown,
+    backgroundColor: palette.brown,
     display: "flex",
     justifyContent: "flex-start",
     paddingHorizontal: 20,
@@ -138,24 +151,24 @@ const styles = StyleSheet.create({
 
   signOutButton: {
     alignItems: "center",
-    backgroundColor: color.palette.fuschia,
+    backgroundColor: palette.fuschia,
     borderRadius: 0,
     bottom: 0,
     left: 0,
     paddingBottom: 20,
     paddingTop: 15,
     position: "absolute",
-    width: Dimensions.get('window').width,
+    width: sWidth,
   },
 
   signOutText: {
-    color: color.palette.palePeach,
+    color: palette.palePeach,
     fontFamily: "Poppins-Bold",
     fontSize: 24,
   },
 
   textField: {
-    color: color.palette.palePeach,
+    color: palette.palePeach,
     fontFamily: "Poppins-SemiBold",
     fontSize: 14,
   },
@@ -163,7 +176,7 @@ const styles = StyleSheet.create({
   textInput: {
     borderBottomColor: color.transparent,
     borderBottomWidth: 3,
-    color: color.palette.palePeach,
+    color: palette.palePeach,
     fontFamily: "Poppins-Regular",
     fontSize: 24,
     marginBottom: 6,
@@ -224,38 +237,6 @@ export const SettingsScreen = observer(function SettingsScreen() {
     const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "");
     return userUpi;
   }
-
-  // async function changeName(newName: string) {
-  //   const names: string[] = newName.split(" ")
-  //   const firstName = names[0]
-  //   const lastName = names[1]
-
-  //   firebase
-  //     .auth()
-  //     .currentUser.getIdToken(true)
-  //     .then(async function (idToken) {
-  //       await usersApi
-  //         .put(
-  //           `/users/${upi}`,
-  //           {},
-  //           {
-  //             params: {
-  //               firstname: firstName,
-  //               lastname: lastName,
-  //             },
-  //             headers: {
-  //               "auth-token": idToken,
-  //             },
-  //           },
-  //         )
-  //         .then(() => {
-  //           console.log("name changed!")
-  //         })
-  //         .catch((e) => {
-  //           console.error(e)
-  //         })
-  //     })
-  // }
 
   async function changeName() {
     const fName = firstName
@@ -327,6 +308,29 @@ export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+
+        <View style={{
+          width: sWidth,
+          height: sHeight,
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}>
+          <Button
+              style={({pressed}) => [
+                {
+                  opacity: pressed ? 0.2 : 1
+                },
+                styles.signOutButton
+              ]}
+              onPress={() => {
+                firebase.auth().signOut()
+                logOut()
+              }}
+          >
+            <Text style={styles.signOutText}>Sign Out</Text>
+          </Button>
+        </View>
         <Box
             style={{
               justifyContent: "space-between",
@@ -339,16 +343,16 @@ export const SettingsScreen = observer(function SettingsScreen() {
           <Image
               source={require("../../resources/menu-icon.svg")}
               style={{
-                width: Dimensions.get('window').width * 0.2,
-                height: Dimensions.get('window').height * 0.05,
+                width: sWidth * 0.2,
+                height: sHeight * 0.05,
                 resizeMode: "contain",
               }}
           />
           <Image
               source={require("../../resources/uads-logo.png")}
               style={{
-                width: Dimensions.get('window').width * 0.27,
-                height: Dimensions.get('window').height * 0.035,
+                width: sWidth * 0.27,
+                height: sHeight * 0.035,
                 resizeMode: "contain",
               }}
           />
@@ -357,24 +361,19 @@ export const SettingsScreen = observer(function SettingsScreen() {
           <Image
               source={require("../../resources/settings-header.svg")}
               style={{
-                width: Dimensions.get('window').width * 0.9,
-                height: Dimensions.get('window').height * 0.12,
+                width: sWidth * 0.9,
+                height: sHeight * 0.12,
                 paddingVertical: 50,
                 resizeMode: "contain",
               }}
           />
         </Box>
-        <Box style={{ alignSelf:"center", width:Dimensions.get('window').width * 0.9}}>
+
+        <Box style={{ alignSelf:"center", width:sWidth * 0.9}}>
           <Text style={styles.upiLabel}>UPI: {name === "" || notifs === "" ? "" : upi}</Text>
-
-          {/* <Text style={styles.upiLabel}>
-            {name === "" || notifs === "" ? "" : upi}
-          </Text> */}
-
         </Box>
 
         <Box style={styles.settingsBox}>
-
           <Box style={styles.nameBox}>
             {isEdit ? (
               <View>
@@ -403,16 +402,45 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
             <View>
               <Text style={styles.textField}>Notifications:</Text>
-              <Button
-                  style={styles.notifsButton}
-                  disabled={!isEdit}
-                  onPress={() => {
-                    setNotifs(notifs === "ON" ? "OFF" : "ON")
-                    changeNotifs()
-                  }}
-                >
-                  <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
-                </Button>
+              {isEdit ? (
+                  <View style={{
+                    flexDirection: "row",
+                  }}>
+                    <Button
+                        style={notifs === "OFF" ? [styles.notifsButton, styles.notifsButtonDeselect] : styles.notifsButton}
+                        onPress={() => {
+                          setNotifs("ON")
+                          changeNotifs()
+                        }}
+                    >
+                      <Text style={notifs === "OFF" ? [styles.notifsText, styles.notifsTextDeselect] : styles.notifsText}>ON</Text>
+                    </Button>
+                    <Button
+                        style={notifs === "ON" ? [styles.notifsButton, styles.notifsButtonDeselect] : styles.notifsButton}
+                        onPress={() => {
+                          setNotifs("OFF")
+                          changeNotifs()
+                        }}
+                    >
+                      <Text style={notifs === "ON" ? [styles.notifsText, styles.notifsTextDeselect] : styles.notifsText}>OFF</Text>
+                    </Button>
+                  </View>
+
+              ) : (
+                  <View>
+                    <Button
+                        style={styles.notifsButton}
+                        disabled={!isEdit}
+                        onPress={() => {
+                          setNotifs(notifs === "ON" ? "OFF" : "ON")
+                          changeNotifs()
+                        }}
+                    >
+                      <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
+                    </Button>
+                  </View>
+              )}
+
             </View>
 
             
@@ -465,11 +493,9 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
             </Button>
             )}
-            
-
           </Box>
 
-        <View style={{alignItems: "center", justifyContent: "center", width: Dimensions.get('window').width}}>
+        <View style={{alignItems: "center", justifyContent: "center", width: sWidth}}>
           <Box>
             <Button
                 style={({pressed}) => [
@@ -486,21 +512,6 @@ export const SettingsScreen = observer(function SettingsScreen() {
           </Box>
 
         </View>
-
-        <Button
-            style={({pressed}) => [
-              {
-                opacity: pressed ? 0.2 : 1
-              },
-              styles.signOutButton
-            ]}
-            onPress={() => {
-              firebase.auth().signOut()
-              logOut()
-            }}
-        >
-          <Text style={styles.signOutText}>Sign Out</Text>
-        </Button>
 
       </NativeBaseProvider>
 
