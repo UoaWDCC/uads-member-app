@@ -1,6 +1,7 @@
 import React from "react"
 import { View, StyleSheet, Text, Dimensions } from "react-native"
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
+import { color } from "../../theme/color"
 
 export function DrawerContent(props) {
   const drawerItemData = [
@@ -15,8 +16,8 @@ export function DrawerContent(props) {
   const textFontSize = windowHeight * 0.04 // Adjust multiplier as needed
 
   return (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.drawerContainer}>
+    <DrawerContentScrollView {...props} style={styles.drawerContainer}>
+      <View style={styles.drawerView}>
         {drawerItemData.map((item, index) => (
           <DrawerItem
             key={index}
@@ -37,6 +38,9 @@ export function DrawerContent(props) {
 const styles = StyleSheet.create({
   drawerContainer: {
     flex: 1,
+    backgroundColor: color.palette.palePeach,
+  },
+  drawerView: {
     marginTop: 40, // Adjust as needed
   },
   drawerItem: {
@@ -50,7 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 0,
     textAlign: "center", // Align the text to the center vertically
-    color: "#801E15",
+    color: color.palette.darkRed,
   },
 })
 
