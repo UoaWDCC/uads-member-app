@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, Dimensions , View} from "react-native"
+import { ViewStyle, StyleSheet, Dimensions, View } from "react-native"
 
 import { Screen, Text, AutoImage as Image, Button, Icon } from "../../components"
 import "firebase/auth"
@@ -12,8 +12,10 @@ import { TabNavigatorParamList } from "./types" // Import your type definition
 import { Box, NativeBaseProvider } from "native-base"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { backgroundColor } from "styled-system"
+import { zIndex } from "styled-system"
 
 const uadsLogo = require("../../resources/icon.png")
+const menuIcon = require("../../resources/menu-icon.svg")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -52,6 +54,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textDecorationColor: color.palette.brown,
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "absolute", // Position it at the top left corner
+    top: 0,
+    left: 0,
+    zIndex: 10,
+  },
 })
 
 interface AboutScreenProps {
@@ -61,26 +74,17 @@ interface AboutScreenProps {
 export const AboutScreen = observer(function AboutScreen({ navigation }: AboutScreenProps) {
   return (
     <Screen style={ROOT} preset="scroll">
-      <NativeBaseProvider> 
-      {/* press me button -> need to put to every of the four screen after styling */}
-
-
-      <TouchableOpacity 
-  onPress={() => {
-    // Handle press
-    navigation.openDrawer()
-  }}
-  style={{
-    padding: 20, // Increase padding to make the button bigger
-    position: 'absolute', // Position it at the top left corner
-    top: 0,
-    left: 0,
-  }}
->
-  <Text style={{ color: "#C44F6C", fontWeight: '900', fontSize: 50 }}>☰</Text>
-</TouchableOpacity>
-
-
+      <NativeBaseProvider>
+        {/* press me button -> need to put to every of the four screen after styling */}
+        <Button
+          onPress={() => {
+            // Handle press
+            navigation.openDrawer()
+          }}
+          style={styles.menuBtnStyle}
+        >
+          <Image source={menuIcon} style={styles.iconStyle} />
+        </Button>
         <Box alignItems="center" justifyContent="center">
           <Image source={uadsLogo} style={styles.logoStyle} />
           <Text
