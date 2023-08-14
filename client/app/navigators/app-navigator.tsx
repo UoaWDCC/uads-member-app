@@ -207,7 +207,6 @@ const AppDrawer = () => {
       <Drawer.Screen name="about" component={AboutScreen} />
       <Drawer.Screen name="sponsors" component={SponsorsScreen} />
       <Drawer.Screen name="events" component={EventsScreen} />
-      <Drawer.Screen name="offers" component={OffersScreen} />
       <Drawer.Screen name="settings" component={SettingsScreen} />
     </Drawer.Navigator>
   )

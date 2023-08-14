@@ -5,10 +5,9 @@ import { color } from "../../theme/color"
 
 export function DrawerContent(props) {
   const drawerItemData = [
-    { label: "About Us", screen: "about" },
-    { label: "Sponsors\n&Offers", screen: "offers" },
     { label: "Events", screen: "events" },
-    { label: "Offers", screen: "offers" },
+    { label: "Sponsors\n&Offers", screen: "sponsors" },
+    { label: "About Us", screen: "about" },
     { label: "Settings", screen: "settings" },
   ]
 
