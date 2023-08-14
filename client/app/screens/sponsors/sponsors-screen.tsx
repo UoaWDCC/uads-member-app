@@ -96,7 +96,7 @@ const TEXT: TextStyle = {
   fontWeight: "bold",
   fontSize: 40,
   color: color.text,
-  marginTop: 30,
+  marginTop: 60,
   marginLeft: 30,
 }
 
