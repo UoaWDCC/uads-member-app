@@ -5,6 +5,7 @@ import React from "react"
 import { Dimensions, Linking, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { color } from "../../theme"
+import { ScrollView } from "react-native-gesture-handler"
 
 const cupcakeImage = require("../../resources/cupcake.png")
 
@@ -104,6 +105,10 @@ const styles = StyleSheet.create({
     columnGap: "0.5rem",
     backgroundColor: color.palette.dustyPink,
   },
+
+  bodyBox: {
+    overflowY: "scroll",
+  },
 })
 
 export const AboutScreen = observer(function AboutScreen() {
@@ -135,31 +140,32 @@ export const AboutScreen = observer(function AboutScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Box style={styles.topbox}>
-          <Box style={styles.textBox}>
-            <Text style={styles.subHeaderStyle}>University of Auckland</Text>
-            <Text style={styles.headerStyle}>Dessert{"\n"}Society</Text>
+        <ScrollView>
+          <Box style={styles.topbox}>
+            <Box style={styles.textBox}>
+              <Text style={styles.subHeaderStyle}>University of Auckland</Text>
+              <Text style={styles.headerStyle}>Dessert{"\n"}Society</Text>
+            </Box>
+
+            <Box style={styles.imageBox}>
+              <Image source={cupcakeImage} style={styles.imageStyle}></Image>
+            </Box>
           </Box>
 
-          <Box style={styles.imageBox}>
-            <Image source={cupcakeImage} style={styles.imageStyle}></Image>
+          <Box style={styles.middlebox}>
+            <Text style={styles.headerTextStyle}>What We Do</Text>
+            <Text style={styles.bodyTextStyle}>
+              The Dessert Society aims to bring people together through the joy of dessert.
+              {"\n"}
+              {"\n"}
+              With many different types of events, from bake-offs to cultural food events, we create
+              an environment that anyone can join and have their sweet tooth fulfilled.
+              {"\n"}
+              {"\n"}
+              As a member, you gain access to discounts and deals at our sponsored dessert hotspots.
+            </Text>
           </Box>
-        </Box>
-
-        <Box style={styles.middlebox}>
-          <Text style={styles.headerTextStyle}>What We Do</Text>
-          <Text style={styles.bodyTextStyle}>
-            The Dessert Society aims to bring people together through the joy of dessert.
-            {"\n"}
-            {"\n"}
-            With many different types of events, from bake-offs to cultural food events, we create
-            an environment that anyone can join and have their sweet tooth fulfilled.
-            {"\n"}
-            {"\n"}
-            As a member, you gain access to discounts and deals at our sponsored dessert hotspots.
-          </Text>
-        </Box>
-
+        </ScrollView>
         <Box style={styles.socialMediaBox}>
           <TouchableOpacity onPress={handleFacebookPress}>
             <Image source={facebookLogo} />
