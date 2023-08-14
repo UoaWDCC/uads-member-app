@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
+import { ViewStyle, StyleSheet, TouchableOpacity, Dimensions } from "react-native"
 import { Screen, Text, AutoImage as Image, Button } from "../../components"
 import { useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -98,6 +98,9 @@ interface EventsScreenProps {
 export const EventsScreen = observer(function OffersScreen({ navigation }: EventsScreenProps) {
   const isVisible = useIsFocused()
 
+  const sWidth = Dimensions.get("window").width
+  const sHeight = Dimensions.get("window").height
+
   const [firstName, setFirstName] = useState<string>("")
   const [events, setEvents] = useState<
     {
@@ -155,15 +158,41 @@ export const EventsScreen = observer(function OffersScreen({ navigation }: Event
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-        <Button
-          onPress={() => {
-            // Handle press
-            navigation.openDrawer()
+        <Box
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "row",
+            paddingTop: 35,
+            paddingHorizontal: 10,
           }}
-          style={styles.menuBtnStyle}
         >
-          <Image source={menuIcon} style={styles.iconStyle} />
-        </Button>
+          <Button
+            onPress={() => {
+              // Handle press
+              navigation.openDrawer()
+            }}
+            style={styles.menuBtnStyle}
+          >
+            <Image
+              source={require("../../resources/menu-icon.svg")}
+              style={{
+                width: sWidth * 0.2,
+                height: sHeight * 0.05,
+                resizeMode: "contain",
+              }}
+            />
+          </Button>
+          <Image
+            source={require("../../resources/logo.png")}
+            style={{
+              width: sWidth * 0.27,
+              height: sHeight * 0.035,
+              resizeMode: "contain",
+            }}
+          />
+        </Box>
+
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
         <Text
           style={styles.textStyle}
