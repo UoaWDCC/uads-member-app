@@ -13,6 +13,7 @@ const instaLogo = require("../../resources/instagramLogo.png")
 const discordLogo = require("../../resources/discordLogo.png")
 const tiktokLogo = require("../../resources/tiktokLogo.png")
 const mailLogo = require("../../resources/mailLogo.png")
+const uadsLogo = require("../../resources/icon.png")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -62,17 +63,19 @@ const styles = StyleSheet.create({
   },
 
   imageBox: {
-    width: "max-content",
     position: "absolute",
-    top: -70,
+    maxWidth: sWidth >= 600 ? sWidth * 0.3 : sWidth * 1.2,
+
+    top: 0,
     opacity: 0.5,
-    zIndex: 0,
+    zIndex: -1,
     overflow: "hidden",
   },
 
   imageStyle: {
-    width: "32rem",
-    height: "27rem",
+    width: sWidth >= 600 ? sWidth * 0.4 : sWidth * 1.2,
+    height: sHeight * 0.45,
+    overflow: "hidden",
   },
 
   topbox: {
@@ -115,7 +118,7 @@ export const AboutScreen = observer(function AboutScreen() {
   }
 
   const handleDiscordPress = () => {
-    const externalLink = "https://discord.gg/SrcgRFEH"
+    const externalLink = "https://discord.gg/dFuwHuU8FT"
     Linking.openURL(externalLink)
   }
 
