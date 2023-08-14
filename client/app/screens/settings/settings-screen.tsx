@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import {ViewStyle, StyleSheet, View, Dimensions, Image, TextInput} from "react-native"
+import { ViewStyle, StyleSheet, View, Dimensions, Image, TextInput } from "react-native"
 import { Screen, Text } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Box, Button} from "native-base"
+import { NativeBaseProvider, Box, Button } from "native-base"
 import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
-import {palette} from "../../theme/palette";
+import { palette } from "../../theme/palette"
+import { ScrollView } from "react-native-gesture-handler"
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
@@ -23,18 +24,17 @@ const ROOT: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-
   buttonContent: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
   },
 
   changePassword: {
     alignItems: "center",
     color: color.palette.palePeach,
     fontFamily: "Poppins-Medium",
-    fontSize: 24,
-    justifyContent: "center"
+    fontSize: sHeight < 850 ? 20 : 24,
+    justifyContent: "center",
   },
 
   changePasswordButton: {
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     color: color.palette.palePeach,
     fontFamily: "Poppins-Medium",
     fontSize: 24,
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   editSettingsButton: {
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
 
   settingsBox: {
-    alignItems:"flex-start",
+    alignItems: "flex-start",
     backgroundColor: palette.brown,
     display: "flex",
     justifyContent: "flex-start",
@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     bottom: 0,
     left: 0,
-    paddingBottom: 20,
-    paddingTop: 15,
+    paddingBottom: sHeight < 850 ? 10 : 15,
+    paddingTop: sHeight < 850 ? 10 : 15,
     position: "absolute",
     width: sWidth,
   },
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   signOutText: {
     color: palette.palePeach,
     fontFamily: "Poppins-Bold",
-    fontSize: 24,
+    fontSize: sHeight < 850 ? 20 : 24,
   },
 
   textField: {
@@ -211,8 +211,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
     firebase
       .auth()
       .currentUser.getIdToken(true)
-      .then(async idToken => {
-        setUpi(getUpi());
+      .then(async (idToken) => {
+        setUpi(getUpi())
         await usersApi
           .get(`/users/${upi}`, {
             headers: {
@@ -221,21 +221,22 @@ export const SettingsScreen = observer(function SettingsScreen() {
           })
           .then((res) => {
             const { firstName, lastName, notificationsON } = res.data
-            const name = firstName === undefined || lastName === undefined? "" : `${firstName} ${lastName}`
-            setFirstName(firstName || "");
-            setLastName(lastName || "");
+            const name =
+              firstName === undefined || lastName === undefined ? "" : `${firstName} ${lastName}`
+            setFirstName(firstName || "")
+            setLastName(lastName || "")
             setName(name)
             setNotifs(notificationsON ? "ON" : "OFF")
           })
           .catch((e) => {
             console.error(e)
           })
-        })
-      }, [upi])
+      })
+  }, [upi])
 
-  function getUpi(): string{
-    const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "");
-    return userUpi;
+  function getUpi(): string {
+    const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "")
+    return userUpi
   }
 
   async function changeName() {
@@ -288,8 +289,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
               },
             },
           )
-          .then(() => {
-          })
+          .then(() => {})
           .catch((e) => {
             console.error(e)
           })
@@ -299,7 +299,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
   const handleEdit = () => {
     setIsEdit(!isEdit)
     if (!isEdit) {
-      changeName();
+      changeName()
     }
   }
 
@@ -308,30 +308,32 @@ export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-
-        <View style={{
-          width: sWidth,
-          height: sHeight,
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}>
-          <Button
-              style={({pressed}) => [
+        <ScrollView>
+          <View
+            style={{
+              width: sWidth,
+              height: sHeight,
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          >
+            <Button
+              style={({ pressed }) => [
                 {
-                  opacity: pressed ? 0.2 : 1
+                  opacity: pressed ? 0.2 : 1,
                 },
-                styles.signOutButton
+                styles.signOutButton,
               ]}
               onPress={() => {
                 firebase.auth().signOut()
                 logOut()
               }}
-          >
-            <Text style={styles.signOutText}>Sign Out</Text>
-          </Button>
-        </View>
-        <Box
+            >
+              <Text style={styles.signOutText}>Sign Out</Text>
+            </Button>
+          </View>
+          <Box
             style={{
               justifyContent: "space-between",
               alignItems: "center",
@@ -339,26 +341,26 @@ export const SettingsScreen = observer(function SettingsScreen() {
               paddingTop: 35,
               paddingHorizontal: 10,
             }}
-        >
-          <Image
+          >
+            <Image
               source={require("../../resources/menu-icon.svg")}
               style={{
                 width: sWidth * 0.2,
                 height: sHeight * 0.05,
                 resizeMode: "contain",
               }}
-          />
-          <Image
+            />
+            <Image
               source={require("../../resources/uads-logo.png")}
               style={{
                 width: sWidth * 0.27,
                 height: sHeight * 0.035,
                 resizeMode: "contain",
               }}
-          />
-        </Box>
-        <Box style={{ justifyContent:"space-between", alignItems:"center"}}>
-          <Image
+            />
+          </Box>
+          <Box style={{ justifyContent: "space-between", alignItems: "center" }}>
+            <Image
               source={require("../../resources/settings-header.svg")}
               style={{
                 width: sWidth * 0.9,
@@ -366,17 +368,17 @@ export const SettingsScreen = observer(function SettingsScreen() {
                 paddingVertical: 50,
                 resizeMode: "contain",
               }}
-          />
-        </Box>
+            />
+          </Box>
 
-        <Box style={{ alignSelf:"center", width:sWidth * 0.9}}>
-          <Text style={styles.upiLabel}>UPI: {name === "" || notifs === "" ? "" : upi}</Text>
-        </Box>
+          <Box style={{ alignSelf: "center", width: sWidth * 0.9 }}>
+            <Text style={styles.upiLabel}>UPI: {name === "" || notifs === "" ? "" : upi}</Text>
+          </Box>
 
-        <Box style={styles.settingsBox}>
-          <Box style={styles.nameBox}>
-            {isEdit ? (
-              <View>
+          <Box style={styles.settingsBox}>
+            <Box style={styles.nameBox}>
+              {isEdit ? (
+                <View>
                   <Text style={styles.textField}>First name:</Text>
                   <TextInput
                     style={[styles.textInput, styles.textInputEdit]}
@@ -389,136 +391,154 @@ export const SettingsScreen = observer(function SettingsScreen() {
                     defaultValue={lastName}
                     onChangeText={(lastNameInput) => setLastName(lastNameInput)}
                   />
-              </View>
-                 ) : (
-                  <View>
-                    <Text style={styles.textField}>First name:</Text>
-                    <Text style={styles.textInput}>{firstName}</Text>
-                    <Text style={styles.textField}>Last name:</Text>
-                    <Text style={styles.textInput}>{lastName}</Text>
-                  </View>
-                 )}
-          </Box>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.textField}>First name:</Text>
+                  <Text style={styles.textInput}>{firstName}</Text>
+                  <Text style={styles.textField}>Last name:</Text>
+                  <Text style={styles.textInput}>{lastName}</Text>
+                </View>
+              )}
+            </Box>
 
             <View>
               <Text style={styles.textField}>Notifications:</Text>
               {isEdit ? (
-                  <View style={{
+                <View
+                  style={{
                     flexDirection: "row",
-                  }}>
-                    <Button
-                        style={notifs === "OFF" ? [styles.notifsButton, styles.notifsButtonDeselect] : styles.notifsButton}
-                        onPress={() => {
-                          setNotifs("ON")
-                          changeNotifs()
-                        }}
+                  }}
+                >
+                  <Button
+                    style={
+                      notifs === "OFF"
+                        ? [styles.notifsButton, styles.notifsButtonDeselect]
+                        : styles.notifsButton
+                    }
+                    onPress={() => {
+                      setNotifs("ON")
+                      changeNotifs()
+                    }}
+                  >
+                    <Text
+                      style={
+                        notifs === "OFF"
+                          ? [styles.notifsText, styles.notifsTextDeselect]
+                          : styles.notifsText
+                      }
                     >
-                      <Text style={notifs === "OFF" ? [styles.notifsText, styles.notifsTextDeselect] : styles.notifsText}>ON</Text>
-                    </Button>
-                    <Button
-                        style={notifs === "ON" ? [styles.notifsButton, styles.notifsButtonDeselect] : styles.notifsButton}
-                        onPress={() => {
-                          setNotifs("OFF")
-                          changeNotifs()
-                        }}
+                      ON
+                    </Text>
+                  </Button>
+                  <Button
+                    style={
+                      notifs === "ON"
+                        ? [styles.notifsButton, styles.notifsButtonDeselect]
+                        : styles.notifsButton
+                    }
+                    onPress={() => {
+                      setNotifs("OFF")
+                      changeNotifs()
+                    }}
+                  >
+                    <Text
+                      style={
+                        notifs === "ON"
+                          ? [styles.notifsText, styles.notifsTextDeselect]
+                          : styles.notifsText
+                      }
                     >
-                      <Text style={notifs === "ON" ? [styles.notifsText, styles.notifsTextDeselect] : styles.notifsText}>OFF</Text>
-                    </Button>
-                  </View>
-
+                      OFF
+                    </Text>
+                  </Button>
+                </View>
               ) : (
-                  <View>
-                    <Button
-                        style={styles.notifsButton}
-                        disabled={!isEdit}
-                        onPress={() => {
-                          setNotifs(notifs === "ON" ? "OFF" : "ON")
-                          changeNotifs()
-                        }}
-                    >
-                      <Text style={styles.notifsText}>{name === "" || notifs === "" ? "" : notifs}</Text>
-                    </Button>
-                  </View>
+                <View>
+                  <Button
+                    style={styles.notifsButton}
+                    disabled={!isEdit}
+                    onPress={() => {
+                      setNotifs(notifs === "ON" ? "OFF" : "ON")
+                      changeNotifs()
+                    }}
+                  >
+                    <Text style={styles.notifsText}>
+                      {name === "" || notifs === "" ? "" : notifs}
+                    </Text>
+                  </Button>
+                </View>
               )}
-
             </View>
 
-            
             {isEdit ? (
               <Button
-                style={({pressed}) => [
+                style={({ pressed }) => [
                   {
-                    opacity: pressed ? 0.2 : 1
+                    opacity: pressed ? 0.2 : 1,
                   },
-                  styles.editSettingsButton
+                  styles.editSettingsButton,
                 ]}
                 onPress={handleEdit}
               >
-              <View style={styles.buttonContent}>
-                <Text style={styles.editSettings}>Save</Text>
-                <Image
-                  source={require("../../resources/save-icon.svg")}
-                  style={{
-                    width: 25,
-                    height: 25,
-                    marginLeft: 10,
-                    resizeMode: "contain",
-                  }}
-                />
-              </View>
-
-            </Button>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.editSettings}>Save</Text>
+                  <Image
+                    source={require("../../resources/save-icon.svg")}
+                    style={{
+                      width: 25,
+                      height: 25,
+                      marginLeft: 10,
+                      resizeMode: "contain",
+                    }}
+                  />
+                </View>
+              </Button>
             ) : (
               <Button
-              style={({pressed}) => [
-                {
-                  opacity: pressed ? 0.2 : 1
-                },
-                styles.editSettingsButton,
-              ]}
-              onPress={handleEdit}
-            >
-              <View style={styles.buttonContent}>
-                <Text style={styles.editSettings}>Edit</Text>
-                <Image
-                  source={require("../../resources/edit-icon.svg")}
-                  style={{
-                    width: 25,
-                    height: 25,
-                    marginLeft: 10,
-                    resizeMode: "contain",
-                  }}
-                />
-              </View>
-
-            </Button>
+                style={({ pressed }) => [
+                  {
+                    opacity: pressed ? 0.2 : 1,
+                  },
+                  styles.editSettingsButton,
+                ]}
+                onPress={handleEdit}
+              >
+                <View style={styles.buttonContent}>
+                  <Text style={styles.editSettings}>Edit</Text>
+                  <Image
+                    source={require("../../resources/edit-icon.svg")}
+                    style={{
+                      width: 25,
+                      height: 25,
+                      marginLeft: 10,
+                      resizeMode: "contain",
+                    }}
+                  />
+                </View>
+              </Button>
             )}
           </Box>
 
-        <View style={{alignItems: "center", justifyContent: "center", width: sWidth}}>
-          <Box>
-            {!isEdit && (
-              <Button
-              style={({pressed}) => [
-                {
-                  opacity: pressed ? 0.2 : 1
-                },
-                styles.changePasswordButton
-              ]}
-              onPress={() => navigation.navigate("change-password")}
-          >
-            <Text style={styles.changePassword}>Change Password</Text>
-          </Button>
-            )}
-            
-          
-          </Box>
-
-        </View>
-
+          <View style={{ alignItems: "center", justifyContent: "center", width: sWidth }}>
+            <Box>
+              {!isEdit && (
+                <Button
+                  style={({ pressed }) => [
+                    {
+                      opacity: pressed ? 0.2 : 1,
+                    },
+                    styles.changePasswordButton,
+                  ]}
+                  onPress={() => navigation.navigate("change-password")}
+                >
+                  <Text style={styles.changePassword}>Change Password</Text>
+                </Button>
+              )}
+            </Box>
+          </View>
+        </ScrollView>
       </NativeBaseProvider>
-
-
     </Screen>
   )
 })
