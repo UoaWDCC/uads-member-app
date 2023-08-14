@@ -12,6 +12,7 @@ import { BASE_URL } from "@env"
 import { SocialIcon } from "react-social-icons"
 import { TabNavigatorParamList } from "../../navigators"
 import { DrawerNavigationProp } from "@react-navigation/drawer"
+import { paddingBottom } from "styled-system"
 
 const uadsLogo = require("../../resources/icon.png")
 const menuIcon = require("../../resources/menu-icon.svg")
@@ -165,6 +166,7 @@ export const EventsScreen = observer(function OffersScreen({ navigation }: Event
             flexDirection: "row",
             paddingTop: 35,
             paddingHorizontal: 10,
+            paddingBottom: 20, // Add padding to the bottom of the header row
           }}
         >
           <Button
@@ -186,9 +188,13 @@ export const EventsScreen = observer(function OffersScreen({ navigation }: Event
           <Image
             source={require("../../resources/logo.png")}
             style={{
-              width: sWidth * 0.27,
-              height: sHeight * 0.035,
+              width: sWidth * 0.54,
+              height: sHeight * 0.07,
               resizeMode: "contain",
+              position: "absolute",
+              top: 10, 
+              right: 0,
+        
             }}
           />
         </Box>
