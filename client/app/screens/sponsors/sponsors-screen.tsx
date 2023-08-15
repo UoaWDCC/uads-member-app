@@ -83,7 +83,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
           <Box 
             style={{
               height: "auto",
-              width: sWidth * 0.85,
+              width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
               marginBottom: "1rem",
               left: "50%",
               transform: [{ translateX: "-50%" }],
@@ -94,8 +94,8 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               {/* Top Half (Image, Name, Address and Expand Button) */}
               <Box
                 style={{
-                  width: sWidth * 0.85,
-                  height: sHeight * 0.2,
+                  width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
+                  height: sWidth >= 600 ? sHeight * 0.15 : sHeight * 0.2,
                   overflow: "hidden",
                   backgroundColor: "black",
                   zIndex: 0,
@@ -103,7 +103,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                   {/* Image Box */}
                   <Box 
                     style={{
-                      width: sWidth * 0.85,
+                      width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                       height: sHeight * 0.07,
                       opacity: 0.7,
                       zIndex: 1,
@@ -128,7 +128,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                       alignItems: "center",
                       justifyContent: "center",
                       height: sHeight * 0.07,
-                      width: sWidth * 0.85,
+                      width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                       position: "absolute",
                       zIndex: 1,
                     }}
@@ -136,7 +136,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                     {/* Horizontal Box for Sponsor Name and Button */}
                     <Box
                       style={{
-                        width: sWidth * 0.85,
+                        width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                         display: "flex",
                         flexDirection: "row",
                         justifyContent: "space-between",
@@ -225,7 +225,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
               {/* Bottom Half (Description and Redeem Button) */}
               <Box
                 style={{
-                  width: sWidth * 0.85,
+                  width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                   height: "auto",
                   padding: 10,
                   backgroundColor: color.palette.brown,
@@ -287,7 +287,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
           <Box
             style={{
               height: sHeight * 0.07,
-              width: sWidth * 0.85,
+              width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
               marginBottom: "1rem",
               left: "50%",
               transform: [{ translateX: "-50%" }],
@@ -320,7 +320,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
             {/* Horizontal Box for Name and Button */}
             <Box
               style={{
-                width: sWidth * 0.85,
+                width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -481,7 +481,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
             <Image
               source={require("../../resources/sponsors-header.png")}
               style={{
-                width: sWidth * 0.85,
+                width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                 height: sHeight * 0.2,
                 resizeMode: "contain",
               }}
@@ -507,7 +507,7 @@ export const SponsorsScreen = observer(function SponsorsScreen() {
                   justifyContent: "space-between",
                   alignItems: "center",
                   backgroundColor: color.palette.twentyFiveFuschia,
-                  width: sWidth * 0.85,
+                  width: sWidth >= 600 ? sWidth * 0.3 : sWidth * 0.85,
                   height: sHeight * 0.05,
                   borderTopLeftRadius: 10,
                   borderTopRightRadius: 10,
