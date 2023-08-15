@@ -239,7 +239,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
     return userUpi
   }
 
-  async function changeName() {
+  function changeName() {
     const fName = firstName
     const lName = lastName
 
@@ -262,7 +262,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
             },
           )
           .then(() => {
-            console.log("name changed!")
+            console.log(`name changed to ${fName} ${lName}`)
           })
           .catch((e) => {
             console.error(e)
@@ -271,7 +271,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
   }
 
   function changeNotifs() {
-    const newNotifs: boolean = notifs !== "ON"
+    const newNotifs: boolean = notifs === "ON"
     firebase
       .auth()
       .currentUser.getIdToken(true)
@@ -289,7 +289,9 @@ export const SettingsScreen = observer(function SettingsScreen() {
               },
             },
           )
-          .then(() => {})
+          .then(() => {
+            console.log(`notifications set to ${newNotifs ? "ON" : "OFF"}`)
+          })
           .catch((e) => {
             console.error(e)
           })
@@ -298,8 +300,9 @@ export const SettingsScreen = observer(function SettingsScreen() {
 
   const handleEdit = () => {
     setIsEdit(!isEdit)
-    if (!isEdit) {
+    if (isEdit) {
       changeName()
+      changeNotifs()
     }
   }
 
@@ -418,7 +421,6 @@ export const SettingsScreen = observer(function SettingsScreen() {
                     }
                     onPress={() => {
                       setNotifs("ON")
-                      changeNotifs()
                     }}
                   >
                     <Text
@@ -439,7 +441,6 @@ export const SettingsScreen = observer(function SettingsScreen() {
                     }
                     onPress={() => {
                       setNotifs("OFF")
-                      changeNotifs()
                     }}
                   >
                     <Text
@@ -460,7 +461,6 @@ export const SettingsScreen = observer(function SettingsScreen() {
                     disabled={!isEdit}
                     onPress={() => {
                       setNotifs(notifs === "ON" ? "OFF" : "ON")
-                      changeNotifs()
                     }}
                   >
                     <Text style={styles.notifsText}>
