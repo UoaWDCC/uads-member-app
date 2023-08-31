@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
+import { ViewStyle, StyleSheet, TouchableOpacity, Dimensions } from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -11,7 +11,7 @@ import axios from "axios"
 import { BASE_URL } from "@env"
 import { SocialIcon } from "react-social-icons"
 
-const uadsLogo = require("../../resources/icon.png")
+const uadsLogo = require("../../resources/menu-icon.png")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -80,6 +80,15 @@ const styles = StyleSheet.create({
 export const EventsScreen = observer(function OffersScreen() {
   const navigation = useNavigation()
   const isVisible = useIsFocused()
+  
+  const [sWidth, setSWidth] = useState(0)
+  const [sHeight, setSHeight] = useState(0)
+
+  // Calculate screen dimensions on mount
+  useEffect(() => {
+  setSWidth(Dimensions.get("window").width)
+  setSHeight(Dimensions.get("window").height)
+  }, [])
 
   const [firstName, setFirstName] = useState<string>("")
   const [events, setEvents] = useState<
@@ -138,6 +147,36 @@ export const EventsScreen = observer(function OffersScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+
+      {/* Hamburger Menu */}
+      <Box
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "row",
+            paddingTop: 20,
+            paddingHorizontal: 10,
+            paddingBottom: 5,
+          }}
+        >
+          <Image
+            source={require("../../resources/menu-icon.png")}
+            style={{
+              width: sWidth * 0.2,
+              height: sHeight * 0.04,
+              resizeMode: "contain",
+            }}
+          />
+          <Image
+            source={require("../../resources/logo.png")}
+            style={{
+              width: sWidth * 0.3,
+              height: sHeight * 0.06,
+              resizeMode: "contain",
+            }}
+          />
+        </Box>
+
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
         <Text
           style={styles.textStyle}
