@@ -86,14 +86,14 @@ const styles = StyleSheet.create({
 export const EventsScreen = observer(function OffersScreen() {
   const navigation = useNavigation()
   const isVisible = useIsFocused()
-  
+
   const [sWidth, setSWidth] = useState(0)
   const [sHeight, setSHeight] = useState(0)
 
   // Calculate screen dimensions on mount
   useEffect(() => {
-  setSWidth(Dimensions.get("window").width)
-  setSHeight(Dimensions.get("window").height)
+    setSWidth(Dimensions.get("window").width)
+    setSHeight(Dimensions.get("window").height)
   }, [])
 
   const [firstName, setFirstName] = useState<string>("")
@@ -153,7 +153,6 @@ export const EventsScreen = observer(function OffersScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-
         {/* Hamburger Menu Icon */}
         <Box
           style={{
@@ -182,14 +181,14 @@ export const EventsScreen = observer(function OffersScreen() {
             }}
           />
         </Box>
-        
+
         <Box
           style={{
             marginHorizontal: 30,
           }}
         >
           <Text style={styles.header} preset="header" text={"Welcome back, " + firstName + " :)"} />
-          
+
           <Image
             source={require("../../resources/fourPointStar.png")}
             style={{
@@ -214,7 +213,7 @@ export const EventsScreen = observer(function OffersScreen() {
             }}
           />
         </Box>
-        
+
         <Box style={CONTAINER}>
           {/* Upcoming Events Box */}
           <Box
@@ -225,10 +224,10 @@ export const EventsScreen = observer(function OffersScreen() {
             }}
           >
             <Text
-            style={styles.textStyle}
-            preset="header"
-            text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
-            />  
+              style={styles.textStyle}
+              preset="header"
+              text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
+            />
 
             <Image
               source={require("../../resources/calendar-icon.png")}
@@ -239,7 +238,7 @@ export const EventsScreen = observer(function OffersScreen() {
               }}
             />
           </Box>
-          
+
           <Stack>
             {events.length === 0 ? (
               <Image source={uadsLogo} style={styles.logoStyle} />
@@ -299,40 +298,6 @@ export const EventsScreen = observer(function OffersScreen() {
                 }}
               />
             )}
-            <Stack style={{ marginVertical: 20 }}>
-              <HStack style={styles.socialStyle}>
-                <SocialIcon
-                  url="https://www.instagram.com/uoadessertsociety/"
-                  style={{ height: 40, width: 40 }}
-                />
-                <Text style={styles.socialTextStyle} preset="secondary" text="@uoadessertsociety" />
-              </HStack>
-              <HStack style={styles.socialStyle}>
-                <SocialIcon
-                  url="https://www.tiktok.com/@uoadessertsociety"
-                  style={{ height: 40, width: 40 }}
-                />
-                <Text style={styles.socialTextStyle} preset="secondary" text="@uoadessertsociety" />
-              </HStack>
-              <HStack style={styles.socialStyle}>
-                <SocialIcon
-                  url="https://www.facebook.com/uoadessertsociety"
-                  style={{ height: 40, width: 40 }}
-                />
-                <Text style={styles.socialTextStyle} preset="secondary" text="@uoadessertsociety" />
-              </HStack>
-              <HStack style={styles.socialStyle}>
-                <SocialIcon
-                  url="https://discord.com/invite/UaeCB7xA"
-                  style={{ height: 40, width: 40 }}
-                />
-                <Text
-                  style={styles.socialTextStyle}
-                  preset="secondary"
-                  text="University of Auckland Dessert Society"
-                />
-              </HStack>
-            </Stack>
           </Stack>
         </Box>
       </NativeBaseProvider>
