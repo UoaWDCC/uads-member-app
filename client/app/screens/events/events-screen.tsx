@@ -314,7 +314,7 @@ export const EventsScreen = observer(function OffersScreen() {
             />
 
             <Image
-              source={require("../../resources/calendar-icon.png")}
+              source={require("../../resources/calendar-past-icon.png")}
               style={{
                 width: sWidth * 0.15,
                 height: sHeight * 0.04,
