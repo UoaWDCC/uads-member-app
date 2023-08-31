@@ -12,6 +12,7 @@ import { BASE_URL } from "@env"
 import { SocialIcon } from "react-social-icons"
 
 const uadsLogo = require("../../resources/menu-icon.png")
+const calendarIcon = require("../../resources/calendar-icon.png")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -23,8 +24,10 @@ const ROOT: ViewStyle = {
 
 const CONTAINER: ViewStyle = {
   flex: 1,
-  backgroundColor: color.background,
+  backgroundColor: color.palette.brown,
   marginTop: 10,
+  paddingHorizontal: 30,
+  paddingVertical: 10,
 }
 
 const styles = StyleSheet.create({
@@ -50,9 +53,11 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: "Sen-Regular",
     fontSize: 40,
-    margin: 10,
-    textAlign: "center",
-    textDecorationColor: color.palette.brown,
+    lineHeight: 48,
+    textAlign: "left",
+    fontWeight: "700",
+    fontStyle: "italic",
+    color: color.palette.darkRed,
   },
   logoStyle: {
     alignSelf: "center",
@@ -71,9 +76,10 @@ const styles = StyleSheet.create({
     textAlignVertical: "bottom",
   },
   textStyle: {
-    fontSize: 18,
-    textAlign: "center",
-    textAlignVertical: "center",
+    fontSize: 24,
+    lineHeight: 20,
+    fontWeight: "600",
+    color: color.palette.sand,
   },
 })
 
@@ -148,8 +154,8 @@ export const EventsScreen = observer(function OffersScreen() {
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
 
-      {/* Hamburger Menu */}
-      <Box
+        {/* Hamburger Menu Icon */}
+        <Box
           style={{
             justifyContent: "space-between",
             alignItems: "center",
@@ -176,14 +182,64 @@ export const EventsScreen = observer(function OffersScreen() {
             }}
           />
         </Box>
+        
+        <Box
+          style={{
+            marginHorizontal: 30,
+          }}
+        >
+          <Text style={styles.header} preset="header" text={"Welcome back, " + firstName + " :)"} />
+          
+          <Image
+            source={require("../../resources/fourPointStar.png")}
+            style={{
+              position: "absolute",
+              right: 10,
+              bottom: 0,
+              width: sWidth * 0.25,
+              height: sHeight * 0.05,
+              resizeMode: "contain",
+            }}
+          />
 
-        <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
-        <Text
-          style={styles.textStyle}
-          preset="header"
-          text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
-        />
+          <Image
+            source={require("../../resources/fourPointStar.png")}
+            style={{
+              position: "absolute",
+              right: 0,
+              bottom: 20,
+              width: sWidth * 0.15,
+              height: sHeight * 0.04,
+              resizeMode: "contain",
+            }}
+          />
+        </Box>
+        
         <Box style={CONTAINER}>
+          {/* Upcoming Events Box */}
+          <Box
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <Text
+            style={styles.textStyle}
+            preset="header"
+            text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
+            />  
+
+            <Image
+              source={require("../../resources/calendar-icon.png")}
+              style={{
+                width: sWidth * 0.15,
+                height: sHeight * 0.04,
+                resizeMode: "contain",
+              }}
+            />
+          </Box>
+          
           <Stack>
             {events.length === 0 ? (
               <Image source={uadsLogo} style={styles.logoStyle} />
