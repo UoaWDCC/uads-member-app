@@ -299,6 +299,29 @@ export const EventsScreen = observer(function OffersScreen() {
               />
             )}
           </Stack>
+          <Box
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <Text
+              style={styles.textStyle}
+              preset="header"
+              //TODO change logic for past events
+              text={events.length === 0 ? "No Past Events:" : "Past Events:"}
+            />
+
+            <Image
+              source={require("../../resources/calendar-icon.png")}
+              style={{
+                width: sWidth * 0.15,
+                height: sHeight * 0.04,
+                resizeMode: "contain",
+              }}
+            />
+          </Box>
         </Box>
       </NativeBaseProvider>
     </Screen>
