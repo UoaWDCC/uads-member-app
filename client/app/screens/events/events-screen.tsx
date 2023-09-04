@@ -23,7 +23,6 @@ const ROOT: ViewStyle = {
 }
 
 const CONTAINER: ViewStyle = {
-  flex: 1,
   backgroundColor: color.palette.brown,
   marginTop: 10,
   paddingHorizontal: 30,
@@ -32,14 +31,14 @@ const CONTAINER: ViewStyle = {
 
 const styles = StyleSheet.create({
   cardStyle: {
-    backgroundColor: color.palette.goldenGlow,
+    backgroundColor: color.palette.palePeach,
     borderRadius: 15,
     flex: 1,
     height: "180px",
     margin: 5,
     paddingHorizontal: "5px",
     paddingVertical: "5px",
-    width: "100px",
+    width: "100%",
   },
   cardTextStyle: {
     flex: 1,
@@ -246,7 +245,7 @@ export const EventsScreen = observer(function OffersScreen() {
               <FlatList
                 style={{ overflow: "visible" }}
                 data={events}
-                numColumns={2}
+                numColumns={1}
                 keyExtractor={(item) => item.uuid}
                 renderItem={({ item, index }) => {
                   const { name, imagePath } = item
