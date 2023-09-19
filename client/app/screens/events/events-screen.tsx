@@ -94,7 +94,7 @@ export const EventsScreen = observer(function OffersScreen() {
     setSWidth(Dimensions.get("window").width)
     setSHeight(Dimensions.get("window").height)
   }, [])
-
+  const currentDateAndTime: Date = new Date()
   const [firstName, setFirstName] = useState<string>("")
   const [events, setEvents] = useState<
     {
@@ -148,7 +148,6 @@ export const EventsScreen = observer(function OffersScreen() {
     const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "")
     return userUpi
   }
-
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
@@ -244,7 +243,14 @@ export const EventsScreen = observer(function OffersScreen() {
             ) : (
               <FlatList
                 style={{ overflow: "visible" }}
-                data={events}
+                // sort out filter
+                data={events.filter((item) => {
+                  // Convert the datetime string to a Date object
+                  const itemDatetime = new Date(item.dateTime)
+
+                  // Compare the item's datetime with the current time
+                  return itemDatetime >= currentDateAndTime
+                })}
                 numColumns={1}
                 keyExtractor={(item) => item.uuid}
                 renderItem={({ item, index }) => {
@@ -321,6 +327,73 @@ export const EventsScreen = observer(function OffersScreen() {
               }}
             />
           </Box>
+
+          <Stack>
+            {events.length === 0 ? (
+              <Image source={uadsLogo} style={styles.logoStyle} />
+            ) : (
+              <FlatList
+                style={{ overflow: "visible" }}
+                data={events.filter((item) => {
+                  // Convert the datetime string to a Date object
+                  const itemDatetime = new Date(item.dateTime)
+
+                  // Compare the item's datetime with the current time
+                  return itemDatetime < currentDateAndTime
+                })}
+                numColumns={1}
+                keyExtractor={(item) => item.uuid}
+                renderItem={({ item, index }) => {
+                  const { name, imagePath } = item
+                  return (
+                    <Box key={index} style={styles.cardStyle}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate("event", item)
+                        }}
+                        style={{ height: "100%", width: "100%" }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexFlow: "column",
+                            height: "100%",
+                            width: "calc(100% - 10px)",
+                            marginRight: "5px",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
+                            {name}
+                          </Text>
+                          <div
+                            style={{
+                              flex: "1 1 auto",
+                              marginTop: "5px",
+                              marginBottom: "5px",
+                              width: "100%",
+                            }}
+                          >
+                            <img
+                              alt={name}
+                              src={imagePath}
+                              // eslint-disable-next-line react-native/no-inline-styles
+                              style={{
+                                borderRadius: "10px",
+                                width: "100%",
+                                height: "130px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </TouchableOpacity>
+                    </Box>
+                  )
+                }}
+              />
+            )}
+          </Stack>
         </Box>
       </NativeBaseProvider>
     </Screen>
