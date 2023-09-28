@@ -1,7 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, TouchableOpacity, Dimensions } from "react-native"
+import {
+  ViewStyle,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  View,
+  ImageBackground,
+} from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
@@ -47,8 +54,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
   },
+  imageGradient: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  cardTextHeader: {
+    fontFamily: "Bitter-Bold",
+    fontWeight: "700",
+    fontSize: 22,
+    color: color.palette.palePeach,
+  },
   header: {
-    fontFamily: "Sen-Regular",
+    fontFamily: "Bitter-Bold",
     fontSize: 40,
     lineHeight: 48,
     textAlign: "left",
@@ -268,7 +288,42 @@ export const EventsScreen = observer(function OffersScreen() {
                             height: "100%",
                           }}
                         >
-                          <img
+                          <View
+                            style={{
+                              position: "relative", // To position child elements
+                              width: "100%",
+                              height: "140px",
+                            }}
+                          >
+                            <Image
+                              source={imagePath}
+                              style={{
+                                flex: 1,
+                                width: "100%",
+                                height: "100px",
+                              }}
+                            />
+
+                            <View
+                              style={{
+                                position: "absolute", // Position text absolutely over the image
+                                left: 0,
+                                bottom: 0,
+                                padding: 10,
+                                justifyContent: "center", // Center the text vertically
+                              }}
+                            >
+                              <Text
+                                style={[styles.cardTextStyle, styles.cardTextHeader]}
+                                numberOfLines={1}
+                                preset="bold"
+                              >
+                                {name}
+                              </Text>
+                            </View>
+                          </View>
+                          <Text style={[styles.cardTextStyle]}>Your Text Here</Text>
+                          {/* <img
                             alt={name}
                             src={imagePath}
                             // eslint-disable-next-line react-native/no-inline-styles
@@ -279,9 +334,13 @@ export const EventsScreen = observer(function OffersScreen() {
                               objectFit: "cover",
                             }}
                           />
-                          <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
+                          <Text
+                            style={[styles.cardTextStyle, styles.cardTextHeader]}
+                            numberOfLines={1}
+                            preset="bold"
+                          >
                             {name}
-                          </Text>
+                          </Text> */}
                           <div
                             style={{
                               flex: "1 1 auto",
