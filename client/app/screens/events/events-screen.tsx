@@ -36,8 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "180px",
     margin: 5,
-    paddingHorizontal: "5px",
-    paddingVertical: "5px",
     width: "100%",
   },
   cardTextStyle: {
@@ -268,11 +266,19 @@ export const EventsScreen = observer(function OffersScreen() {
                             display: "flex",
                             flexFlow: "column",
                             height: "100%",
-                            width: "calc(100% - 10px)",
-                            marginRight: "5px",
-                            marginLeft: "5px",
                           }}
                         >
+                          <img
+                            alt={name}
+                            src={imagePath}
+                            // eslint-disable-next-line react-native/no-inline-styles
+                            style={{
+                              borderRadius: "10px",
+                              width: "100%",
+                              height: "130px",
+                              objectFit: "cover",
+                            }}
+                          />
                           <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
                             {name}
                           </Text>
@@ -283,19 +289,7 @@ export const EventsScreen = observer(function OffersScreen() {
                               marginBottom: "5px",
                               width: "100%",
                             }}
-                          >
-                            <img
-                              alt={name}
-                              src={imagePath}
-                              // eslint-disable-next-line react-native/no-inline-styles
-                              style={{
-                                borderRadius: "10px",
-                                width: "100%",
-                                height: "130px",
-                                objectFit: "cover",
-                              }}
-                            />
-                          </div>
+                          ></div>
                         </div>
                       </TouchableOpacity>
                     </Box>
