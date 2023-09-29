@@ -6,6 +6,7 @@ export const palette = {
   lilac: "#d9b5c1",
   dustyPink: "#b96574",
   fuschia: "#c44f6c",
+  twentyFiveFuschia: "rgba(196, 79, 108, 0.25)",
   brown: "#804949",
   darkRed: "#801e15",
 }
