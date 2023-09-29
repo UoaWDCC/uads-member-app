@@ -1,0 +1,5 @@
+class VoucherRepository{
+
+}
+
+export {VoucherRepository}
