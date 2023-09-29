@@ -110,4 +110,12 @@ interface IUser {
   notificationsON?: Boolean;
 }
 
-export { IEvent, ISponsor, IDiscount, IClub, IUser };
+interface IVoucher{
+  uuid: string;
+  description: string;
+  sponsor: string;
+  imageLink: string;
+}
+
+
+export { IEvent, ISponsor, IDiscount, IClub, IUser, IVoucher };
