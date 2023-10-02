@@ -308,7 +308,8 @@ export const EventsScreen = observer(function OffersScreen() {
                             style={{
                               position: "relative", // To position child elements
                               width: "100%",
-                              height: "140px",
+                              // experiment with height values
+                              height: "160px",
                             }}
                           >
                             <Image
@@ -316,7 +317,6 @@ export const EventsScreen = observer(function OffersScreen() {
                               style={{
                                 flex: 1,
                                 width: "100%",
-                                height: "100px",
                               }}
                             />
                             <View style={styles.gradient} />
@@ -352,24 +352,6 @@ export const EventsScreen = observer(function OffersScreen() {
                             </Text>
                             <Text style={[styles.cardTextStyle]}>{desc}</Text>
                           </View>
-                          {/* <img
-                            alt={name}
-                            src={imagePath}
-                            // eslint-disable-next-line react-native/no-inline-styles
-                            style={{
-                              borderRadius: "10px",
-                              width: "100%",
-                              height: "130px",
-                              objectFit: "cover",
-                            }}
-                          />
-                          <Text
-                            style={[styles.cardTextStyle, styles.cardTextHeader]}
-                            numberOfLines={1}
-                            preset="bold"
-                          >
-                            {name}
-                          </Text> */}
                           <div
                             style={{
                               flex: "1 1 auto",
