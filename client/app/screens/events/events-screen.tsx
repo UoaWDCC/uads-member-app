@@ -98,6 +98,16 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: color.palette.sand,
   },
+  gradient: {
+    flex: 1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "transparent",
+    backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1))",
+  },
 })
 
 export const EventsScreen = observer(function OffersScreen() {
@@ -303,6 +313,7 @@ export const EventsScreen = observer(function OffersScreen() {
                                 height: "100px",
                               }}
                             />
+                            <View style={styles.gradient} />
 
                             <View
                               style={{
