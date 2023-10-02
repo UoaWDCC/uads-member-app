@@ -17,6 +17,7 @@ import firebase from "firebase"
 import axios from "axios"
 import { BASE_URL } from "@env"
 import { SocialIcon } from "react-social-icons"
+import { padding } from "styled-system"
 
 const uadsLogo = require("../../resources/menu-icon.png")
 const calendarIcon = require("../../resources/calendar-icon.png")
@@ -341,7 +342,13 @@ export const EventsScreen = observer(function OffersScreen() {
                               </Text>
                             </View>
                           </View>
-                          <Text style={[styles.cardTextStyle]}>Your Text Here</Text>
+                          <View
+                            style={{
+                              padding: 10,
+                            }}
+                          >
+                            <Text style={[styles.cardTextStyle]}>{desc}</Text>
+                          </View>
                           {/* <img
                             alt={name}
                             src={imagePath}
