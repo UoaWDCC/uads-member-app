@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "transparent",
-    backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1))",
+    backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,1))",
   },
 })
 
