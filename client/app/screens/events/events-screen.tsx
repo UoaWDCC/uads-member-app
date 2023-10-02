@@ -347,6 +347,9 @@ export const EventsScreen = observer(function OffersScreen() {
                               padding: 10,
                             }}
                           >
+                            <Text style={[styles.cardTextStyle]} preset="bold">
+                              {dateTime}
+                            </Text>
                             <Text style={[styles.cardTextStyle]}>{desc}</Text>
                           </View>
                           {/* <img
