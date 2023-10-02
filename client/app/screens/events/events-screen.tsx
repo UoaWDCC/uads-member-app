@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexBasis: "auto",
     fontSize: 18,
-    textAlign: "center",
     width: "100%",
+    textAlign: "left",
   },
   imageGradient: {
     position: "absolute",
@@ -65,6 +65,11 @@ const styles = StyleSheet.create({
     fontFamily: "Bitter-Bold",
     fontWeight: "700",
     fontSize: 22,
+    color: color.palette.palePeach,
+  },
+  cardTextLocation: {
+    fontWeight: "500",
+    fontSize: 13,
     color: color.palette.palePeach,
   },
   header: {
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "transparent",
-    backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,1))",
+    backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0) 25%, rgba(0,0,0,1))",
   },
 })
 
@@ -282,7 +287,7 @@ export const EventsScreen = observer(function OffersScreen() {
                 numColumns={1}
                 keyExtractor={(item) => item.uuid}
                 renderItem={({ item, index }) => {
-                  const { name, imagePath } = item
+                  const { name, desc, imagePath, location, urlSignUp, dateTime } = item
                   return (
                     <Box key={index} style={styles.cardStyle}>
                       <TouchableOpacity
@@ -330,6 +335,9 @@ export const EventsScreen = observer(function OffersScreen() {
                                 preset="bold"
                               >
                                 {name}
+                              </Text>
+                              <Text style={[styles.cardTextStyle, styles.cardTextLocation]}>
+                                {location}
                               </Text>
                             </View>
                           </View>
