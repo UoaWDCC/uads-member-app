@@ -51,9 +51,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: "auto",
-    fontSize: 18,
+    fontSize: 16,
     width: "100%",
     textAlign: "left",
+    color: color.palette.darkRed,
+    fontWeight: "600",
   },
   imageGradient: {
     position: "absolute",
@@ -178,6 +180,219 @@ export const EventsScreen = observer(function OffersScreen() {
       })
   }, [isVisible])
 
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+
+  const renderEvent = ( {item }) => {
+    
+    return (
+      // Entire Event Box
+      <Box style={styles.cardStyle}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("event", item)
+          }}
+          style={{ height: "100%", width: "100%" }}
+        >
+          {/* Top Half of the Events (Image, Name, Location) */}
+          <Box 
+            style={{
+              height: 175,
+            }}  
+          >
+            <Box
+              style={{
+                position: "absolute",
+                top: 10,
+                right: 10,
+                display: "flex",
+                flexDirection: "row",
+                zIndex: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: color.palette.sand,
+                  borderTopLeftRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  padding: 10,
+                  width: 100,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 50,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    lineHeight: 12,
+                    color: color.palette.darkRed,
+                  }}
+                >
+                  Going
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor: color.palette.dustyPink,
+                  borderTopRightRadius: 5,
+                  borderBottomRightRadius: 5,
+                  padding: 10,
+                  width: 100,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 50,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    lineHeight: 12,
+                    color: color.palette.sand,
+                  }}
+                >
+                  Not Going
+                </Text>
+              </TouchableOpacity>
+            </Box>
+            
+
+            <Image
+              source={item.imagePath}
+              style={{
+                width: "100%",
+                height: "100%",
+                resizeMode: "stretch",  
+              }}
+            />
+
+            {/* Event Name and Address */}
+            <Box
+              style={{
+                position: "absolute",
+                // backgroundColor: color.palette.darkRed,
+                bottom: 0,
+                height: "auto",
+                width: "100%",
+                paddingHorizontal: 10,
+                zIndex: 10,
+              }}
+            >
+              <Text
+                style={{                 
+                  fontSize: 24,
+                  fontFamily: "Poppins",
+                  fontWeight: "500",
+                  color: color.palette.palePeach,
+                  fontStyle: "italic",
+                }}
+              >
+                {item.name}
+              </Text>
+
+              <Text
+                style={{  
+                  fontSize: 16,
+                  fontFamily: "Poppins",
+                  fontWeight: "500",
+                  color: color.palette.palePeach,
+                }}
+              >
+                {item.location}
+              </Text>
+            </Box>
+            
+          </Box>
+          
+          {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
+          <Box
+            style={{
+              height: "auto",
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}  
+          >
+            {/* Event Date */}
+            <Text style={styles.cardTextStyle}>
+              {item.dateTime}
+            </Text>
+            
+            {/* Button Box */}
+            <Box
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginVertical: 5,
+              }}
+            >
+              {/* More Info Button */}
+              <TouchableOpacity
+                style={{
+                  backgroundColor: color.palette.dustyPink,
+                  borderRadius: 5,
+                  padding: 10,
+                  width: 110,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    lineHeight: 12,
+                    color: color.palette.sand,
+                  }}
+                >
+                  More Info +
+                </Text>
+              </TouchableOpacity>
+            
+              {/* More Info Button */}
+              <TouchableOpacity
+                style={{  
+                  backgroundColor: color.palette.darkRed,
+                  borderRadius: 5,
+                  padding: 10,
+                  width: 110,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    lineHeight: 12,
+                    color: color.palette.sand,
+                  }}
+                >
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+
+            </Box>
+            
+          </Box>
+        </TouchableOpacity>
+      </Box>
+    )
+  }
+
   function getUpi(): string {
     const userUpi = firebase.auth().currentUser?.email?.replace("@aucklanduni.ac.nz", "")
     return userUpi
@@ -287,84 +502,7 @@ export const EventsScreen = observer(function OffersScreen() {
                 })}
                 numColumns={1}
                 keyExtractor={(item) => item.uuid}
-                renderItem={({ item, index }) => {
-                  const { name, desc, imagePath, location, urlSignUp, dateTime } = item
-                  return (
-                    <Box key={index} style={styles.cardStyle}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate("event", item)
-                        }}
-                        style={{ height: "100%", width: "100%" }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexFlow: "column",
-                            height: "100%",
-                          }}
-                        >
-                          <View
-                            style={{
-                              position: "relative", // To position child elements
-                              width: "100%",
-                              // experiment with height values
-                              height: "160px",
-                            }}
-                          >
-                            <Image
-                              source={imagePath}
-                              style={{
-                                flex: 1,
-                                width: "100%",
-                              }}
-                            />
-                            <View style={styles.gradient} />
-
-                            <View
-                              style={{
-                                position: "absolute", // Position text absolutely over the image
-                                left: 0,
-                                bottom: 0,
-                                padding: 10,
-                                justifyContent: "center", // Center the text vertically
-                              }}
-                            >
-                              <Text
-                                style={[styles.cardTextStyle, styles.cardTextHeader]}
-                                numberOfLines={1}
-                                preset="bold"
-                              >
-                                {name}
-                              </Text>
-                              <Text style={[styles.cardTextStyle, styles.cardTextLocation]}>
-                                {location}
-                              </Text>
-                            </View>
-                          </View>
-                          <View
-                            style={{
-                              padding: 10,
-                            }}
-                          >
-                            <Text style={[styles.cardTextStyle]} preset="bold">
-                              {dateTime}
-                            </Text>
-                            <Text style={[styles.cardTextStyle]}>{desc}</Text>
-                          </View>
-                          <div
-                            style={{
-                              flex: "1 1 auto",
-                              marginTop: "5px",
-                              marginBottom: "5px",
-                              width: "100%",
-                            }}
-                          ></div>
-                        </div>
-                      </TouchableOpacity>
-                    </Box>
-                  )
-                }}
+                renderItem={renderEvent}
               />
             )}
           </Stack>
@@ -399,62 +537,18 @@ export const EventsScreen = observer(function OffersScreen() {
               <FlatList
                 style={{ overflow: "visible" }}
                 data={events.filter((item) => {
+
                   // Convert the datetime string to a Date object
                   const itemDatetime = new Date(item.dateTime)
-
+                  
+                  const formattedDate = itemDatetime.toLocaleDateString('en-US', options)
+                  console.log(formattedDate)
                   // Compare the item's datetime with the current time
                   return itemDatetime < currentDateAndTime
                 })}
                 numColumns={1}
                 keyExtractor={(item) => item.uuid}
-                renderItem={({ item, index }) => {
-                  const { name, imagePath } = item
-                  return (
-                    <Box key={index} style={styles.cardStyle}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate("event", item)
-                        }}
-                        style={{ height: "100%", width: "100%" }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexFlow: "column",
-                            height: "100%",
-                            width: "calc(100% - 10px)",
-                            marginRight: "5px",
-                            marginLeft: "5px",
-                          }}
-                        >
-                          <Text style={styles.cardTextStyle} numberOfLines={1} preset="bold">
-                            {name}
-                          </Text>
-                          <div
-                            style={{
-                              flex: "1 1 auto",
-                              marginTop: "5px",
-                              marginBottom: "5px",
-                              width: "100%",
-                            }}
-                          >
-                            <img
-                              alt={name}
-                              src={imagePath}
-                              // eslint-disable-next-line react-native/no-inline-styles
-                              style={{
-                                borderRadius: "10px",
-                                width: "100%",
-                                height: "130px",
-                                objectFit: "cover",
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </TouchableOpacity>
-                    </Box>
-                  )
-                }}
+                renderItem={renderEvent}
               />
             )}
           </Stack>
