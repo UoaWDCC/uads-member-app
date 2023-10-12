@@ -142,6 +142,7 @@ export const EventsScreen = observer(function OffersScreen() {
       imagePath: string
       sponsor?: string[]
       urlSignUp?: string
+      dateTimeString: string
     }[]
   >([])
 
@@ -172,6 +173,11 @@ export const EventsScreen = observer(function OffersScreen() {
           })
           .then(({ data }) => {
             console.log(data)
+            data.forEach((event) => {
+              const itemDatetime = new Date(event.dateTime)
+              const formattedDate = itemDatetime.toLocaleDateString('en-US', options)
+              event["dateTimeString"] = formattedDate
+            })
             setEvents(data)
           })
           .catch((e) => {
@@ -325,7 +331,7 @@ export const EventsScreen = observer(function OffersScreen() {
           >
             {/* Event Date */}
             <Text style={styles.cardTextStyle}>
-              {item.dateTime}
+              {item.dateTimeString}
             </Text>
             
             {/* Button Box */}
@@ -537,12 +543,9 @@ export const EventsScreen = observer(function OffersScreen() {
               <FlatList
                 style={{ overflow: "visible" }}
                 data={events.filter((item) => {
-
                   // Convert the datetime string to a Date object
                   const itemDatetime = new Date(item.dateTime)
                   
-                  const formattedDate = itemDatetime.toLocaleDateString('en-US', options)
-                  console.log(formattedDate)
                   // Compare the item's datetime with the current time
                   return itemDatetime < currentDateAndTime
                 })}
