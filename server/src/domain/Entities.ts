@@ -1,4 +1,5 @@
 import { Number } from 'mongoose';
+import { UUID } from 'bson';
 
 interface IDiscount {
   uuid: string;
@@ -15,6 +16,14 @@ interface IDiscount {
     hour: string;
     minute: string;
   };
+}
+
+interface IVoucher {
+  uuid: string;
+  name: string;
+  desc: string;
+  sponsorName: string;
+  sponsorId: string;
 }
 
 interface ISponsor {
@@ -58,7 +67,7 @@ interface IEvent {
   name: string;
   desc: string;
   dateTime: string;
-  location: string
+  location: string;
   imagePath: string;
   sponsor?: string[];
   urlSignUp?: string;
@@ -109,13 +118,5 @@ interface IUser {
   modified: number;
   notificationsON?: Boolean;
 }
-
-interface IVoucher{
-  uuid: string;
-  description: string;
-  sponsor: string;
-  imageLink: string;
-}
-
 
 export { IEvent, ISponsor, IDiscount, IClub, IUser, IVoucher };

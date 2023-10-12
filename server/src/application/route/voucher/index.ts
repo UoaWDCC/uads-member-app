@@ -1,6 +1,6 @@
 import { Handler } from 'express';
-import {isAuthenticated} from "../../../middleware/authentication";
 import { VoucherController } from '../../controller/VoucherController';
+import { isAuthenticated } from '../../../middleware/authentication';
 
 const voucherController = new VoucherController();
 
@@ -8,7 +8,7 @@ const voucherController = new VoucherController();
 const get: Handler[] = [isAuthenticated, voucherController.getVouchers];
 const post: Handler[] = [isAuthenticated, voucherController.createVoucher];
 const del: Handler[] = [isAuthenticated, voucherController.deleteVoucher];
-const put: Handler[] = [isAuthenticated, voucherController.editVoucher];
+const put: Handler[] = [isAuthenticated, voucherController.editVouchers];
 
 export {
   get as GET_VOUCHER,
