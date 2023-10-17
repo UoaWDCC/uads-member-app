@@ -7,20 +7,18 @@ import {
   TouchableOpacity,
   Dimensions,
   View,
-  ImageBackground,
 } from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Box, FlatList, Stack, HStack } from "native-base"
+import { NativeBaseProvider, Box, FlatList, Stack } from "native-base"
 import firebase from "firebase"
 import axios from "axios"
 import { BASE_URL } from "@env"
-import { SocialIcon } from "react-social-icons"
-import { padding } from "styled-system"
 
 const uadsLogo = require("../../resources/menu-icon.png")
 const calendarIcon = require("../../resources/calendar-icon.png")
+const pastCalendarIcon = require("../../resources/calendar-past-icon.png")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -43,8 +41,96 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     flex: 1,
     height: "180px",
-    margin: 5,
+    marginVertical: 10,
     width: "100%",
+  },
+  topButtonBoxStyle: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    display: "flex",
+    flexDirection: "row",
+    zIndex: 10,
+  },
+  goingButtonStyle: {
+    backgroundColor: color.palette.sand,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    padding: 10,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 20,
+  },
+  goingButtonTextStlye: {
+    fontSize: 16,
+    fontFamily: "Poppins",
+    fontWeight: "500",
+    lineHeight: 12,
+    color: color.palette.darkRed,
+  },
+  notGoingButtonStyle: {
+    backgroundColor: color.palette.dustyPink,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    padding: 10,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 20,
+  },
+  notGoingButtonTextStyle: {
+    fontSize: 16,
+    fontFamily: "Poppins",
+    fontWeight: "500",
+    lineHeight: 12,
+    color: color.palette.sand,
+  },
+  eventImageStyle: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "stretch", 
+  },
+  cardBottomBoxStyle: {
+    height: "auto",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  cardBottomButtonBoxStyle: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 5,
+  },
+  moreInfoButtonStyle: {
+    backgroundColor: color.palette.dustyPink,
+    borderRadius: 5,
+    padding: 10,
+    width: 110,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  infoTextStyle: {
+    fontSize: 16,
+    fontFamily: "Poppins",
+    fontWeight: "500",
+    lineHeight: 12,
+    color: color.palette.sand,  
+  },
+  signUpButtonStyle: {
+    backgroundColor: color.palette.darkRed,
+    borderRadius: 5,
+    padding: 10,
+    width: 110,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  signUpTextStyle: {
+    fontSize: 16,
+    fontFamily: "Poppins",
+    fontWeight: "500",
+    lineHeight: 12,
+    color: color.palette.sand,
   },
   cardTextStyleBold: {
     fontSize: 16,
@@ -60,22 +146,31 @@ const styles = StyleSheet.create({
     color: color.palette.darkRed,
     paddingVertical: 5,
   },
-  imageGradient: {
+  eventInfoBoxStyle: {
     position: "absolute",
-    top: 0,
-    left: 0,
+    bottom: 0,
+    height: "auto",
     width: "100%",
-    height: "100%",
+    paddingHorizontal: 10,
+    zIndex: 10,
+  },
+  eventNameStyle: {
+    fontSize: 24,
+    fontFamily: "Poppins",
+    fontWeight: "500",
+    color: color.palette.palePeach,
+    fontStyle: "italic",
+  },
+  eventLocationStyle: {
+    fontSize: 16,
+    fontFamily: "Poppins",
+    fontWeight: "500",
+    color: color.palette.palePeach,
   },
   cardTextHeader: {
     fontFamily: "Bitter-Bold",
     fontWeight: "700",
     fontSize: 22,
-    color: color.palette.palePeach,
-  },
-  cardTextLocation: {
-    fontWeight: "500",
-    fontSize: 13,
     color: color.palette.palePeach,
   },
   header: {
@@ -91,17 +186,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 150,
     width: 200,
-  },
-  socialStyle: {
-    marginBottom: 10,
-    marginHorizontal: 10,
-  },
-  socialTextStyle: {
-    fontSize: 14,
-    marginLeft: 15,
-    marginTop: 12,
-    textAlign: "center",
-    textAlignVertical: "bottom",
   },
   headerStyle: {
     fontSize: 24,
@@ -119,6 +203,20 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0) 25%, rgba(0,0,0,1))",
   },
+  menuIconStyle: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingTop: 20,
+    paddingHorizontal: 10,
+    paddingBottom: 5,
+  },
+  eventTitleBoxStyle: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    marginBottom: 5,
+  },
 })
 
 export const EventsScreen = observer(function OffersScreen() {
@@ -135,6 +233,7 @@ export const EventsScreen = observer(function OffersScreen() {
   }, [])
   const [openedEvents, setOpenedEvents] = useState([])
 
+  // Handles the Opening/Closing of the Event Boxes
   const handleToggleEvent = (eventId: string) => {
     // Check if the Event ID is already in the openedEvents array
     const isOpened = openedEvents.includes(eventId)
@@ -146,6 +245,7 @@ export const EventsScreen = observer(function OffersScreen() {
       setOpenedEvents(openedEvents.filter((id) => id !== eventId))
     }
   }
+  // Creates a new Date Object Every time the Page is Loaded
   const currentDateAndTime: Date = new Date()
   const [firstName, setFirstName] = useState<string>("")
   const [events, setEvents] = useState<
@@ -202,6 +302,7 @@ export const EventsScreen = observer(function OffersScreen() {
       })
   }, [isVisible])
 
+  // Used to Format the Date Objects
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -215,124 +316,44 @@ export const EventsScreen = observer(function OffersScreen() {
     
     return (
       <Box style={{ flexDirection: "column", alignItems: "center"}}>
+        {/* Conditional Rendering based on whether the More Info is active or not */}
         {!openedEvents.includes(item._id) ? (
           // Event is Closed
           
           // Event Box
           <Box style={styles.cardStyle}>
-            {/* Top Half of the Events (Image, Name, Location) */}
-            <Box 
-              style={{
-                height: 175,
-              }}  
-            >
+            {/* Top Half of the Events (Image, Name, Location, Going/Not Going Buttons) */}
+            <Box style={{height: 175}}>
               {/* Box for Going and Not Going Buttons */}
-              <Box
-                style={{
-                  position: "absolute",
-                  top: 10,
-                  right: 10,
-                  display: "flex",
-                  flexDirection: "row",
-                  zIndex: 10,
-                }}
-              >
+              <Box style={styles.topButtonBoxStyle}>
                 {/* Going Button */}
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: color.palette.sand,
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
-                    padding: 10,
-                    width: 100,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: 50,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      lineHeight: 12,
-                      color: color.palette.darkRed,
-                    }}
-                  >
+                <TouchableOpacity style={styles.goingButtonStyle}>
+                  <Text style={styles.goingButtonTextStlye}>
                     Going
                   </Text>
                 </TouchableOpacity>
                   
                 {/* Not Going Button */}
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: color.palette.dustyPink,
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5,
-                    padding: 10,
-                    width: 100,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: 50,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      lineHeight: 12,
-                      color: color.palette.sand,
-                    }}
-                  >
+                <TouchableOpacity style={styles.notGoingButtonStyle}>
+                  <Text style={styles.notGoingButtonTextStyle}>
                     Not Going
                   </Text>
                 </TouchableOpacity>
               </Box>
-                
-              <Image
-                source={item.imagePath}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  resizeMode: "stretch",  
-                }}
-              />
+              
+              {/* Background Image */}
+              <Image source={item.imagePath} style={styles.eventImageStyle} />
 
+              {/* Background Image Black Gradient */}
               <View style={styles.gradient} />
 
               {/* Event Name and Address */}
-              <Box
-                style={{
-                  position: "absolute",
-                  // backgroundColor: color.palette.darkRed,
-                  bottom: 0,
-                  height: "auto",
-                  width: "100%",
-                  paddingHorizontal: 10,
-                  zIndex: 10,
-                }}
-              >
-                <Text
-                  style={{                 
-                    fontSize: 24,
-                    fontFamily: "Poppins",
-                    fontWeight: "500",
-                    color: color.palette.palePeach,
-                    fontStyle: "italic",
-                  }}
-                >
+              <Box style={styles.eventInfoBoxStyle}>
+                <Text style={styles.eventNameStyle}>
                   {item.name}
                 </Text>
 
-                <Text
-                  style={{  
-                    fontSize: 16,
-                    fontFamily: "Poppins",
-                    fontWeight: "500",
-                    color: color.palette.palePeach,
-                  }}
-                >
+                <Text style={styles.eventLocationStyle}>
                   {item.location}
                 </Text>
               </Box>
@@ -340,74 +361,28 @@ export const EventsScreen = observer(function OffersScreen() {
             </Box>
 
             {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
-            <Box
-                style={{
-                  height: "auto",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                }}  
-            >
+            <Box style={styles.cardBottomBoxStyle}>
               {/* Event Date */}
               <Text style={styles.cardTextStyleBold}>
                 {item.dateTimeString}
               </Text>
 
               {/* Button Box */}
-              <Box
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginVertical: 5,
-                }}
-              >
+              <Box style={styles.cardBottomButtonBoxStyle}>
                 {/* More Info Button */}
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: color.palette.dustyPink,
-                    borderRadius: 5,
-                    padding: 10,
-                    width: 110,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+                <TouchableOpacity style={styles.moreInfoButtonStyle}
                   onPress={() => {
                     handleToggleEvent(item._id)
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      lineHeight: 12,
-                      color: color.palette.sand,
-                    }}
-                  >
+                  <Text style={styles.infoTextStyle}>
                     More Info +
                   </Text>
                 </TouchableOpacity>
 
                 {/* Sign Up Button */}
-                <TouchableOpacity
-                  style={{  
-                    backgroundColor: color.palette.darkRed,
-                    borderRadius: 5,
-                    padding: 10,
-                    width: 110,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      lineHeight: 12,
-                      color: color.palette.sand,
-                    }}
-                  >
+                <TouchableOpacity style={styles.signUpButtonStyle}>
+                  <Text style={styles.signUpTextStyle}>
                     Sign Up
                   </Text>
                 </TouchableOpacity>
@@ -423,118 +398,37 @@ export const EventsScreen = observer(function OffersScreen() {
           // Event Box
           <Box style={styles.cardStyle}>
             {/* Top Half of the Events (Image, Name, Location) */}
-            <Box 
-                style={{
-                  height: 175,
-                }}  
-              >
+            <Box style={{ height: 175}}>
                 {/* Box for Going and Not Going Buttons */}
-                <Box
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                    right: 10,
-                    display: "flex",
-                    flexDirection: "row",
-                    zIndex: 10,
-                  }}
-                >
+                <Box style={styles.topButtonBoxStyle}>
                   {/* Going Button */}
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: color.palette.sand,
-                      borderTopLeftRadius: 5,
-                      borderBottomLeftRadius: 5,
-                      padding: 10,
-                      width: 100,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      zIndex: 50,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontFamily: "Poppins",
-                        fontWeight: "500",
-                        lineHeight: 12,
-                        color: color.palette.darkRed,
-                      }}
-                    >
+                  <TouchableOpacity style={styles.goingButtonStyle}>
+                    <Text style={styles.goingButtonTextStlye}>
                       Going
                     </Text>
                   </TouchableOpacity>
                   
                   {/* Not Going Button */}
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: color.palette.dustyPink,
-                      borderTopRightRadius: 5,
-                      borderBottomRightRadius: 5,
-                      padding: 10,
-                      width: 100,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      zIndex: 50,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontFamily: "Poppins",
-                        fontWeight: "500",
-                        lineHeight: 12,
-                        color: color.palette.sand,
-                      }}
-                    >
+                  <TouchableOpacity style={styles.notGoingButtonStyle}>
+                    <Text style={styles.notGoingButtonTextStyle}>
                       Not Going
                     </Text>
                   </TouchableOpacity>
                 </Box>
                 
-                <Image
-                  source={item.imagePath}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    resizeMode: "stretch",  
-                  }}
-                />
+                {/* Background Image */}
+                <Image source={item.imagePath} style={styles.eventImageStyle} />
 
+                {/* Background Image Black Gradient */}
                 <View style={styles.gradient} />
 
                 {/* Event Name and Address */}
-                <Box
-                  style={{
-                    position: "absolute",
-                    // backgroundColor: color.palette.darkRed,
-                    bottom: 0,
-                    height: "auto",
-                    width: "100%",
-                    paddingHorizontal: 10,
-                    zIndex: 10,
-                  }}
-                >
-                  <Text
-                    style={{                 
-                      fontSize: 24,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      color: color.palette.palePeach,
-                      fontStyle: "italic",
-                    }}
-                  >
+                <Box style={styles.eventInfoBoxStyle}>
+                  <Text style={styles.eventNameStyle}>
                     {item.name}
                   </Text>
 
-                  <Text
-                    style={{  
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      color: color.palette.palePeach,
-                    }}
-                  >
+                  <Text style={styles.eventLocationStyle}>
                     {item.location}
                   </Text>
                 </Box>
@@ -542,13 +436,7 @@ export const EventsScreen = observer(function OffersScreen() {
             </Box>
 
             {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
-            <Box
-              style={{
-                height: "auto",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-              }}  
-            >
+            <Box style={styles.cardBottomBoxStyle}>
               {/* Event Date */}
               <Text style={styles.cardTextStyleBold}>
                 {item.dateTimeString}
@@ -560,61 +448,21 @@ export const EventsScreen = observer(function OffersScreen() {
               </Text>
 
               {/* Button Box */}
-              <Box
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginVertical: 5,
-                }}
-              >
+              <Box style={styles.cardBottomButtonBoxStyle}>
                 {/* More Info Button */}
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: color.palette.dustyPink,
-                    borderRadius: 5,
-                    padding: 10,
-                    width: 110,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+                <TouchableOpacity style={styles.moreInfoButtonStyle}
                   onPress={() => {
                     handleToggleEvent(item._id)
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      lineHeight: 12,
-                      color: color.palette.sand,
-                    }}
-                  >
+                  <Text style={styles.infoTextStyle}>
                     Less Info -
                   </Text>
                 </TouchableOpacity>
 
                 {/* Sign Up Button */}
-                <TouchableOpacity
-                  style={{  
-                    backgroundColor: color.palette.darkRed,
-                    borderRadius: 5,
-                    padding: 10,
-                    width: 110,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins",
-                      fontWeight: "500",
-                      lineHeight: 12,
-                      color: color.palette.sand,
-                    }}
-                  >
+                <TouchableOpacity style={styles.signUpButtonStyle}>
+                  <Text style={styles.signUpTextStyle}>
                     Sign Up
                   </Text>
                 </TouchableOpacity>
@@ -637,16 +485,7 @@ export const EventsScreen = observer(function OffersScreen() {
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
         {/* Hamburger Menu Icon */}
-        <Box
-          style={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexDirection: "row",
-            paddingTop: 20,
-            paddingHorizontal: 10,
-            paddingBottom: 5,
-          }}
-        >
+        <Box style={styles.menuIconStyle}>
           <Image
             source={require("../../resources/menu-icon.png")}
             style={{
@@ -665,13 +504,11 @@ export const EventsScreen = observer(function OffersScreen() {
           />
         </Box>
 
-        <Box
-          style={{
-            marginHorizontal: 30,
-          }}
-        >
+        <Box style={{marginHorizontal: 30}}>
+          {/* Welcome Message */}
           <Text style={styles.header} preset="header" text={"Welcome back, " + firstName + " :)"} />
-
+          
+          {/* Star Icons */}
           <Image
             source={require("../../resources/fourPointStar.png")}
             style={{
@@ -698,15 +535,8 @@ export const EventsScreen = observer(function OffersScreen() {
         </Box>
 
         <Box style={CONTAINER}>
-          {/* Upcoming Events Box */}
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
-              marginBottom: 5,
-            }}
-          >
+          {/* Upcoming Events Title Box */}
+          <Box style={styles.eventTitleBoxStyle}>
             <Text
               style={styles.headerStyle}
               preset="header"
@@ -714,7 +544,7 @@ export const EventsScreen = observer(function OffersScreen() {
             />
 
             <Image
-              source={require("../../resources/calendar-icon.png")}
+              source={calendarIcon}
               style={{
                 width: sWidth * 0.15,
                 height: sHeight * 0.04,
@@ -722,19 +552,20 @@ export const EventsScreen = observer(function OffersScreen() {
               }}
             />
           </Box>
-
+          
+          {/* Upcoming Events List */}
           <Stack>
             {events.length === 0 ? (
               <Image source={uadsLogo} style={styles.logoStyle} />
             ) : (
               <FlatList
-                style={{ overflow: "visible" }}
-                // sort out filter
+                style={{ overflow: "hidden" }}
+                // Filters Events by Current Date
                 data={events.filter((item) => {
-                  // Convert the datetime string to a Date object
+                  // Convert the Datetime String to a Date Object
                   const itemDatetime = new Date(item.dateTime)
 
-                  // Compare the item's datetime with the current time
+                  // Compare the Item's Datetime with the Current Time
                   return itemDatetime >= currentDateAndTime
                 })}
                 numColumns={1}
@@ -743,14 +574,9 @@ export const EventsScreen = observer(function OffersScreen() {
               />
             )}
           </Stack>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
-              marginVertical: 5,
-            }}
-          >
+
+          {/* Past Events Title Box */}
+          <Box style={styles.eventTitleBoxStyle}>
             <Text
               style={styles.headerStyle}
               preset="header"
@@ -758,7 +584,7 @@ export const EventsScreen = observer(function OffersScreen() {
             />
 
             <Image
-              source={require("../../resources/calendar-past-icon.png")}
+              source={pastCalendarIcon}
               style={{
                 width: sWidth * 0.15,
                 height: sHeight * 0.04,
@@ -766,18 +592,20 @@ export const EventsScreen = observer(function OffersScreen() {
               }}
             />
           </Box>
-
+          
+          {/* Past Events List */}
           <Stack>
             {events.length === 0 ? (
               <Image source={uadsLogo} style={styles.logoStyle} />
             ) : (
               <FlatList
-                style={{ overflow: "visible" }}
+                style={{ overflow: "hidden" }}
+                // Filters Events by Current Date
                 data={events.filter((item) => {
-                  // Convert the datetime string to a Date object
+                  // Convert the Datetime String to a Date Object
                   const itemDatetime = new Date(item.dateTime)
                   
-                  // Compare the item's datetime with the current time
+                  // Compare the Item's Datetime with the Current Time
                   return itemDatetime < currentDateAndTime
                 })}
                 numColumns={1}
