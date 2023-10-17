@@ -1,5 +1,6 @@
 import "firebase/auth"
-
+import axios from "axios"
+import { BASE_URL } from "@env"
 import {
   Alert,
   Dimensions,
@@ -157,19 +158,27 @@ export const LoginScreen = observer(function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false)
   const { logIn } = React.useContext(AuthContext)
 
-  function userLogin() {
+  async function userLogin() {
     if (upi === "" && password === "") {
       Alert.alert("Enter details to signin!")
     } else {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password) // Getting email from UPI
-        .then((res) => {
-          console.log(res)
-          console.log("User logged-in successfully!")
-          logIn(res)
-        })
-        .catch((error) => console.error(error))
+      const response = await axios.get(BASE_URL + "/users/" + upi)
+      if (response.status == 200) {
+        if (response.data.approved) {
+          console.log("approved")
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(upi + "@aucklanduni.ac.nz", password) // Getting email from UPI
+            .then((res) => {
+              console.log(res)
+              console.log("User logged-in successfully!")
+              logIn(res)
+            })
+            .catch((error) => console.error(error))
+        } else {
+          console.log("not approved!!")
+        }
+      }
     }
   }
 
