@@ -58,7 +58,7 @@ interface IEvent {
   name: string;
   desc: string;
   dateTime: string;
-  location: string
+  location: string;
   imagePath: string;
   sponsor?: string[];
   urlSignUp?: string;
@@ -93,6 +93,7 @@ interface IUser {
     type: string;
     enum: ['Undergraduate', 'Postgraduate'];
   };
+  approved: boolean;
   clubMembership: [
     {
       name: string;
@@ -110,12 +111,11 @@ interface IUser {
   notificationsON?: Boolean;
 }
 
-interface IVoucher{
+interface IVoucher {
   uuid: string;
   description: string;
   sponsor: string;
   imageLink: string;
 }
-
 
 export { IEvent, ISponsor, IDiscount, IClub, IUser, IVoucher };

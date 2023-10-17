@@ -13,6 +13,7 @@ const UserSchema = new Schema<IUser>(
         enum: ['Undergraduate', 'Postgraduate'],
       },
     },
+    approved: { type: Boolean, required: true },
     notificationsOn: { type: Schema.Types.Boolean, default: false },
   },
   {
