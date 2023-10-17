@@ -46,16 +46,19 @@ const styles = StyleSheet.create({
     margin: 5,
     width: "100%",
   },
-  cardTextStyle: {
-    flex: 1,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: "auto",
+  cardTextStyleBold: {
     fontSize: 16,
     width: "100%",
     textAlign: "left",
     color: color.palette.darkRed,
     fontWeight: "600",
+  },
+  cardTextStyle: {
+    fontSize: 16,
+    width: "100%",
+    textAlign: "left",
+    color: color.palette.darkRed,
+    paddingVertical: 5,
   },
   imageGradient: {
     position: "absolute",
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "bottom",
   },
-  textStyle: {
+  headerStyle: {
     fontSize: 24,
     lineHeight: 20,
     fontWeight: "600",
@@ -130,6 +133,19 @@ export const EventsScreen = observer(function OffersScreen() {
     setSWidth(Dimensions.get("window").width)
     setSHeight(Dimensions.get("window").height)
   }, [])
+  const [openedEvents, setOpenedEvents] = useState([])
+
+  const handleToggleEvent = (eventId: string) => {
+    // Check if the Event ID is already in the openedEvents array
+    const isOpened = openedEvents.includes(eventId)
+
+    // If the eventId is not in the Opened Array then Add it
+    if (!isOpened) {
+      setOpenedEvents([...openedEvents, eventId])
+    } else {
+      setOpenedEvents(openedEvents.filter((id) => id !== eventId))
+    }
+  }
   const currentDateAndTime: Date = new Date()
   const [firstName, setFirstName] = useState<string>("")
   const [events, setEvents] = useState<
@@ -198,203 +214,417 @@ export const EventsScreen = observer(function OffersScreen() {
   const renderEvent = ( {item }) => {
     
     return (
-      // Entire Event Box
-      <Box style={styles.cardStyle}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("event", item)
-          }}
-          style={{ height: "100%", width: "100%" }}
-        >
-          {/* Top Half of the Events (Image, Name, Location) */}
-          <Box 
-            style={{
-              height: 175,
-            }}  
-          >
-            <Box
-              style={{
-                position: "absolute",
-                top: 10,
-                right: 10,
-                display: "flex",
-                flexDirection: "row",
-                zIndex: 10,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: color.palette.sand,
-                  borderTopLeftRadius: 5,
-                  borderBottomLeftRadius: 5,
-                  padding: 10,
-                  width: 100,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: 50,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: "Poppins",
-                    fontWeight: "500",
-                    lineHeight: 12,
-                    color: color.palette.darkRed,
-                  }}
-                >
-                  Going
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  backgroundColor: color.palette.dustyPink,
-                  borderTopRightRadius: 5,
-                  borderBottomRightRadius: 5,
-                  padding: 10,
-                  width: 100,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: 50,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: "Poppins",
-                    fontWeight: "500",
-                    lineHeight: 12,
-                    color: color.palette.sand,
-                  }}
-                >
-                  Not Going
-                </Text>
-              </TouchableOpacity>
-            </Box>
-            
-
-            <Image
-              source={item.imagePath}
-              style={{
-                width: "100%",
-                height: "100%",
-                resizeMode: "stretch",  
-              }}
-            />
-
-            {/* Event Name and Address */}
-            <Box
-              style={{
-                position: "absolute",
-                // backgroundColor: color.palette.darkRed,
-                bottom: 0,
-                height: "auto",
-                width: "100%",
-                paddingHorizontal: 10,
-                zIndex: 10,
-              }}
-            >
-              <Text
-                style={{                 
-                  fontSize: 24,
-                  fontFamily: "Poppins",
-                  fontWeight: "500",
-                  color: color.palette.palePeach,
-                  fontStyle: "italic",
-                }}
-              >
-                {item.name}
-              </Text>
-
-              <Text
-                style={{  
-                  fontSize: 16,
-                  fontFamily: "Poppins",
-                  fontWeight: "500",
-                  color: color.palette.palePeach,
-                }}
-              >
-                {item.location}
-              </Text>
-            </Box>
-            
-          </Box>
+      <Box style={{ flexDirection: "column", alignItems: "center"}}>
+        {!openedEvents.includes(item._id) ? (
+          // Event is Closed
           
-          {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
-          <Box
-            style={{
-              height: "auto",
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-            }}  
-          >
-            {/* Event Date */}
-            <Text style={styles.cardTextStyle}>
-              {item.dateTimeString}
-            </Text>
-            
-            {/* Button Box */}
-            <Box
+          // Event Box
+          <Box style={styles.cardStyle}>
+            {/* Top Half of the Events (Image, Name, Location) */}
+            <Box 
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 5,
-              }}
+                height: 175,
+              }}  
             >
-              {/* More Info Button */}
-              <TouchableOpacity
+              {/* Box for Going and Not Going Buttons */}
+              <Box
                 style={{
-                  backgroundColor: color.palette.dustyPink,
-                  borderRadius: 5,
-                  padding: 10,
-                  width: 110,
-                  justifyContent: "center",
-                  alignItems: "center",
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  display: "flex",
+                  flexDirection: "row",
+                  zIndex: 10,
+                }}
+              >
+                {/* Going Button */}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: color.palette.sand,
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5,
+                    padding: 10,
+                    width: 100,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 50,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      lineHeight: 12,
+                      color: color.palette.darkRed,
+                    }}
+                  >
+                    Going
+                  </Text>
+                </TouchableOpacity>
+                  
+                {/* Not Going Button */}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: color.palette.dustyPink,
+                    borderTopRightRadius: 5,
+                    borderBottomRightRadius: 5,
+                    padding: 10,
+                    width: 100,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 50,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      lineHeight: 12,
+                      color: color.palette.sand,
+                    }}
+                  >
+                    Not Going
+                  </Text>
+                </TouchableOpacity>
+              </Box>
+                
+              <Image
+                source={item.imagePath}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  resizeMode: "stretch",  
+                }}
+              />
+
+              <View style={styles.gradient} />
+
+              {/* Event Name and Address */}
+              <Box
+                style={{
+                  position: "absolute",
+                  // backgroundColor: color.palette.darkRed,
+                  bottom: 0,
+                  height: "auto",
+                  width: "100%",
+                  paddingHorizontal: 10,
+                  zIndex: 10,
                 }}
               >
                 <Text
-                  style={{
-                    fontSize: 16,
+                  style={{                 
+                    fontSize: 24,
                     fontFamily: "Poppins",
                     fontWeight: "500",
-                    lineHeight: 12,
-                    color: color.palette.sand,
+                    color: color.palette.palePeach,
+                    fontStyle: "italic",
                   }}
                 >
-                  More Info +
+                  {item.name}
                 </Text>
-              </TouchableOpacity>
-            
-              {/* More Info Button */}
-              <TouchableOpacity
-                style={{  
-                  backgroundColor: color.palette.darkRed,
-                  borderRadius: 5,
-                  padding: 10,
-                  width: 110,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+
                 <Text
-                  style={{
+                  style={{  
                     fontSize: 16,
                     fontFamily: "Poppins",
                     fontWeight: "500",
-                    lineHeight: 12,
-                    color: color.palette.sand,
+                    color: color.palette.palePeach,
                   }}
                 >
-                  Sign Up
+                  {item.location}
                 </Text>
-              </TouchableOpacity>
+              </Box>
 
             </Box>
-            
+
+            {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
+            <Box
+                style={{
+                  height: "auto",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}  
+            >
+              {/* Event Date */}
+              <Text style={styles.cardTextStyleBold}>
+                {item.dateTimeString}
+              </Text>
+
+              {/* Button Box */}
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginVertical: 5,
+                }}
+              >
+                {/* More Info Button */}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: color.palette.dustyPink,
+                    borderRadius: 5,
+                    padding: 10,
+                    width: 110,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => {
+                    handleToggleEvent(item._id)
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      lineHeight: 12,
+                      color: color.palette.sand,
+                    }}
+                  >
+                    More Info +
+                  </Text>
+                </TouchableOpacity>
+
+                {/* Sign Up Button */}
+                <TouchableOpacity
+                  style={{  
+                    backgroundColor: color.palette.darkRed,
+                    borderRadius: 5,
+                    padding: 10,
+                    width: 110,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      lineHeight: 12,
+                      color: color.palette.sand,
+                    }}
+                  >
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+
+              </Box>
+
+            </Box>
+
           </Box>
-        </TouchableOpacity>
+        ) : (
+          // Event is Opened 
+
+          // Event Box
+          <Box style={styles.cardStyle}>
+            {/* Top Half of the Events (Image, Name, Location) */}
+            <Box 
+                style={{
+                  height: 175,
+                }}  
+              >
+                {/* Box for Going and Not Going Buttons */}
+                <Box
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    display: "flex",
+                    flexDirection: "row",
+                    zIndex: 10,
+                  }}
+                >
+                  {/* Going Button */}
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: color.palette.sand,
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      padding: 10,
+                      width: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      zIndex: 50,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontFamily: "Poppins",
+                        fontWeight: "500",
+                        lineHeight: 12,
+                        color: color.palette.darkRed,
+                      }}
+                    >
+                      Going
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  {/* Not Going Button */}
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: color.palette.dustyPink,
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      padding: 10,
+                      width: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      zIndex: 50,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontFamily: "Poppins",
+                        fontWeight: "500",
+                        lineHeight: 12,
+                        color: color.palette.sand,
+                      }}
+                    >
+                      Not Going
+                    </Text>
+                  </TouchableOpacity>
+                </Box>
+                
+                <Image
+                  source={item.imagePath}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    resizeMode: "stretch",  
+                  }}
+                />
+
+                <View style={styles.gradient} />
+
+                {/* Event Name and Address */}
+                <Box
+                  style={{
+                    position: "absolute",
+                    // backgroundColor: color.palette.darkRed,
+                    bottom: 0,
+                    height: "auto",
+                    width: "100%",
+                    paddingHorizontal: 10,
+                    zIndex: 10,
+                  }}
+                >
+                  <Text
+                    style={{                 
+                      fontSize: 24,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      color: color.palette.palePeach,
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+
+                  <Text
+                    style={{  
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      color: color.palette.palePeach,
+                    }}
+                  >
+                    {item.location}
+                  </Text>
+                </Box>
+
+            </Box>
+
+            {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
+            <Box
+              style={{
+                height: "auto",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}  
+            >
+              {/* Event Date */}
+              <Text style={styles.cardTextStyleBold}>
+                {item.dateTimeString}
+              </Text>
+
+              {/* Event Description */}
+              <Text style={styles.cardTextStyle}>
+                {item.desc}
+              </Text>
+
+              {/* Button Box */}
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginVertical: 5,
+                }}
+              >
+                {/* More Info Button */}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: color.palette.dustyPink,
+                    borderRadius: 5,
+                    padding: 10,
+                    width: 110,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => {
+                    handleToggleEvent(item._id)
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      lineHeight: 12,
+                      color: color.palette.sand,
+                    }}
+                  >
+                    Less Info -
+                  </Text>
+                </TouchableOpacity>
+
+                {/* Sign Up Button */}
+                <TouchableOpacity
+                  style={{  
+                    backgroundColor: color.palette.darkRed,
+                    borderRadius: 5,
+                    padding: 10,
+                    width: 110,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      lineHeight: 12,
+                      color: color.palette.sand,
+                    }}
+                  >
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+
+              </Box>
+              
+            </Box>
+
+          </Box>
+        )} 
       </Box>
     )
   }
@@ -474,10 +704,11 @@ export const EventsScreen = observer(function OffersScreen() {
               display: "flex",
               alignItems: "center",
               flexDirection: "row",
+              marginBottom: 5,
             }}
           >
             <Text
-              style={styles.textStyle}
+              style={styles.headerStyle}
               preset="header"
               text={events.length === 0 ? "Stay tuned for upcoming events!" : "Upcoming Events:"}
             />
@@ -517,12 +748,12 @@ export const EventsScreen = observer(function OffersScreen() {
               display: "flex",
               alignItems: "center",
               flexDirection: "row",
+              marginVertical: 5,
             }}
           >
             <Text
-              style={styles.textStyle}
+              style={styles.headerStyle}
               preset="header"
-              //TODO change logic for past events
               text={events.length === 0 ? "No Past Events:" : "Past Events:"}
             />
 
