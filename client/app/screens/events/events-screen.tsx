@@ -1,17 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, TouchableOpacity } from "react-native"
-import { Screen, Text, AutoImage as Image } from "../../components"
-import { useNavigation, useIsFocused } from "@react-navigation/native"
+import { ViewStyle, StyleSheet, TouchableOpacity, Dimensions } from "react-native"
+import { Screen, Text, AutoImage as Image, Button } from "../../components"
+import { useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, FlatList, Stack, HStack } from "native-base"
 import firebase from "firebase"
 import axios from "axios"
 import { BASE_URL } from "@env"
 import { SocialIcon } from "react-social-icons"
+import { TabNavigatorParamList } from "../../navigators"
+import { DrawerNavigationProp } from "@react-navigation/drawer"
+import { paddingBottom } from "styled-system"
 
 const uadsLogo = require("../../resources/icon.png")
+const menuIcon = require("../../resources/menu-icon.svg")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -75,11 +79,28 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
+    zIndex: 10,
+  },
 })
 
-export const EventsScreen = observer(function OffersScreen() {
-  const navigation = useNavigation()
+interface EventsScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "events">
+}
+
+export const EventsScreen = observer(function OffersScreen({ navigation }: EventsScreenProps) {
   const isVisible = useIsFocused()
+
+  const sWidth = Dimensions.get("window").width
+  const sHeight = Dimensions.get("window").height
 
   const [firstName, setFirstName] = useState<string>("")
   const [events, setEvents] = useState<
@@ -138,6 +159,46 @@ export const EventsScreen = observer(function OffersScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+        <Box
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "row",
+            paddingTop: 35,
+            paddingHorizontal: 10,
+            paddingBottom: 20, // Add padding to the bottom of the header row
+          }}
+        >
+          <Button
+            onPress={() => {
+              // Handle press
+              navigation.openDrawer()
+            }}
+            style={styles.menuBtnStyle}
+          >
+            <Image
+              source={require("../../resources/menu-icon.svg")}
+              style={{
+                width: sWidth * 0.2,
+                height: sHeight * 0.05,
+                resizeMode: "contain",
+              }}
+            />
+          </Button>
+          <Image
+            source={require("../../resources/logo.png")}
+            style={{
+              width: sWidth * 0.54,
+              height: sHeight * 0.07,
+              resizeMode: "contain",
+              position: "absolute",
+              top: 10, 
+              right: 0,
+        
+            }}
+          />
+        </Box>
+
         <Text style={styles.header} preset="header" text={"Welcome " + firstName} />
         <Text
           style={styles.textStyle}

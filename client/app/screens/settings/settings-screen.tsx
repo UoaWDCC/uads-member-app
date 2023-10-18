@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet, View, Dimensions, Image, TextInput } from "react-native"
-import { Screen, Text } from "../../components"
+// import { ViewStyle, StyleSheet, View } from "react-native"
+import { Screen, Text, AutoImage as Image } from "../../components"
+import { ViewStyle, StyleSheet, View, Dimensions, TextInput } from "react-native"
+// import { Screen, Text } from "../../components"
+
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, Button } from "native-base"
@@ -9,11 +12,15 @@ import firebase from "../../../firebaseSetup"
 import "firebase/auth"
 import { AuthContext } from "../../../context/AuthContext"
 import usersApi from "../../api/backend"
+import { TabNavigatorParamList } from "../../navigators"
+import { DrawerNavigationProp } from "@react-navigation/drawer"
 import { palette } from "../../theme/palette"
 import { ScrollView } from "react-native-gesture-handler"
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
+
+const menuIcon = require("../../resources/menu-icon.svg")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -196,9 +203,27 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingVertical: 10,
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0)",
+  },
 })
 
-export const SettingsScreen = observer(function SettingsScreen() {
+interface SettingsScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "settings">
+}
+
+export const SettingsScreen = observer(function SettingsScreen({
+  navigation,
+}: SettingsScreenProps) {
   const [name, setName] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -306,7 +331,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
     }
   }
 
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
 
   return (
     <Screen style={ROOT} preset="scroll">
@@ -345,14 +370,23 @@ export const SettingsScreen = observer(function SettingsScreen() {
               paddingHorizontal: 10,
             }}
           >
-            <Image
-              source={require("../../resources/menu-icon.svg")}
+            <Button
+              onPress={() => {
+                // Handle press
+                navigation.openDrawer()
+              }}  
               style={{
                 width: sWidth * 0.2,
                 height: sHeight * 0.05,
                 resizeMode: "contain",
+                backgroundColor: color.transparent,
               }}
-            />
+            >
+              <Image
+                source={menuIcon}
+                
+              />
+            </Button>
             <Image
               source={require("../../resources/uads-logo.png")}
               style={{
