@@ -1,5 +1,6 @@
 // import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
+
 // import { ViewStyle, TextStyle, TouchableOpacity, StyleSheet } from "react-native"
 import { Button, Screen, SponsorIcon, AutoImage as Image } from "../../components"
 import { Text } from "../../components"
