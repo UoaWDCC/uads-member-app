@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 })
 
 interface SettingsScreenProps {
-  navigation: DrawerNavigationProp<TabNavigatorParamList, "events">
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "settings">
 }
 
 export const SettingsScreen = observer(function SettingsScreen({
