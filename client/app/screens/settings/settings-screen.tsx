@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { ViewStyle, StyleSheet, View, Dimensions, TextInput } from "react-native"
 // import { Screen, Text } from "../../components"
+
 import { useNavigation } from "@react-navigation/native"
 import { color } from "../../theme"
 import { NativeBaseProvider, Box, Button } from "native-base"
@@ -20,6 +21,7 @@ const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
 
 const menuIcon = require("../../resources/menu-icon.svg")
+
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
@@ -212,11 +214,11 @@ const styles = StyleSheet.create({
     left: 10,
     zIndex: 10,
     backgroundColor: "rgba(0,0,0,0)",
-  }
+  },
 })
 
 interface SettingsScreenProps {
-  navigation: DrawerNavigationProp<TabNavigatorParamList, "settings">
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "events">
 }
 
 export const SettingsScreen = observer(function SettingsScreen({
@@ -334,14 +336,6 @@ export const SettingsScreen = observer(function SettingsScreen({
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
-      <Button
-          onPress={() => {
-            // Handle press
-            navigation.openDrawer()
-          }}
-          style={styles.menuBtnStyle}
-        >
-          </Button>
         <ScrollView>
           <View
             style={{
@@ -376,14 +370,23 @@ export const SettingsScreen = observer(function SettingsScreen({
               paddingHorizontal: 10,
             }}
           >
-            <Image
-              source={require("../../resources/menu-icon.svg")}
+            <Button
+              onPress={() => {
+                // Handle press
+                navigation.openDrawer()
+              }}  
               style={{
                 width: sWidth * 0.2,
                 height: sHeight * 0.05,
                 resizeMode: "contain",
+                backgroundColor: color.transparent,
               }}
-            />
+            >
+              <Image
+                source={menuIcon}
+                
+              />
+            </Button>
             <Image
               source={require("../../resources/uads-logo.png")}
               style={{
