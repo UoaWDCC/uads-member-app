@@ -1,10 +1,20 @@
 import "firebase/auth"
 import { observer } from "mobx-react-lite"
-import { Box, NativeBaseProvider } from "native-base"
-import React from "react"
-import { Dimensions, Linking, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
-import { Screen, Text, AutoImage as Image } from "../../components"
+// import { ViewStyle, StyleSheet, Dimensions, View } from "react-native"
+
+import { Screen, Text, AutoImage as Image, Button, Icon } from "../../components"
+import "firebase/auth"
 import { color } from "../../theme"
+
+import { DrawerNavigationProp } from "@react-navigation/drawer"
+import { TabNavigatorParamList } from "../../navigators" // Import your type definition
+
+import { Box, NativeBaseProvider } from "native-base"
+// import { Box, NativeBaseProvider } from "native-base"
+import React from "react"
+import { Dimensions, Linking, StyleSheet, TouchableOpacity, ViewStyle, View } from "react-native"
+// import { Screen, Text, AutoImage as Image } from "../../components"
+// import { color } from "../../theme"
 import { ScrollView } from "react-native-gesture-handler"
 
 const cupcakeImage = require("../../resources/cupcake.png")
@@ -15,9 +25,12 @@ const discordLogo = require("../../resources/discordLogo.png")
 const tiktokLogo = require("../../resources/tiktokLogo.png")
 const mailLogo = require("../../resources/mailLogo.png")
 const uadsLogo = require("../../resources/icon.png")
+const menuIcon = require("../../resources/menu-icon.svg")
 
 const sWidth = Dimensions.get("window").width
 const sHeight = Dimensions.get("window").height
+
+const offersIcon = require("../../resources/tags-solid.svg")
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -109,9 +122,26 @@ const styles = StyleSheet.create({
   bodyBox: {
     overflowY: "scroll",
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
+    zIndex: 10,
+  },
 })
 
-export const AboutScreen = observer(function AboutScreen() {
+interface AboutScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "about">
+}
+
+export const AboutScreen = observer(function AboutScreen({ navigation }: AboutScreenProps) {
+    
+
   const handleFacebookPress = () => {
     const externalLink = "https://www.facebook.com/uoadessertsociety?mibextid=LQQJ4d"
     Linking.openURL(externalLink)
@@ -140,6 +170,17 @@ export const AboutScreen = observer(function AboutScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <NativeBaseProvider>
+        {/* press me button -> need to put to every of the four screen after styling */}
+        <Button
+          onPress={() => {
+            // Handle press
+            navigation.openDrawer()
+          }}
+          style={styles.menuBtnStyle}
+        >
+          <Image source={menuIcon} style={styles.iconStyle} />
+        </Button>
+
         <ScrollView>
           <Box style={styles.topbox}>
             <Box style={styles.textBox}>

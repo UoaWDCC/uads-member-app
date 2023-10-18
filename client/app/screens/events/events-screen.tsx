@@ -1,22 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import {
-  ViewStyle,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  View,
-} from "react-native"
+import { ViewStyle, StyleSheet, TouchableOpacity, Dimensions, View } from "react-native"
 import { Screen, Text, AutoImage as Image } from "../../components"
 import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { color } from "../../theme"
-import { NativeBaseProvider, Box, FlatList, Stack } from "native-base"
+import { NativeBaseProvider, Box, FlatList, Stack, Button } from "native-base"
 import firebase from "firebase"
 import axios from "axios"
 import { BASE_URL } from "@env"
+import { SocialIcon } from "react-social-icons"
+import { TabNavigatorParamList } from "../../navigators"
+import { DrawerNavigationProp } from "@react-navigation/drawer"
+import { paddingBottom } from "styled-system"
 
-const uadsLogo = require("../../resources/menu-icon.png")
+const uadsLogo = require("../../resources/icon.png")
+const menuIcon = require("../../resources/menu-icon.svg")
 const calendarIcon = require("../../resources/calendar-icon.png")
 const pastCalendarIcon = require("../../resources/calendar-past-icon.png")
 
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
   eventImageStyle: {
     width: "100%",
     height: "100%",
-    resizeMode: "stretch", 
+    resizeMode: "stretch",
   },
   cardBottomBoxStyle: {
     height: "auto",
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins",
     fontWeight: "500",
     lineHeight: 12,
-    color: color.palette.sand,  
+    color: color.palette.sand,
   },
   signUpButtonStyle: {
     backgroundColor: color.palette.darkRed,
@@ -217,10 +216,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 5,
   },
+  iconStyle: {
+    height: 30,
+    width: 30,
+  },
+  menuBtnStyle: {
+    padding: 20, // Increase padding to make the button bigger
+    position: "fixed", // Position it at the top left corner
+    top: 10,
+    left: 10,
+    zIndex: 10,
+  },
 })
 
-export const EventsScreen = observer(function OffersScreen() {
-  const navigation = useNavigation()
+interface EventsScreenProps {
+  navigation: DrawerNavigationProp<TabNavigatorParamList, "events">
+}
+
+export const EventsScreen = observer(function OffersScreen({ navigation }: EventsScreenProps) {
   const isVisible = useIsFocused()
 
   const [sWidth, setSWidth] = useState(0)
@@ -291,7 +304,7 @@ export const EventsScreen = observer(function OffersScreen() {
             console.log(data)
             data.forEach((event) => {
               const itemDatetime = new Date(event.dateTime)
-              const formattedDate = itemDatetime.toLocaleDateString('en-US', options)
+              const formattedDate = itemDatetime.toLocaleDateString("en-US", options)
               event["dateTimeString"] = formattedDate
             })
             setEvents(data)
@@ -304,43 +317,38 @@ export const EventsScreen = observer(function OffersScreen() {
 
   // Used to Format the Date Objects
   const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  };
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }
 
-  const renderEvent = ( {item }) => {
-    
+  const renderEvent = ({ item }) => {
     return (
-      <Box style={{ flexDirection: "column", alignItems: "center"}}>
+      <Box style={{ flexDirection: "column", alignItems: "center" }}>
         {/* Conditional Rendering based on whether the More Info is active or not */}
         {!openedEvents.includes(item._id) ? (
           // Event is Closed
-          
+
           // Event Box
           <Box style={styles.cardStyle}>
             {/* Top Half of the Events (Image, Name, Location, Going/Not Going Buttons) */}
-            <Box style={{height: 175}}>
+            <Box style={{ height: 175 }}>
               {/* Box for Going and Not Going Buttons */}
               <Box style={styles.topButtonBoxStyle}>
                 {/* Going Button */}
                 <TouchableOpacity style={styles.goingButtonStyle}>
-                  <Text style={styles.goingButtonTextStlye}>
-                    Going
-                  </Text>
+                  <Text style={styles.goingButtonTextStlye}>Going</Text>
                 </TouchableOpacity>
-                  
+
                 {/* Not Going Button */}
                 <TouchableOpacity style={styles.notGoingButtonStyle}>
-                  <Text style={styles.notGoingButtonTextStyle}>
-                    Not Going
-                  </Text>
+                  <Text style={styles.notGoingButtonTextStyle}>Not Going</Text>
                 </TouchableOpacity>
               </Box>
-              
+
               {/* Background Image */}
               <Image source={item.imagePath} style={styles.eventImageStyle} />
 
@@ -349,130 +357,98 @@ export const EventsScreen = observer(function OffersScreen() {
 
               {/* Event Name and Address */}
               <Box style={styles.eventInfoBoxStyle}>
-                <Text style={styles.eventNameStyle}>
-                  {item.name}
-                </Text>
+                <Text style={styles.eventNameStyle}>{item.name}</Text>
 
-                <Text style={styles.eventLocationStyle}>
-                  {item.location}
-                </Text>
+                <Text style={styles.eventLocationStyle}>{item.location}</Text>
               </Box>
-
             </Box>
 
             {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
             <Box style={styles.cardBottomBoxStyle}>
               {/* Event Date */}
-              <Text style={styles.cardTextStyleBold}>
-                {item.dateTimeString}
-              </Text>
+              <Text style={styles.cardTextStyleBold}>{item.dateTimeString}</Text>
 
               {/* Button Box */}
               <Box style={styles.cardBottomButtonBoxStyle}>
                 {/* More Info Button */}
-                <TouchableOpacity style={styles.moreInfoButtonStyle}
+                <TouchableOpacity
+                  style={styles.moreInfoButtonStyle}
                   onPress={() => {
                     handleToggleEvent(item._id)
                   }}
                 >
-                  <Text style={styles.infoTextStyle}>
-                    More Info +
-                  </Text>
+                  <Text style={styles.infoTextStyle}>More Info +</Text>
                 </TouchableOpacity>
 
                 {/* Sign Up Button */}
                 <TouchableOpacity style={styles.signUpButtonStyle}>
-                  <Text style={styles.signUpTextStyle}>
-                    Sign Up
-                  </Text>
+                  <Text style={styles.signUpTextStyle}>Sign Up</Text>
                 </TouchableOpacity>
-
               </Box>
-
             </Box>
-
           </Box>
         ) : (
-          // Event is Opened 
+          // Event is Opened
 
           // Event Box
           <Box style={styles.cardStyle}>
             {/* Top Half of the Events (Image, Name, Location) */}
-            <Box style={{ height: 175}}>
-                {/* Box for Going and Not Going Buttons */}
-                <Box style={styles.topButtonBoxStyle}>
-                  {/* Going Button */}
-                  <TouchableOpacity style={styles.goingButtonStyle}>
-                    <Text style={styles.goingButtonTextStlye}>
-                      Going
-                    </Text>
-                  </TouchableOpacity>
-                  
-                  {/* Not Going Button */}
-                  <TouchableOpacity style={styles.notGoingButtonStyle}>
-                    <Text style={styles.notGoingButtonTextStyle}>
-                      Not Going
-                    </Text>
-                  </TouchableOpacity>
-                </Box>
-                
-                {/* Background Image */}
-                <Image source={item.imagePath} style={styles.eventImageStyle} />
+            <Box style={{ height: 175 }}>
+              {/* Box for Going and Not Going Buttons */}
+              <Box style={styles.topButtonBoxStyle}>
+                {/* Going Button */}
+                <TouchableOpacity style={styles.goingButtonStyle}>
+                  <Text style={styles.goingButtonTextStlye}>Going</Text>
+                </TouchableOpacity>
 
-                {/* Background Image Black Gradient */}
-                <View style={styles.gradient} />
+                {/* Not Going Button */}
+                <TouchableOpacity style={styles.notGoingButtonStyle}>
+                  <Text style={styles.notGoingButtonTextStyle}>Not Going</Text>
+                </TouchableOpacity>
+              </Box>
 
-                {/* Event Name and Address */}
-                <Box style={styles.eventInfoBoxStyle}>
-                  <Text style={styles.eventNameStyle}>
-                    {item.name}
-                  </Text>
+              {/* Background Image */}
+              <Image source={item.imagePath} style={styles.eventImageStyle} />
 
-                  <Text style={styles.eventLocationStyle}>
-                    {item.location}
-                  </Text>
-                </Box>
+              {/* Background Image Black Gradient */}
+              <View style={styles.gradient} />
 
+              {/* Event Name and Address */}
+              <Box style={styles.eventInfoBoxStyle}>
+                <Text style={styles.eventNameStyle}>{item.name}</Text>
+
+                <Text style={styles.eventLocationStyle}>{item.location}</Text>
+              </Box>
             </Box>
 
             {/* Bottom Half of the Events (Date, Time, More Info, SignUp) */}
             <Box style={styles.cardBottomBoxStyle}>
               {/* Event Date */}
-              <Text style={styles.cardTextStyleBold}>
-                {item.dateTimeString}
-              </Text>
+              <Text style={styles.cardTextStyleBold}>{item.dateTimeString}</Text>
 
               {/* Event Description */}
-              <Text style={styles.cardTextStyle}>
-                {item.desc}
-              </Text>
+              <Text style={styles.cardTextStyle}>{item.desc}</Text>
 
               {/* Button Box */}
               <Box style={styles.cardBottomButtonBoxStyle}>
                 {/* More Info Button */}
-                <TouchableOpacity style={styles.moreInfoButtonStyle}
+                <TouchableOpacity
+                  style={styles.moreInfoButtonStyle}
                   onPress={() => {
                     handleToggleEvent(item._id)
                   }}
                 >
-                  <Text style={styles.infoTextStyle}>
-                    Less Info -
-                  </Text>
+                  <Text style={styles.infoTextStyle}>Less Info -</Text>
                 </TouchableOpacity>
 
                 {/* Sign Up Button */}
                 <TouchableOpacity style={styles.signUpButtonStyle}>
-                  <Text style={styles.signUpTextStyle}>
-                    Sign Up
-                  </Text>
+                  <Text style={styles.signUpTextStyle}>Sign Up</Text>
                 </TouchableOpacity>
-
               </Box>
-              
             </Box>
-
           </Box>
-        )} 
+        )}
       </Box>
     )
   }
@@ -486,6 +462,10 @@ export const EventsScreen = observer(function OffersScreen() {
       <NativeBaseProvider>
         {/* Hamburger Menu Icon */}
         <Box style={styles.menuIconStyle}>
+          <Button 
+            style={{backgroundColor: "transparent", zIndex: 10}}
+            onPress={() => navigation.openDrawer()}
+          >
           <Image
             source={require("../../resources/menu-icon.png")}
             style={{
@@ -494,6 +474,7 @@ export const EventsScreen = observer(function OffersScreen() {
               resizeMode: "contain",
             }}
           />
+          </Button>
           <Image
             source={require("../../resources/logo.png")}
             style={{
@@ -504,10 +485,10 @@ export const EventsScreen = observer(function OffersScreen() {
           />
         </Box>
 
-        <Box style={{marginHorizontal: 30}}>
+        <Box style={{ marginHorizontal: 30 }}>
           {/* Welcome Message */}
           <Text style={styles.header} preset="header" text={"Welcome back, " + firstName + " :)"} />
-          
+
           {/* Star Icons */}
           <Image
             source={require("../../resources/fourPointStar.png")}
@@ -552,7 +533,7 @@ export const EventsScreen = observer(function OffersScreen() {
               }}
             />
           </Box>
-          
+
           {/* Upcoming Events List */}
           <Stack>
             {events.length === 0 ? (
@@ -592,7 +573,7 @@ export const EventsScreen = observer(function OffersScreen() {
               }}
             />
           </Box>
-          
+
           {/* Past Events List */}
           <Stack>
             {events.length === 0 ? (
@@ -604,7 +585,7 @@ export const EventsScreen = observer(function OffersScreen() {
                 data={events.filter((item) => {
                   // Convert the Datetime String to a Date Object
                   const itemDatetime = new Date(item.dateTime)
-                  
+
                   // Compare the Item's Datetime with the Current Time
                   return itemDatetime < currentDateAndTime
                 })}

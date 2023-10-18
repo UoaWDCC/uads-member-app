@@ -29,6 +29,8 @@ import {
   EventsScreen,
   EventScreen,
 } from "../screens"
+import { createDrawerNavigator } from "@react-navigation/drawer"
+import { DrawerContent } from "../components/side-drawer/side-drawer"
 const uadsLogo = require("../resources/icon.png")
 const handshakeIcon = require("../resources/handshake-simple-solid.svg")
 const infoIcon = require("../resources/circle-info-solid.svg")
@@ -193,6 +195,23 @@ export type TabNavigatorParamList = {
   events: undefined
 }
 
+// const DrawerConte
+const Drawer = createDrawerNavigator<TabNavigatorParamList>()
+
+const AppDrawer = () => {
+  return (
+    <Drawer.Navigator
+      initialRouteName="about"
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen name="about" component={AboutScreen} />
+      <Drawer.Screen name="sponsors" component={SponsorsScreen} />
+      <Drawer.Screen name="events" component={EventsScreen} />
+      <Drawer.Screen name="settings" component={SettingsScreen} />
+    </Drawer.Navigator>
+  )
+}
+
 const Tab = createBottomTabNavigator<TabNavigatorParamList>()
 
 const AppTab = () => {
@@ -302,7 +321,7 @@ export const AppNavigator = React.forwardRef<
       }}
     >
       <NavigationContainer {...props} ref={ref}>
-        {state.isLoading ? <LoadingScreen /> : state.user ? <AppTab /> : <AppStack />}
+        {state.isLoading ? <LoadingScreen /> : state.user ? <AppDrawer /> : <AppStack />}
       </NavigationContainer>
     </AuthContext.Provider>
   )
